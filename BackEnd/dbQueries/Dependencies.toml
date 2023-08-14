@@ -98,6 +98,9 @@ dependencies = [
 	{org = "ballerina", name = "jballerina.java"},
 	{org = "ballerina", name = "lang.value"}
 ]
+modules = [
+	{org = "ballerina", packageName = "io", moduleName = "io"}
+]
 
 [[package]]
 org = "ballerina"
@@ -294,14 +297,15 @@ modules = [
 
 [[package]]
 org = "nirashasewwandi"
-name = "tryDB"
+name = "mainAPI"
 version = "0.1.0"
 dependencies = [
 	{org = "ballerina", name = "http"},
+	{org = "ballerina", name = "io"},
 	{org = "ballerinai", name = "observe"},
 	{org = "ballerinax", name = "mongodb"}
 ]
 modules = [
-	{org = "nirashasewwandi", packageName = "tryDB", moduleName = "tryDB"}
+	{org = "nirashasewwandi", packageName = "mainAPI", moduleName = "mainAPI"}
 ]
 
