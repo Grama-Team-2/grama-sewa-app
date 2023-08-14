@@ -9,9 +9,26 @@ import GSDashBoard from "./Components/GramaSevaka/GramaSevakaDashboard";
 import UserDashBoard from "./Components/User/UserDashboard";
 import ViewRequest from "./Components/GramaSevaka/ViewRequests";
 import { useAuthContext } from "@asgardeo/auth-react";
+import { useEffect, useState } from "react";
 
 function App() {
   const { state } = useAuthContext();
+  const [role, setRole] = useState("");
+
+  const { getBasicUserInfo } = useAuthContext();
+
+  const getBasicInfo = async () => {
+    try {
+      const { applicationRoles } = await getBasicUserInfo();
+      setRole(applicationRoles);
+      console.log(applicationRoles);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getBasicInfo();
+  });
 
   return (
     <div>
@@ -19,7 +36,15 @@ function App() {
         {/* <Route path="/signup" element={<SignUp />} /> */}
         <Route
           path="/"
-          element={state.isAuthenticated ? <UserDashBoard /> : <Login />}
+          element={
+            state.isAuthenticated && role === "User" ? (
+              <UserDashBoard />
+            ) : state.isAuthenticated && role === "Gramasevaka" ? (
+              <GSDashBoard />
+            ) : (
+              <Login />
+            )
+          }
         />
 
         {/* <Route path="/request" element={<Request />} />

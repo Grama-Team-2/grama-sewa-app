@@ -12,9 +12,14 @@ import { AuthProvider } from "@asgardeo/auth-react";
 const config = {
   signInRedirectURL: "http://localhost:3000",
   signOutRedirectURL: "http://localhost:3000",
-  clientID: "A956YIh8d_FKh3rr3fPZQ5uMExca",
+  clientID: "dP0vredUT5yWphnhHp1OQPR0IXka",
   baseUrl: "https://api.asgardeo.io/t/sns24",
-  scope: ["openid", "profile"],
+  scope: [
+    "openid",
+    "profile",
+    "urn:sns24:policeserviceapipolicever:check_police_verification urn:sns24:addressserviceapiaddressv:check_address",
+    "app_roles",
+  ],
 };
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
