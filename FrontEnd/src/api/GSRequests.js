@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "http://localhost:9090/social-media/" });
+const API = axios.create({ baseURL: "http://localhost:9090/requests" });
 let axiosConfig = {
   headers: {
     "Content-Type": "application/json;charset=UTF-8",
