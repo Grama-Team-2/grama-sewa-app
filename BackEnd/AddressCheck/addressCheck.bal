@@ -4,7 +4,8 @@ import ballerinax/mongodb;
 type AddressStatus record {
     json _id;
     string NIC;
-    string address;
+    json address;
+
 };
 
 configurable string username = ?;
@@ -13,7 +14,7 @@ configurable string password = ?;
 // Define service for address check
 service /AddressVerify on new http:Listener(9090) {
     // Check whether Address exists or not
-    resource function get AddressVerification/[string NIC]/[string address]() returns boolean | error {
+    resource function get AddressVerification/[string NIC]/[string no]/[string street]/[string city]() returns boolean | error {
         // Set up MongoDB Connection
         mongodb:ConnectionConfig mongoConfig = {
             connection: {
@@ -24,6 +25,14 @@ service /AddressVerify on new http:Listener(9090) {
 
         // Create a Client
         mongodb:Client mongoClient = check new (mongoConfig);
+
+        // Define the address JSON object
+        json address = {
+            "no": no,
+            "street": street,
+            "city": city
+        };
+
 
         // Define query filter
         map<json> queryFilter = {
