@@ -8,27 +8,26 @@ import GSDashBoard from "./Components/GramaSevaka/GramaSevakaDashboard";
 
 import UserDashBoard from "./Components/User/UserDashboard";
 import ViewRequest from "./Components/GramaSevaka/ViewRequests";
-
-
+import { useAuthContext } from "@asgardeo/auth-react";
 
 function App() {
+  const { state } = useAuthContext();
+
   return (
     <div>
-      <Router>
-        <Routes>
+      <Routes>
+        {/* <Route path="/signup" element={<SignUp />} /> */}
+        <Route
+          path="/"
+          element={state.isAuthenticated ? <UserDashBoard /> : <Login />}
+        />
 
-          <Route exact path="/" element={<Login/>} />
-          <Route exact path="/signup" element={<SignUp/>}/>
-          <Route exact path="/request" element={<Request/>}/>
-          <Route exact path="/userhome" element={<UserDashBoard/>}/>
-          <Route exact path="/status" element={<Status/>}/>
-          <Route exact path="/gshome" element={<GSDashBoard/>}/>
-          <Route exact path="/viewrequest" element={<ViewRequest/>}/>
-
-
-
-        </Routes>
-      </Router>
+        {/* <Route path="/request" element={<Request />} />
+        <Route path="/userhome" element={<UserDashBoard />} />
+        <Route path="/status" element={<Status />} />
+        <Route path="/gshome" element={<GSDashBoard />} />
+        <Route path="/viewrequest" element={<ViewRequest />} /> */}
+      </Routes>
     </div>
   );
 }
