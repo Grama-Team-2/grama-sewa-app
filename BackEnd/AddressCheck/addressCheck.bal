@@ -12,9 +12,9 @@ configurable string username = ?;
 configurable string password = ?;
 
 // Define service for address check
-service /AddressVerify on new http:Listener(9090) {
+service /AddressVerify on new http:Listener(8070) {
     // Check whether Address exists or not
-    resource function get AddressVerification/[string NIC]/[string no]/[string street]/[string city]() returns boolean | error {
+    resource function get AddressVerification/[string NIC]/[string no]/[string street]/[string city]() returns boolean|error {
         // Set up MongoDB Connection
         mongodb:ConnectionConfig mongoConfig = {
             connection: {
@@ -33,7 +33,6 @@ service /AddressVerify on new http:Listener(9090) {
             "city": city
         };
 
-
         // Define query filter
         map<json> queryFilter = {
             "NIC": NIC,
@@ -48,8 +47,8 @@ service /AddressVerify on new http:Listener(9090) {
 
         // Check if data exists
         var status = resultData.next();
-        
-        if(status !is error?){
+
+        if (status !is error?) {
             return true;
         }
 

@@ -8,27 +8,51 @@ import GSDashBoard from "./Components/GramaSevaka/GramaSevakaDashboard";
 
 import UserDashBoard from "./Components/User/UserDashboard";
 import ViewRequest from "./Components/GramaSevaka/ViewRequests";
-
-
+import { useAuthContext } from "@asgardeo/auth-react";
+import { useEffect, useState } from "react";
 
 function App() {
+  const { state } = useAuthContext();
+  const [role, setRole] = useState("");
+
+  const { getBasicUserInfo } = useAuthContext();
+
+  const getBasicInfo = async () => {
+    try {
+      const { applicationRoles } = await getBasicUserInfo();
+      setRole(applicationRoles);
+      console.log(applicationRoles);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getBasicInfo();
+  });
+
   return (
     <div>
-      <Router>
-        <Routes>
+      <Routes>
+        {/* <Route path="/signup" element={<SignUp />} /> */}
+        <Route
+          path="/"
+          element={
+            state.isAuthenticated && role === "User" ? (
+              <UserDashBoard />
+            ) : state.isAuthenticated && role === "Gramasevaka" ? (
+              <GSDashBoard />
+            ) : (
+              <Login />
+            )
+          }
+        />
 
-          <Route exact path="/" element={<Login/>} />
-          <Route exact path="/signup" element={<SignUp/>}/>
-          <Route exact path="/request" element={<Request/>}/>
-          <Route exact path="/userhome" element={<UserDashBoard/>}/>
-          <Route exact path="/status" element={<Status/>}/>
-          <Route exact path="/gshome" element={<GSDashBoard/>}/>
-          <Route exact path="/viewrequest" element={<ViewRequest/>}/>
-
-
-
-        </Routes>
-      </Router>
+        {/* <Route path="/request" element={<Request />} />
+        <Route path="/userhome" element={<UserDashBoard />} />
+        <Route path="/status" element={<Status />} />
+        <Route path="/gshome" element={<GSDashBoard />} />
+        <Route path="/viewrequest" element={<ViewRequest />} /> */}
+      </Routes>
     </div>
   );
 }
