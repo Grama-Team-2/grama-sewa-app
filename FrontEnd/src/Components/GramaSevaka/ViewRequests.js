@@ -1,8 +1,72 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
+import axios from "axios";
 import GSHeader from "./GSHeader";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 export default function ViewRequest() {
+  const [data,setData] = useState([]);
+  const [status,setStatus] = useState([]);
+
+  useEffect(() => {
+    axios.get("http://localhost:9090/sendRequest/getAllRequests", {
+      headers: {
+        // Add your headers here
+        // For example, if you need to send an authorization token:
+        Authorization: "Bearer yourAuthToken",
+        "Content-Type": "application/json",
+      }
+    })
+    .then(response => {
+      setData(response.data);
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
+  }, []);
+  
+  function updatePending(nic){
+    setStatus("Pending")
+    axios.put("http://localhost:9090/sendRequest/updateStatus",nic,status).then(() => {
+        
+    window.location.replace("/viewrequest");
+  })
+  .catch((err) => {
+    alert(err);
+  });
+}
+
+  function updateProcessing(nic){
+    setStatus("Processing")
+    axios.put("http://localhost:9090/sendRequest/updateStatus",nic,status).then(() => {
+        
+    window.location.replace("/viewrequest");
+  })
+  .catch((err) => {
+    alert(err);
+  });
+}
+
+  function updateMIR(nic){
+    setStatus("More Info required")
+    axios.put("http://localhost:9090/sendRequest/updateStatus",nic,status).then(() => {
+        
+    window.location.replace("/viewrequest");
+  })
+  .catch((err) => {
+    alert(err);
+  });
+}
+
+  function updateCompleted(nic){
+    setStatus("Completed")
+    axios.put("http://localhost:9090/sendRequest/updateStatus",nic,status).then(() => {
+        
+    window.location.replace("/viewrequest");
+  })
+  .catch((err) => {
+    alert(err);
+  });
+}
 
   return (
     <div>
@@ -30,12 +94,17 @@ export default function ViewRequest() {
                 <th scope="col">Status</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody>{
+              data.map((Request) => (
+
+              
           
                   <tr>
                     
-                    <td>t8r6f</td>
-                    <td>hjvc</td>
+                    <td>{Request.nic}</td>
+                    <td>{Request.no}<br/>
+                    {Request.street}
+                    {Request.city}<br/></td>
                     <td> <button
                         className="btn">
                         <CheckCircleIcon/>
@@ -51,12 +120,16 @@ export default function ViewRequest() {
                     <td className="d-flex justify-content-between" style={{marginTop:"20px"}}>
                         
                       <button
-                        className="btn btn-danger">Pending
+                        className="btn btn-danger"
+                        onClick={updatePending(Request.nic)}
+                        >Pending
+                        
                         
                       </button>
                       
                       <button
                         className="btn btn-info"
+                        onClick={updateProcessing(Request.nic)}
                
                       >
                         Processing
@@ -64,13 +137,15 @@ export default function ViewRequest() {
                       <br/><br/>
                       
                       <button
-                      className="btn btn1" >
+                      className="btn btn1"
+                      onClick={updateMIR(Request.nic)} >
                         MIR
                       </button>
                       <br/>
 
                       <button
                       className="btn btn-success"
+                      onClick={updateCompleted(Request.nic)}
                     
                        
                       >
@@ -81,6 +156,7 @@ export default function ViewRequest() {
                     </td>
                     <br/>
                   </tr>
+                  ))}
               
             </tbody>
           </table>
