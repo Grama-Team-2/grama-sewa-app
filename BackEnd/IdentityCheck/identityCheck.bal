@@ -1,15 +1,6 @@
 import ballerina/http;
 import ballerinax/mongodb;
-
-// import ballerina/io;
-
-type User record {
-    json _id;
-    string firstName;
-    string lastName;
-    int age;
-    string NIC;
-};
+import ballerina/time;
 
 configurable string username = ?;
 configurable string password = ?;
@@ -25,33 +16,36 @@ mongodb:ConnectionConfig mongoConfig = {
 //Create a client
 mongodb:Client mongoClient = check new (mongoConfig);
 
-@http:ServiceConfig {
-    cors: {
-        allowOrigins: ["*"],
-        allowCredentials: true,
-        allowMethods: ["*"]
-    }
-}
-
 //service for identity check
-service /IdentityVerify on new http:Listener(9090) {
+service /identity/verify on new http:Listener(9090) {
 
     //Check whether the NIC exists or not
-    resource function get NIC_check/[string NIC]() returns boolean|error? {
+    resource function get nic/[string NIC]() returns Person|VerificationFailError|error? {
 
-        boolean valid = false;
         map<json> queryString = {"NIC": NIC};
-        stream<User, error?> resultData = check mongoClient->find(collectionName = "People", filter = (queryString));
+        stream<Person, error?>|error resultData = check mongoClient->find(collectionName = "People", filter = (queryString));
+        if resultData is error {
+            return resultData;
+        }
 
-        check resultData.forEach(function(User datas) {
+        var val = resultData.next();
+        if val is error? {
+            ErrorDetails errorDetails = buildErrorPayload(string `NIC: ${NIC}`, string `address/verify`);
+            VerificationFailError verificationFailError = {
+                body: errorDetails
+            };
+            return verificationFailError;
+        }
+        Person[] persons = from Person person in val
+            select person;
 
-            // io:println(datas.NIC);
-            // io:println(resultData.count());
-            valid = true;
+        return persons[0];
 
-        });
-        return valid;
     }
 
+}
+
+function buildErrorPayload(string msg, string path) returns ErrorDetails {
+    return {timeStamp: time:utcNow(), message: msg, details: string `uri = ${path}`};
 }
 
