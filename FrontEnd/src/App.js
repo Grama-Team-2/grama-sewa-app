@@ -37,9 +37,9 @@ function App() {
         <Route
           path="/"
           element={
-            state.isAuthenticated && role === "User" ? (
+            state.isAuthenticated && role === "User-G2" ? (
               <UserDashBoard />
-            ) : state.isAuthenticated && role === "Gramasevaka" ? (
+            ) : state.isAuthenticated && role === "Grama-Sewaka-G2" ? (
               <GSDashBoard />
             ) : (
               <Login />
