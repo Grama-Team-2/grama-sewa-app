@@ -1,57 +1,51 @@
 import ballerina/http;
 import ballerinax/mongodb;
-// import ballerina/io;
+import ballerina/time;
 
-
-type User record {
-    json _id;
-    string firstName;
-    string lastName;
-    int age;
-    string NIC;
-};
-
-
-configurable string username =?;
-configurable string password =?;
-
+configurable string username = ?;
+configurable string password = ?;
 
 //SETUP mongoDB Connection
 mongodb:ConnectionConfig mongoConfig = {
     connection: {
         url: string `mongodb+srv://${username}:${password}@cluster0.sg7wemt.mongodb.net/?retryWrites=true&w=majority`
-        
+
     },
     databaseName: "GramaSewakaApp"
 };
 //Create a client
 mongodb:Client mongoClient = check new (mongoConfig);
 
-
 //service for identity check
-service /IdentityVerify on new http:Listener(9090) {
-
+service /identity/verify on new http:Listener(9090) {
 
     //Check whether the NIC exists or not
-    resource function get NIC_check/[string NIC]() returns boolean|error? {
-        
-        boolean valid = false;
-        map<json> queryString = {"NIC": NIC };
-        stream<User, error?> resultData = check mongoClient->find(collectionName = "People",filter = (queryString));
-    
-        check resultData.forEach(function(User datas){
-                
-                // io:println(datas.NIC);
-                // io:println(resultData.count());
-                valid = true;
-                
-        });
-        return valid;
-    }
+    resource function get nic/[string NIC]() returns Person|VerificationFailError|error? {
 
+        map<json> queryString = {"NIC": NIC};
+        stream<Person, error?>|error resultData = check mongoClient->find(collectionName = "People", filter = (queryString));
+        if resultData is error {
+            return resultData;
+        }
+
+        var val = resultData.next();
+        if val is error? {
+            ErrorDetails errorDetails = buildErrorPayload(string `NIC: ${NIC}`, string `address/verify`);
+            VerificationFailError verificationFailError = {
+                body: errorDetails
+            };
+            return verificationFailError;
+        }
+        Person[] persons = from Person person in val
+            select person;
+
+        return persons[0];
+
+    }
 
 }
 
-
-
+function buildErrorPayload(string msg, string path) returns ErrorDetails {
+    return {timeStamp: time:utcNow(), message: msg, details: string `uri = ${path}`};
+}
 

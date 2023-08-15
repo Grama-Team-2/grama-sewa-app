@@ -85,10 +85,6 @@ dependencies = [
 	{org = "ballerina", name = "time"},
 	{org = "ballerina", name = "url"}
 ]
-modules = [
-	{org = "ballerina", packageName = "http", moduleName = "http"},
-	{org = "ballerina", packageName = "http", moduleName = "http.httpscerr"}
-]
 
 [[package]]
 org = "ballerina"
@@ -205,6 +201,9 @@ dependencies = [
 	{org = "ballerina", name = "lang.value"},
 	{org = "ballerina", name = "observe"}
 ]
+modules = [
+	{org = "ballerina", packageName = "log", moduleName = "log"}
+]
 
 [[package]]
 org = "ballerina"
@@ -285,27 +284,41 @@ modules = [
 
 [[package]]
 org = "ballerinax"
-name = "mongodb"
-version = "4.2.1"
+name = "client.config"
+version = "1.0.1"
 dependencies = [
-	{org = "ballerina", name = "crypto"},
-	{org = "ballerina", name = "jballerina.java"}
+	{org = "ballerina", name = "http"},
+	{org = "ballerina", name = "oauth2"}
+]
+
+[[package]]
+org = "ballerinax"
+name = "twilio"
+version = "3.2.0"
+dependencies = [
+	{org = "ballerina", name = "auth"},
+	{org = "ballerina", name = "http"},
+	{org = "ballerina", name = "log"},
+	{org = "ballerina", name = "mime"},
+	{org = "ballerina", name = "os"},
+	{org = "ballerina", name = "url"},
+	{org = "ballerinax", name = "client.config"}
 ]
 modules = [
-	{org = "ballerinax", packageName = "mongodb", moduleName = "mongodb"}
+	{org = "ballerinax", packageName = "twilio", moduleName = "twilio"}
 ]
 
 [[package]]
 org = "dharane_segar"
-name = "Request"
+name = "twilio"
 version = "0.1.0"
 dependencies = [
-	{org = "ballerina", name = "http"},
 	{org = "ballerina", name = "io"},
+	{org = "ballerina", name = "log"},
 	{org = "ballerinai", name = "observe"},
-	{org = "ballerinax", name = "mongodb"}
+	{org = "ballerinax", name = "twilio"}
 ]
 modules = [
-	{org = "dharane_segar", packageName = "Request", moduleName = "Request"}
+	{org = "dharane_segar", packageName = "twilio", moduleName = "twilio"}
 ]
 
