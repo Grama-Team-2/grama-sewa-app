@@ -70,8 +70,32 @@ function Request() {
                             
                           />
                         </div>
+                        <hr/>
+                        <label style={{marginLeft:"145px"}}>Address Details</label>
                         <div className="form-floating mb-3">
-                          <label>Address :</label>
+                          <label>No :</label>
+                          <br />
+                          <br />
+                          <input
+                            className="form-control"
+                            type="text"
+                            
+                            required
+                          />
+                        </div>
+                        <div className="form-floating mb-3">
+                          <label>Street :</label>
+                          <br />
+                          <br />
+                          <input
+                            className="form-control"
+                            type="text"
+                            
+                            required
+                          />
+                        </div>
+                        <div className="form-floating mb-3">
+                          <label>City :</label>
                           <br />
                           <br />
                           <input
