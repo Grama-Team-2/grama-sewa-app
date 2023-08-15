@@ -94,9 +94,6 @@ dependencies = [
 	{org = "ballerina", name = "jballerina.java"},
 	{org = "ballerina", name = "lang.value"}
 ]
-modules = [
-	{org = "ballerina", packageName = "io", moduleName = "io"}
-]
 
 [[package]]
 org = "ballerina"
@@ -292,19 +289,12 @@ dependencies = [
 ]
 
 [[package]]
-<<<<<<<< HEAD:BackEnd/twilio/Dependencies.toml
 org = "ballerinax"
 name = "twilio"
 version = "3.2.0"
-========
-org = "nirashasewwandi"
-name = "mainAPI"
-version = "0.1.0"
->>>>>>>> f16a79f64b11a200647d99efccef12979f61f4e5:BackEnd/dbQueries/Dependencies.toml
 dependencies = [
 	{org = "ballerina", name = "auth"},
 	{org = "ballerina", name = "http"},
-<<<<<<<< HEAD:BackEnd/twilio/Dependencies.toml
 	{org = "ballerina", name = "log"},
 	{org = "ballerina", name = "mime"},
 	{org = "ballerina", name = "os"},
@@ -320,20 +310,11 @@ org = "dharane_segar"
 name = "twilio"
 version = "0.1.0"
 dependencies = [
-	{org = "ballerina", name = "io"},
 	{org = "ballerina", name = "log"},
 	{org = "ballerinai", name = "observe"},
 	{org = "ballerinax", name = "twilio"}
 ]
 modules = [
 	{org = "dharane_segar", packageName = "twilio", moduleName = "twilio"}
-========
-	{org = "ballerina", name = "io"},
-	{org = "ballerinai", name = "observe"},
-	{org = "ballerinax", name = "mongodb"}
-]
-modules = [
-	{org = "nirashasewwandi", packageName = "mainAPI", moduleName = "mainAPI"}
->>>>>>>> f16a79f64b11a200647d99efccef12979f61f4e5:BackEnd/dbQueries/Dependencies.toml
 ]
 
