@@ -109,9 +109,9 @@ service /requests on new http:Listener(8080) {
         return resultData;
     }
 
-    resource function post validate(@http:Payload ValidationRequest request) returns error? {
+    resource function post validate(@http:Payload ValidationRequest request) returns Person|error? {
         http:Client http_client = check new ("http://identity-check-service-3223962601:9090/identity/verify");
         Person payload = check http_client->/nic/["998877665V"];
-        io:println(payload);
+        return payload;
     }
 }
