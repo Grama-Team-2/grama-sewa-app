@@ -1,11 +1,45 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import Header from "./UserHeader";
 
-
-
 function Request() {
+  const [nic, setNic] = useState("");
+  const [no, setNo] = useState("");
+  const [street, setStreet] = useState("");
+  const [city, setCity] = useState("");
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    const requestData = {
+      NIC: nic,
+      no: no,
+      street: street,
+      city: city,
+    };
+  
+    console.log("Sending request data:", requestData);
+  
+    try {
+      const response = await axios.post(
+        
+        "https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/maoe/grama-api-service/requests-915/1.0.0/newRequest",
+        requestData,
+        {
+          headers: {
+            "Content-Type": "application/json",
 
+            "Access-Control-Allow-Origin": "*",
+             "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
+          },
+        }
+      );
+      console.log("Response data:", response.data);
+    } catch (error) {
+      console.error("Error sending data: ", error);
+    }
+  };
+  
 
   return (
     <div>
