@@ -10,7 +10,7 @@ function GSHeader() {
   return (
     <div>
       <nav class="navbar navbar-expand-lg navbar-light ">
-        <a class="navbar-brand" href="/gshome" style={{ color: "white" }}>
+        <a class="navbar-brand" href="/" style={{ color: "white" }}>
           Grama Assist
         </a>
         <button
@@ -26,12 +26,12 @@ function GSHeader() {
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
-            <li class="nav-item active">
-              <span
-                class="nav-link"
-                onClick={() => navigate("/gs/me/requests")}
-                style={{ color: "white" }}
-              >
+            <li
+              class="nav-item active"
+              onClick={() => navigate("/gs/me/requests")}
+              style={{ cursor: "pointer" }}
+            >
+              <span class="nav-link" style={{ color: "white" }}>
                 View Requests <span class="sr-only">(current)</span>
               </span>
             </li>
