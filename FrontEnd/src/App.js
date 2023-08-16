@@ -45,8 +45,10 @@ function App() {
           element={
             state.isAuthenticated && role === userRoles.USER ? (
               <Request />
-            ) : (
+            ) : state.isAuthenticated ? (
               <Navigate to="/restricted" replace={true} />
+            ) : (
+              <Login />
             )
           }
         />
@@ -61,21 +63,40 @@ function App() {
           }
         />
 
+        {/* <Route path="/status" element={<Status />} /> */}
+        <Route
+          path="/gs/me/requests"
+          element={
+            state.isAuthenticated && role === userRoles.GRAMA ? (
+              <ViewRequest />
+            ) : (
+              <Navigate to="/restricted" />
+            )
+          }
+        />
+        <Route
+          path="/gs/me"
+          element={
+            state.isAuthenticated && role === userRoles.GRAMA ? (
+              <GSDashBoard />
+            ) : (
+              <Navigate to="/restricted" />
+            )
+          }
+        />
+
         <Route
           path="/"
           element={
             state.isAuthenticated && role === userRoles.USER ? (
-              <UserDashBoard />
+              <Navigate to="/user/me" />
             ) : state.isAuthenticated && role === userRoles.GRAMA ? (
-              <GSDashBoard />
+              <Navigate to="/gs/me" />
             ) : (
               <Login />
             )
           }
         />
-        <Route path="/status" element={<Status />} />
-        <Route path="/gs/me" element={<GSDashBoard />} />
-        <Route path="/viewrequest" element={<ViewRequest />} />
         <Route path="/restricted" element={<Restrict />} />
       </Routes>
     </div>
