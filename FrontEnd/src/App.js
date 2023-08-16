@@ -1,7 +1,11 @@
 import "./App.css";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import Login from "./Components/Common/Login";
-import SignUp from "./Components/Common/SignUp";
 import Request from "./Components/User/Request";
 import Status from "./Components/User/Status";
 import GSDashBoard from "./Components/GramaSevaka/GramaSevakaDashboard";
@@ -10,6 +14,8 @@ import UserDashBoard from "./Components/User/UserDashboard";
 import ViewRequest from "./Components/GramaSevaka/ViewRequests";
 import { useAuthContext } from "@asgardeo/auth-react";
 import { useEffect, useState } from "react";
+import { userRoles } from "./utils/config";
+import Restrict from "./Components/Restrict/Restrict";
 
 function App() {
   const { state } = useAuthContext();
@@ -21,7 +27,6 @@ function App() {
     try {
       const { applicationRoles } = await getBasicUserInfo();
       setRole(applicationRoles);
-      console.log(applicationRoles);
     } catch (error) {
       console.log(error);
     }
@@ -34,24 +39,44 @@ function App() {
     <div>
       <Routes>
         {/* <Route path="/signup" element={<SignUp />} /> */}
+
+        <Route
+          path="/user/me/request-cert"
+          element={
+            state.isAuthenticated && role === userRoles.USER ? (
+              <Request />
+            ) : (
+              <Navigate to="/restricted" replace={true} />
+            )
+          }
+        />
+        <Route
+          path="/user/me"
+          element={
+            state.isAuthenticated && role === userRoles.USER ? (
+              <UserDashBoard />
+            ) : (
+              <Navigate to="/restricted" />
+            )
+          }
+        />
+
         <Route
           path="/"
           element={
-            state.isAuthenticated && role === "User-G2" ? (
+            state.isAuthenticated && role === userRoles.USER ? (
               <UserDashBoard />
-            ) : state.isAuthenticated && role === "Grama-Sevaka-G2" ? (
+            ) : state.isAuthenticated && role === userRoles.GRAMA ? (
               <GSDashBoard />
             ) : (
               <Login />
             )
           }
         />
-
-        {/* <Route path="/request" element={<Request />} />
-        <Route path="/userhome" element={<UserDashBoard />} />
         <Route path="/status" element={<Status />} />
-        <Route path="/gshome" element={<GSDashBoard />} />
-        <Route path="/viewrequest" element={<ViewRequest />} /> */}
+        <Route path="/gs/me" element={<GSDashBoard />} />
+        <Route path="/viewrequest" element={<ViewRequest />} />
+        <Route path="/restricted" element={<Restrict />} />
       </Routes>
     </div>
   );

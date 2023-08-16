@@ -1,0 +1,17 @@
+.err-heading {
+  width: 100vw;
+  height: 100vh;
+  background-color: #eee;
+}
+.err-heading h3 {
+  font-size: 2rem;
+  color: #da0d0d;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  right: 50%;
+  bottom: 50%;
+  width: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+}
