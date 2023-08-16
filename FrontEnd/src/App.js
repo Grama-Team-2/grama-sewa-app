@@ -1,7 +1,7 @@
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Login from "./Components/Common/Login";
-import SignUp from "./Components/Common/SignUp";
+//import SignUp from "./Components/Common/SignUp";
 import Request from "./Components/User/Request";
 import Status from "./Components/User/Status";
 import GSDashBoard from "./Components/GramaSevaka/GramaSevakaDashboard";
@@ -37,15 +37,9 @@ function App() {
         <Route
           path="/"
           element={
-<<<<<<< HEAD
             state.isAuthenticated && role === "User" ? (
               <UserDashBoard />
             ) : state.isAuthenticated && role === "Gramasevaka" ? (
-=======
-            state.isAuthenticated && role === "User-G2" ? (
-              <UserDashBoard />
-            ) : state.isAuthenticated && role === "Grama-Sewaka-G2" ? (
->>>>>>> f16a79f64b11a200647d99efccef12979f61f4e5
               <GSDashBoard />
             ) : (
               <Login />

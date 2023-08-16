@@ -12031,3 +12031,90 @@ flex-direction: row;
 .box:hover {
   color: black;
 }
+
+.desktop {
+  background-color: #b31af01f;
+  height: 100%;
+  position:relative;
+  width: 1440px;
+  
+}
+
+.desktop .overlap {
+  height: 420px;
+  left: 86px;
+  position: absolute;
+  top: -10px;
+  width: 1192px;
+}
+
+.desktop .frame {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 667px;
+  left: 0;
+  padding: 10px;
+  position: absolute;
+  top: 0;
+  width: 1000px;
+}
+
+.desktop .logo {
+  height: 580px;
+  margin-left: -4px;
+  margin-right: -79px;
+  object-fit: cover;
+  margin-top: -60px;
+  position: relative;
+  width: 1200px;
+}
+
+.desktop .text-wrapper {
+  -webkit-text-stroke: 1px #000000;
+  color: #7f3e99;
+  font-family: "Inknut Antiqua-Regular", Helvetica;
+  font-size: 60px;
+  font-weight: 400;
+  left: 450px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  top: 500px;
+}
+
+.desktop .overlap-group {
+  height: 52px;
+  left: 666px;
+  position: absolute;
+  top: 570px;
+  width: 151px;
+}
+
+.desktop .signup-button {
+  background-color: #ef8e22;
+  border: 1px solid;
+  border-color: #614242;
+  border-radius: 20px;
+  height: 47px;
+  left: 0;
+  position: absolute;
+  top: 1px;
+  width: 151px;
+}
+
+.desktop .div {
+  color: #c10e20;
+  font-family: "Inknut Antiqua-Bold", Helvetica;
+  font-size: 20px;
+  font-weight: 700;
+  left: 26px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  text-align: center;
+  margin-top: 15px;
+  margin-left: 10px;
+  top: 0;
+}
