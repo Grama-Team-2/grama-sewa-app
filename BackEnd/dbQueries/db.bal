@@ -1,6 +1,7 @@
 import ballerina/http;
 import ballerinax/mongodb;
 import ballerina/io;
+import ballerina/time;
 
 type requestRecord record {
     json _id;
@@ -24,6 +25,36 @@ mongodb:ConnectionConfig mongoConfig1 = {
 mongodb:Client mongoClient = check new (mongoConfig1);
 
 //service for identity check
+type ValidationResponse record {|
+
+|};
+
+type ErrorDetails record {|
+    time:Utc timeStamp;
+    string message;
+    string details;
+|};
+
+type ValidationRequest record {
+    string NIC;
+    Address address;
+};
+
+type Address record {
+    string no;
+    string street;
+    string city;
+};
+
+type Person record {
+    string firstName;
+    string lastName;
+    string NIC;
+    Address address;
+    string civilStatus;
+    string dob;
+};
+
 service /requests on new http:Listener(8080) {
 
     //Create entry for new request in database
@@ -76,5 +107,11 @@ service /requests on new http:Listener(8080) {
         int|error resultData = check mongoClient->update(queryString, "RequestDetails", filter = filter);
 
         return resultData;
+    }
+
+    resource function post validate(@http:Payload ValidationRequest request) returns error? {
+        http:Client http_client = check new ("http://identity-check-service-3223962601:9090/identity/verify");
+        Person payload = check http_client->/nic/["998877665V"];
+        io:println(payload);
     }
 }
