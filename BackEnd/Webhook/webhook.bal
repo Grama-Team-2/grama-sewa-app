@@ -32,6 +32,7 @@ scim:Client client1 = check new (config1);
 service asgardeo:RegistrationService on webhookListener {
 
     remote function onAddUser(asgardeo:AddUserEvent event) returns error? {
+        log:printInfo(string `The add user webhook activated`);
         string userId = <string>event?.eventData?.userId;
 
         string userName = <string>event?.eventData?.userName;
