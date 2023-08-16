@@ -33,7 +33,7 @@ function App() {
   return (
     <div>
       <Routes>
-        {/* <Route path="/signup" element={<SignUp />} /> */}
+          
         <Route
           path="/"
           element={
@@ -46,12 +46,13 @@ function App() {
             )
           }
         />
+        
 
-        {/* <Route path="/request" element={<Request />} />
+         <Route path="/request" element={<Request />} />
         <Route path="/userhome" element={<UserDashBoard />} />
         <Route path="/status" element={<Status />} />
         <Route path="/gshome" element={<GSDashBoard />} />
-        <Route path="/viewrequest" element={<ViewRequest />} /> */}
+        <Route path="/viewrequest" element={<ViewRequest />} /> 
       </Routes>
     </div>
   );

@@ -622,7 +622,8 @@ progress {
 
 .img-fluid {
   max-width: 100%;
-  height: auto;
+  height: 100px;
+
 }
 
 .img-thumbnail {
@@ -4585,7 +4586,7 @@ textarea.form-control-lg {
   background-clip: border-box;
   border: 5px solid #483248;
   border-radius: 0.25rem;
-  width
+  margin-bottom: 50px;
 }
 .card > hr {
   margin-right: 0;
@@ -11948,13 +11949,14 @@ body {
   align-self: center;
  }
  .container1{
-  width: 90%;
+  width: 100%;
   padding-right: var(--bs-gutter-x, 0.75rem);
   padding-left: var(--bs-gutter-x, 0.75rem);
   margin-right: auto;
   margin-left: auto;
   position:absolute; 
-  left:100px
+  background-color: #b31af01f;
+  
   
 
 }
@@ -12115,6 +12117,6 @@ flex-direction: row;
   position: absolute;
   text-align: center;
   margin-top: 15px;
-  margin-left: 10px;
+  margin-left: 12px;
   top: 0;
 }
