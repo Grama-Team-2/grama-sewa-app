@@ -1,0 +1,46 @@
+[
+    {
+        
+        "NIC":"998877665V",
+        "address":{"no":"10","street":"Temple road","city":"Colombo"},
+        "status":"Pending"
+        
+    },
+    {
+       
+        "NIC":"887766553V",
+        "address":{"no":"20","street":"Queens street","city":"Kandy"},
+        "status":"Completed"
+        
+    },
+    {
+        
+        "NIC":"932247149V",
+        "address":{"no":"17","street":"Galle Road","city":"Moratuwa"},
+        "status":"Processing"
+        
+    },
+    {
+        
+        "NIC":"993315682V",
+        "address":{"no":"25","street":"Lake street","city":"Matara"},
+        "status":"More Information Required"
+        
+    },
+    {
+        
+        "NIC":"961234561V",
+        "address":{"no":"22","street":"Main street","city":"Galle"},
+        "status":"Processing"
+        
+    },
+    {
+        
+        "NIC":"200026431937",
+        "address":{"no":"33","street":"Middle street","city":"Jaffna"},
+        "status":"Pending"
+
+        
+    }
+
+]

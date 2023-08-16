@@ -1,0 +1,29 @@
+[
+    {
+        "record": "Murder",
+        "relaventPoliceStation":"Colombo",
+        "NIC":"998877665V"
+        
+    },
+    {
+        "record": "Con",
+        "relaventPoliceStation":"Kandy",
+        "NIC":"993315682V"
+    },
+    {
+        "record": "Theft",
+        "relaventPoliceStation":"Galle",
+        "NIC":"961234561V"
+    },
+    {
+        "record": "Murder",
+        "relaventPoliceStation":"Jaffna",
+        "NIC":"200026431937"
+    },
+    {
+        "record": "Theft",
+        "relaventPoliceStation":"Matara",
+        "NIC":"200026431937"
+    }
+
+]

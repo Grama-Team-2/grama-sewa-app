@@ -1,0 +1,51 @@
+[
+    {
+        "firstName": "John",
+        "lastName":"Doe",
+        "NIC":"998877665V",
+        "address":{"no":"10","street":"Temple road","city":"Colombo"},
+        "civilStatus":"Single",
+        "dob" : "1999-12-31T18:00:00.000+00:00"
+    },
+    {
+        "firstName": "Sam",
+        "lastName":"Peter",
+        "NIC":"887766553V",
+        "address":{"no":"20","street":"Queens street","city":"Kandy"},
+        "civilStatus":"Married",
+        "dob" : "1980-11-21T18:00:00.000+00:00"
+    },
+    {
+        "firstName": "Kevin",
+        "lastName":"Dowson",
+        "NIC":"932247149V",
+        "address":{"no":"17","street":"Galle Road","city":"Moratuwa"},
+        "civilStatus":"Single",
+        "dob" : "1995-04-21T18:00:00.000+00:00"
+    },
+    {
+        "firstName": "Akila",
+        "lastName":"Perera",
+        "NIC":"993315682V",
+        "address":{"no":"25","street":"Lake street","city":"Matara"},
+        "civilStatus":"Married",
+        "dob" : "1991-10-11T18:00:00.000+00:00"
+    },
+    {
+        "firstName": "Thomson",
+        "lastName":"willey",
+        "NIC":"961234561V",
+        "address":{"no":"22","street":"Main street","city":"Galle"},
+        "civilStatus":"Single",
+        "dob" : "1989-04-24T18:00:00.000+00:00"
+    },
+    {
+        "firstName": "Sam",
+        "lastName":"Peter",
+        "NIC":"200026431937",
+        "address":{"no":"33","street":"Middle street","city":"Jaffna"},
+        "civilStatus":"Married",
+        "dob" : "1961-06-24T18:00:00.000+00:00"
+    }
+
+]

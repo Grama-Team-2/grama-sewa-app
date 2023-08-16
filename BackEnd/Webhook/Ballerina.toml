@@ -3,7 +3,7 @@
 
 [package]
   distribution = "2201.6.0"
-  name = "user_role_assign_service"
+  name = "user_role_hook"
   org = "interns"
   version = "0.1.0"
 
