@@ -13,8 +13,10 @@ function UserDashBoard() {
     });
   return (
     <>
-      <div>
-        <Header></Header>
+      
+      
+      
+      
 
         <main>
           <div className={`desktop`}>
@@ -31,7 +33,9 @@ function UserDashBoard() {
             <div className="overlap-group"></div>
           </div>
         </main>
-      </div>
+        <Header></Header>
+      
+      
     </>
   );
 }

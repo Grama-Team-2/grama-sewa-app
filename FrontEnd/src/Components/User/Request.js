@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import Header from "./UserHeader";
+// import React, { useState } from 'react';
 
 function Request() {
   const [nic, setNic] = useState("");
@@ -8,6 +9,28 @@ function Request() {
   const [street, setStreet] = useState("");
   const [city, setCity] = useState("");
 
+
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+
+  //   const xhr = new XMLHttpRequest();
+  //   xhr.open('POST', 'https://jsonplaceholder.typicode.com/posts', true);
+  //   xhr.setRequestHeader('Content-Type', 'application/json');
+  //   xhr.onload = () => {
+  //     if (xhr.status === 201) {
+  //       const responseData = JSON.parse(xhr.responseText);
+  //       console.log('Post successful:', responseData);
+  //     } else {
+  //       console.error('Error posting data:', xhr.statusText);
+  //     }
+  //   };
+  //   xhr.onerror = () => {
+  //     console.error('Network error occurred');
+  //   };
+  //   xhr.send(JSON.stringify(postData));
+  // };
+
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
   
@@ -17,24 +40,43 @@ function Request() {
       street: street,
       city: city,
     };
+    // const [postData, setPostData] = useState({
+    //   title: '',
+    //   body: requestData,
+    // });
   
     console.log("Sending request data:", requestData);
   
     try {
-      const response = await axios.post(
-        
-        "https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/maoe/grama-api-service/requests-915/1.0.0/newRequest",
-        requestData,
-        {
-          headers: {
-            "Content-Type": "application/json",
 
-            "Access-Control-Allow-Origin": "*",
-             "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
-          },
-        }
-      );
-      console.log("Response data:", response.data);
+
+      var xhr = new XMLHttpRequest()
+
+      // get a callback when the server responds
+      xhr.addEventListener('load', () => {
+        // update the state of the component with the result here
+        console.log(xhr.responseText)
+      })
+      // open the request with the verb and the url
+      xhr.open('GET', 'https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/maoe/grama-api-service/requests-915/1.0.0/getAllRequests')
+      // send the request
+      xhr.send()
+
+      // const response = await axios.post(
+        
+      //   "https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/maoe/grama-api-service/requests-915/1.0.0/newRequest",
+      //   requestData,
+      //   {
+      //     headers: {
+      //       "Content-Type": "application/json",
+
+      //       "Access-Control-Allow-Origin": "*",
+      //        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
+      //     },
+      //   }
+      // );
+      // const response = await fetch("https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/maoe/grama-api-service/requests-915/1.0.0/getAllRequests");
+      // console.log("Response data:", response);
     } catch (error) {
       console.error("Error sending data: ", error);
     }
@@ -60,7 +102,7 @@ function Request() {
                       <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp" className="img-fluid" alt="Phone image" />
                     </div>
                     <div className="card-body">
-                      <form method="post">
+                      <form method="post" onSubmit={handleSubmit}>
                         <div className="form-floating mb-3">
                           <label>NIC No :</label>
                           <br />
