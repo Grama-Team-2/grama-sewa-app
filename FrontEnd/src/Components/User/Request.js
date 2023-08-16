@@ -59,6 +59,17 @@ function Request() {
       })
       // open the request with the verb and the url
       xhr.open('GET', 'https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/maoe/grama-api-service/requests-915/1.0.0/getAllRequests')
+      // xhr.setRequestHeader('Authorization', 'Bearer your-access-token');
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+      xhr.setRequestHeader('Access-Control-Allow-Credentials',true );
+
+//Access-Control-Allow-Credentials: true
+      xhr.setRequestHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
+      xhr.setRequestHeader('Access-Control-Allow-Headers', 'Origin, X-Api-Key, X-Requested-With, Content-Type, Accept, Authorization');
+
+      // Access-Control-Allow-Headers: Origin, X-Api-Key, X-Requested-With, Content-Type, Accept, Authorization
+
       // send the request
       xhr.send()
 
