@@ -55,7 +55,7 @@ function Header() {
           style={{ marginRight: "15px", cursor: "pointer" }}
         >
           <span class="logout-icon" onClick={() => signOut()}>
-            <LogoutIcon />
+            <LogoutIcon style={{ cursor: "pointer" }} />
           </span>
         </div>
       </nav>
