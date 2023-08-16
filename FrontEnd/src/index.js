@@ -8,6 +8,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { AuthProvider } from "@asgardeo/auth-react";
+import { ContextProvider } from "./context/UserContext";
 
 const config = {
   signInRedirectURL: "http://localhost:3000",
@@ -25,13 +26,15 @@ const config = {
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <AuthProvider config={config}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="*" element={<App />}></Route>
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+    <ContextProvider>
+      <AuthProvider config={config}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="*" element={<App />}></Route>
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
+    </ContextProvider>
   </React.StrictMode>
 );
 
