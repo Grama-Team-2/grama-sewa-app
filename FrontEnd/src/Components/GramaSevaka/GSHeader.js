@@ -2,14 +2,16 @@ import React from "react";
 import LogoutIcon from "@mui/icons-material/Logout";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useAuthContext } from "@asgardeo/auth-react";
+import { useNavigate } from "react-router-dom";
 
 function GSHeader() {
   const { signOut } = useAuthContext();
+  const navigate = useNavigate();
   return (
     <div>
       <nav class="navbar navbar-expand-lg navbar-light ">
-        <a class="navbar-brand" href="/userhome" style={{ color: "white" }}>
-          Grama App
+        <a class="navbar-brand" href="/gshome" style={{ color: "white" }}>
+          Grama Assist
         </a>
         <button
           class="navbar-toggler"
@@ -25,13 +27,13 @@ function GSHeader() {
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item active">
-              <a
+              <span
                 class="nav-link"
-                href="/viewrequest"
+                onClick={() => navigate("/gs/me/requests")}
                 style={{ color: "white" }}
               >
                 View Requests <span class="sr-only">(current)</span>
-              </a>
+              </span>
             </li>
           </ul>
         </div>

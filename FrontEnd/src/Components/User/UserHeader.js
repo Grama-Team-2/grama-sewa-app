@@ -9,7 +9,7 @@ function Header() {
     <div>
       <nav class="navbar navbar-expand-lg navbar-light ">
         <a class="navbar-brand" href="/userhome" style={{ color: "white" }}>
-          Grama App
+          Grama Assist
         </a>
         <button
           class="navbar-toggler"
@@ -25,7 +25,11 @@ function Header() {
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item active">
-              <a class="nav-link" href="/request" style={{ color: "white" }}>
+              <a
+                class="nav-link"
+                href="user/me/request-cert"
+                style={{ color: "white" }}
+              >
                 Request letter <span class="sr-only">(current)</span>
               </a>
             </li>
@@ -51,7 +55,7 @@ function Header() {
           style={{ marginRight: "15px", cursor: "pointer" }}
         >
           <span class="logout-icon" onClick={() => signOut()}>
-            <LogoutIcon />
+            <LogoutIcon style={{ cursor: "pointer" }} />
           </span>
         </div>
       </nav>
