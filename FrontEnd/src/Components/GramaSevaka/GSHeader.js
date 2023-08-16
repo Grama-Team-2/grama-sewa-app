@@ -21,13 +21,16 @@ function GSHeader() {
           aria-controls="navbarNav"
           aria-expanded="false"
           aria-label="Toggle navigation"
-          onClick={() => navigate("/gs/me/requests")}
         >
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
-            <li class="nav-item active">
+            <li
+              class="nav-item active"
+              onClick={() => navigate("/gs/me/requests")}
+              style={{ cursor: "pointer" }}
+            >
               <span class="nav-link" style={{ color: "white" }}>
                 View Requests <span class="sr-only">(current)</span>
               </span>
