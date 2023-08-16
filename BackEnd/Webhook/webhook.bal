@@ -27,13 +27,14 @@ scim:ConnectorConfig config1 = {
         "internal_group_mgt_delete"
     ]
 };
-scim:Client client1 = check new (config1);
 
 service asgardeo:RegistrationService on webhookListener {
 
     remote function onAddUser(asgardeo:AddUserEvent event) returns error? {
+        scim:Client client1 = check new (config1);
         log:printInfo(string `The add user webhook activated`);
         string userId = <string>event?.eventData?.userId;
+        log:printInfo(string `user name found: ${userId}`);
 
         string userName = <string>event?.eventData?.userName;
         log:printInfo(string `user name found: ${userName}`);
