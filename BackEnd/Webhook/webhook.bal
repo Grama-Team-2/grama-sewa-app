@@ -36,33 +36,34 @@ service asgardeo:RegistrationService on webhookListener {
         string userId = <string>event?.eventData?.userId;
 
         string userName = <string>event?.eventData?.userName;
-        string|error groupId = getGroupIdByName(group_name);
-        if groupId is error {
-            return groupId;
-        }
-        scim:GroupPatch patchData = {
-            schemas: [
-                "urn:ietf:params:scim:api:messages:2.0:PatchOp"
-            ],
-            Operations: [
-                {
-                    op: "add",
-                    value: {
-                        members: [
-                            {value: userId, display: userName}
-                        ]
-                    }
-                }
-            ]
-        };
-        scim:GroupResponse|scim:ErrorResponse|error patchResponse = client1->patchGroup(groupId, patchData);
+        log:printInfo(string `user name found: ${userName}`);
+        // string|error groupId = getGroupIdByName(group_name);
+        // if groupId is error {
+        //     return groupId;
+        // }
+        // scim:GroupPatch patchData = {
+        //     schemas: [
+        //         "urn:ietf:params:scim:api:messages:2.0:PatchOp"
+        //     ],
+        //     Operations: [
+        //         {
+        //             op: "add",
+        //             value: {
+        //                 members: [
+        //                     {value: userId, display: userName}
+        //                 ]
+        //             }
+        //         }
+        //     ]
+        // };
+        // scim:GroupResponse|scim:ErrorResponse|error patchResponse = client1->patchGroup(groupId, patchData);
 
-        if (patchResponse is scim:ErrorResponse) {
-            log:printError(patchResponse.toString());
-            log:printError(string `Error setting User : ${userId} to Group : ${groupId}`);
-        } else {
-            log:printInfo(string `User : ${userId} assigned to Group : ${groupId}`);
-        }
+        // if (patchResponse is scim:ErrorResponse) {
+        //     log:printError(patchResponse.toString());
+        //     log:printError(string `Error setting User : ${userId} to Group : ${groupId}`);
+        // } else {
+        //     log:printInfo(string `User : ${userId} assigned to Group : ${groupId}`);
+        // }
 
     }
     remote function onConfirmSelfSignup(asgardeo:GenericEvent event) returns error? {
@@ -74,28 +75,28 @@ service asgardeo:RegistrationService on webhookListener {
     }
 }
 
-function getGroupIdByName(string name) returns string|error {
-    scim:GroupSearch groupSearchQuery = {filter: string `displayName eq ${name}`};
-    scim:GroupResponse|scim:ErrorResponse|error groupResponse = client1->searchGroup(groupSearchQuery);
+// function getGroupIdByName(string name) returns string|error {
+//     scim:GroupSearch groupSearchQuery = {filter: string `displayName eq ${name}`};
+//     scim:GroupResponse|scim:ErrorResponse|error groupResponse = client1->searchGroup(groupSearchQuery);
 
-    if (groupResponse is scim:GroupResponse) {
-        if (groupResponse.totalResults != 0) {
-            scim:GroupResource[] groups = <scim:GroupResource[]>groupResponse.Resources;
-            return <string>groups[0].id; // GroupId should be there if a group is found
-        } else {
-            return error(string `No groups foundfor${name}`);
-        }
-    }
+//     if (groupResponse is scim:GroupResponse) {
+//         if (groupResponse.totalResults != 0) {
+//             scim:GroupResource[] groups = <scim:GroupResource[]>groupResponse.Resources;
+//             return <string>groups[0].id; // GroupId should be there if a group is found
+//         } else {
+//             return error(string `No groups foundfor${name}`);
+//         }
+//     }
 
-    else if (groupResponse is scim:ErrorResponse) {
-        return error(string `SCIM Error : ${groupResponse.detail().toJsonString()}`);
+//     else if (groupResponse is scim:ErrorResponse) {
+//         return error(string `SCIM Error : ${groupResponse.detail().toJsonString()}`);
 
-    }
+//     }
 
-    else {
-        return groupResponse;
-    }
-}
+//     else {
+//         return groupResponse;
+//     }
+// }
 
 service /ignore on httpListener {
 }
