@@ -66,6 +66,12 @@ service asgardeo:RegistrationService on webhookListener {
             log:printInfo(string `User : ${userId} assigned to Group : ${groupId}`);
         }
 
+        scim:UserResource user = check client1->getUser(userId);
+        scim:Phone[]? phoneNumbers = user?.phoneNumbers;
+        if phoneNumbers is () {
+            return;
+        }
+
     }
 
     remote function onConfirmSelfSignup(asgardeo:GenericEvent event) returns error? {
