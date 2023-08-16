@@ -9,7 +9,7 @@ function Header() {
     <div>
       <nav class="navbar navbar-expand-lg navbar-light ">
         <a class="navbar-brand" href="/userhome" style={{ color: "white" }}>
-          Grama App
+          Grama Assist
         </a>
         <button
           class="navbar-toggler"

@@ -1,26 +1,36 @@
 import React from "react";
 import GSHeader from "./GSHeader";
+import { useAuthContext } from "@asgardeo/auth-react";
 
-
-function GSDashBoard() {
-
+function UserDashBoard() {
+  const { getBasicUserInfo } = useAuthContext();
+  getBasicUserInfo()
+    .then((basicUserDetails) => {
+      console.log(basicUserDetails);
+    })
+    .catch((error) => {
+      // Handle the error
+    });
   return (
     <>
       <div>
         <GSHeader></GSHeader>
 
         <main>
-          <div >
-           
-
-            <img id="lo" src={"https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"} />
-          </div>
+        <div className={`desktop`}>
+      <div className="overlap">
+        <div className="frame">
+          <img className="logo" alt="Logo" src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp" />
+        </div>
+        <div className="text-wrapper">GRAMA ASSIST</div>
+      </div>
+      <div className="overlap-group">
+        </div>
+    </div>
         </main>
-
-        
       </div>
     </>
   );
 }
 
-export default GSDashBoard;
+export default UserDashBoard;

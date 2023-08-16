@@ -8,8 +8,8 @@ function GSHeader() {
   return (
     <div>
       <nav class="navbar navbar-expand-lg navbar-light ">
-        <a class="navbar-brand" href="/userhome" style={{ color: "white" }}>
-          Grama App
+        <a class="navbar-brand" href="/gshome" style={{ color: "white" }}>
+          Grama Assist
         </a>
         <button
           class="navbar-toggler"
