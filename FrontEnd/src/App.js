@@ -46,7 +46,7 @@ function App() {
             state.isAuthenticated && role === userRoles.USER ? (
               <Request />
             ) : state.isAuthenticated ? (
-              <Navigate to="/restricted" replace={true} />
+              <Navigate to="/user/me/request-cert" replace={true} />
             ) : (
               <Login />
             )
