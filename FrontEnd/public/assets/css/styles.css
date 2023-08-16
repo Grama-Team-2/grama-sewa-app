@@ -3528,7 +3528,7 @@ textarea.form-control-lg {
 .btn1 {
   color: #fff;
   background-color: #483248;
-  border-color: #483248;
+  
 }
 
 #lo{
@@ -12119,4 +12119,8 @@ flex-direction: row;
   margin-top: 15px;
   margin-left: 12px;
   top: 0;
+}
+
+.error{
+  margin-left: 400px;
 }
