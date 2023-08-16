@@ -4,10 +4,10 @@ import {
   Route,
   Routes,
   Navigate,
+  useNavigate,
 } from "react-router-dom";
 import Login from "./Components/Common/Login";
 import Request from "./Components/User/Request";
-import Status from "./Components/User/Status";
 import GSDashBoard from "./Components/GramaSevaka/GramaSevakaDashboard";
 import NotFound from "./Components/Common/NotFound";
 
@@ -23,24 +23,25 @@ function App() {
   const { state } = useAuthContext();
   const { role, setRole } = useContext(UserContext);
   const { getBasicUserInfo } = useAuthContext();
-
+  const navigate = useNavigate();
   const getBasicInfo = async () => {
     try {
-      console.log("role is emptyy");
       const { applicationRoles } = await getBasicUserInfo();
-      setRole(applicationRoles);
+
+      setRole(applicationRoles[0]);
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
     getBasicInfo();
-  }, []);
+    navigate("/");
+  }, [role]);
 
   return (
     <div>
       <Routes>
-         <Route path="/error" element={<NotFound />} />
+        <Route path="/error" element={<NotFound />} />
 
         <Route
           path="/user/me/request-cert"
@@ -48,7 +49,7 @@ function App() {
             state.isAuthenticated ? (
               <Request />
             ) : state.isAuthenticated ? (
-              <Navigate to="/restricted" replace={true} />
+              <Navigate to="/user/me/request-cert" replace={true} />
             ) : (
               <Login />
             )
@@ -92,7 +93,7 @@ function App() {
           element={
             state.isAuthenticated && role === userRoles.USER ? (
               <Navigate to="/user/me" />
-            ) : state.isAuthenticated ? (
+            ) : state.isAuthenticated && role === userRoles.GRAMA ? (
               <Navigate to="/gs/me" />
             ) : (
               <Login />

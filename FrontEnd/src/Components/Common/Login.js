@@ -3,7 +3,6 @@ import { useAuthContext } from "@asgardeo/auth-react";
 
 function Login() {
   const { state } = useAuthContext();
-  console.log(state.isAuthenticated);
   const { signIn } = useAuthContext();
   return (
     <div className={`desktop`}>
