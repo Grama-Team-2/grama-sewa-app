@@ -26,13 +26,12 @@ function Request() {
       // const street = "main"
       // const city = "Galle"
 
-      newRequest.url =
-        newRequest.url + "/" + nic + "/" + no + "/" + street + "/" + city;
+      newRequest.url = newRequest.url + "/" + nic + "/" + no + "/" + street + "/" + city;
       const { data } = await httpRequest(newRequest);
       setRequests(data);
       setLoading(false);
       // history.push('/');
-      // window.location.href = "/";
+      window.location.replace("/user/me");
     } catch (err) {
       console.log(err);
       setLoading(false);
@@ -95,6 +94,7 @@ function Request() {
                           <input
                             className="form-control"
                             type="text"
+                            onChange={(e) => setNo(e.target.value)}
                             required
                           />
                         </div>
@@ -105,6 +105,7 @@ function Request() {
                           <input
                             className="form-control"
                             type="text"
+                            onChange={(e) => setStreet(e.target.value)}
                             required
                           />
                         </div>
@@ -115,6 +116,7 @@ function Request() {
                           <input
                             className="form-control"
                             type="text"
+                            onChange={(e) => setCity(e.target.value)}
                             required
                           />
                         </div>
