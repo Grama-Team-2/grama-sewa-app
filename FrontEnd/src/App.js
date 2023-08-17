@@ -27,8 +27,7 @@ function App() {
   const getBasicInfo = async () => {
     try {
       const { applicationRoles } = await getBasicUserInfo();
-
-      setRole(applicationRoles[0]);
+      setRole(applicationRoles);
     } catch (error) {
       console.log(error);
     }
