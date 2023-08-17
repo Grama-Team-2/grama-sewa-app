@@ -70,9 +70,18 @@ function Header() {
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/contact" style={{ color: "white" }}>
+
+
+            <Link
+                class="nav-link"
+                to="/user/me/contact"
+                style={{ color: "white" }}
+              >
+                Contact{" "}
+              </Link>
+              {/* <a class="nav-link" href="/user/me/contact" style={{ color: "white" }}>
                 Contact
-              </a>
+              </a> */}
             </li>
           </ul>
         </div>
