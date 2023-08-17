@@ -1,8 +1,30 @@
-import React from "react";
+import React,{useState} from "react";
 import Header from "./UserHeader";
+import { useAuthContext } from "@asgardeo/auth-react";
+import { checkStatus } from "../../api/UserRequests";
 
 
 function Status() {
+const [nic,setNic] = useState("");
+const [status,setStatus] = useState("");
+const [loading, setLoading] = useState(false);
+const { httpRequest } = useAuthContext();
+
+const handleSubmit = async (e) => { 
+  e.preventDefault();
+  try {
+    setLoading(true);
+    checkStatus.url =
+      checkStatus.url + "/" + nic;
+    setStatus(await httpRequest(checkStatus));
+    setLoading(false);
+    console.log(status);
+  } catch (err) {
+    console.log(err);
+    setLoading(false);
+  }
+};
+
   return (
     <div>
       <Header></Header>
@@ -22,9 +44,35 @@ function Status() {
                       <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp" class="img-fluid" alt="Phone image" />
                     </div>
                     <div className="card-body">
+                    <form className="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                  <div className="input-group">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input
+                      className="form-control"
+                      type="text"
+                      placeholder="Type NIC here"
+                      aria-label="Search for..."
+                      aria-describedby="btnNavbarSearch"
+                      onChange={(e) => setNic(e.target.value)}
+                      
+                    />
+                    <input
+                      type="button"
+                      className="btn1"
+                      id="btnNavbarSearch"
+                      value="Search"
+                      onClick={handleSubmit}
+                      
+                      
+                    ></input>
+                  </div>
+                </form>
+                <br/>
+                <br/>
+                <br/>
                     <div className="card p-4" style = {{backgroundColor:"#483248",color:"white",marginLeft:"100px",marginRight:"100px"}} >
           
-            <h5>More Information Required</h5>
+            <h5>{status}</h5>
           
         </div>
                     </div>

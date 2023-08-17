@@ -26,6 +26,7 @@ mongodb:Client mongoClient = check new (mongoConfig1);
 
 //service for identity check
 type ValidationResponse record {
+    string NIC;
     boolean identityVerificationStatus;
     boolean addressVerificationStatus;
     boolean policeVerificationStatus;
@@ -96,7 +97,7 @@ service /requests on new http:Listener(8080) {
             "city": city
         };
 
-        map<json> doc = {"NIC": NIC, "address": address, "status": "PENDING"};
+        map<json> doc = {"NIC": NIC, "address": address, "status": "Pending"};
 
         error? resultData = check mongoClient->insert(doc, collectionName = "RequestDetails");
 
@@ -106,6 +107,28 @@ service /requests on new http:Listener(8080) {
         return false;
 
     }
+
+       resource function get getStatus/[string NIC]() returns string|error {
+
+        map<json> queryString = {"NIC": NIC};
+        stream<requestRecord, error?> resultData = check mongoClient->find(collectionName = "RequestDetails",filter =queryString);
+
+
+        string result="";
+       
+        check resultData.forEach(function(requestRecord data) {
+
+            result = data.status;
+
+            
+
+        });
+        return result;
+
+        
+
+    }
+
 
     resource function get getAllRequests() returns requestRecord[]|error {
 
@@ -142,6 +165,7 @@ service /requests on new http:Listener(8080) {
         http:Client http_client = check new ("http://identity-check-service-3223962601:9090/identity/verify");
         Person|error person = http_client->/nic/[request.NIC];
         ValidationResponse val_response = {
+            NIC: "",
             identityVerificationStatus: true,
             addressVerificationStatus: true,
             policeVerificationStatus: true,
@@ -180,6 +204,12 @@ service /requests on new http:Listener(8080) {
             _ = check mongoClient->update(queryString, "RequestDetails", filter = filter);
             val_response.validationResult = "REJECTED";
         }
+        val_response.NIC = request.NIC;
+
+        map<json> doc = {"NIC": request.NIC, "identityVerificationStatus": val_response.identityVerificationStatus, "addressVerificationStatus": val_response.addressVerificationStatus, "policeVerificationStatus": val_response.policeVerificationStatus};
+
+        _ = check mongoClient->insert(doc, collectionName = "RequestValidation");
+
         return val_response;
 
     }

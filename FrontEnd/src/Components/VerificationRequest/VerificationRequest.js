@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CancelIcon from "@mui/icons-material/Cancel";
 import { requestStatus } from "../../utils/config";
 
 function VerificationRequest({ nic, address, status, onValidate }) {
@@ -11,7 +12,7 @@ function VerificationRequest({ nic, address, status, onValidate }) {
       </td>
       <td>
         <button className="btn">
-          <CheckCircleIcon />
+          <CheckCircleIcon style={{ color: "green" }} />
         </button>
         <input type="text" value="verified"></input>
       </td>

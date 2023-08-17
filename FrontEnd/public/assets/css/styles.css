@@ -4044,7 +4044,7 @@ textarea.form-control-lg {
 }
 .nav-tabs .nav-link.active,
 .nav-tabs .nav-item.show .nav-link {
-  color:black
+  color:black;
   background-color: black;
   border-color: #dee2e6 #dee2e6 #fff;
 }
