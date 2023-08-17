@@ -1,12 +1,21 @@
 import React, { useState, useEffect } from "react";
+import Header from "../Common/UserHeader";
+import { useAuthContext } from "@asgardeo/auth-react";
+// import { slackNotify } from "../../api/slackNotify";
 
-import Header from "./UserHeader";
+import { slackNotify } from "../../api/SlackNotify";
 
+//slackNotify
 function Contact() {
   const [message, setMessage] = useState("");
   const [no, setNo] = useState("");
 
+  const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const { httpRequest } = useAuthContext();
+
   const handleSubmit = async (e) => {
+    // const history = useHistory();
     // const history = useHistory();
     e.preventDefault();
     try {
@@ -16,8 +25,8 @@ function Contact() {
       // const street = "main"
       // const city = "Galle"
 
-      newRequest.url = newRequest.url + "/" + message;
-      const { data } = await httpRequest(newRequest);
+      slackNotify.url = slackNotify.url + "/" + message;
+      const { data } = await httpRequest(slackNotify);
       setRequests(data);
       setLoading(false);
       // history.push('/');
@@ -32,22 +41,30 @@ function Contact() {
   //   handleSubmit();
   // }, []);
 
+
   return (
     <div>
-      <Header></Header>
+      <Header/>
       <div>
         <div>
+          
           <main style={{ backgroundColor: "#b31af01f" }}>
             <div className="container1">
               <div className="row justify-content-center">
                 <div className="col-lg-5">
                   <br />
 
+
                   <div className="card shadow-lg border-0 rounded-lg mt-5">
                     <div className="card-header">
                       <h3 className="text-center font-weight-light my-4">
                         Contact Us
                       </h3>
+                      <img
+                        src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
+                        className="img-fluid"
+                        alt="Phone image"
+                      />
                       <img
                         src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
                         className="img-fluid"
@@ -64,9 +81,11 @@ function Contact() {
                             className="form-control"
                             rows={10}
                             cols={40}
+                            
                             onChange={(e) => setMessage(e.target.value)}
                           />
                         </div>
+
 
                         <br />
 
@@ -74,6 +93,7 @@ function Contact() {
                           <input
                             type="submit"
                             className="btn1"
+                            
                             value="Send"
                           ></input>
                         </div>

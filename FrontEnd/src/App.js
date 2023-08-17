@@ -10,7 +10,7 @@ import Login from "./Components/Common/Login";
 import Request from "./Components/Request/Request";
 import GSDashBoard from "./Components/GSDashboard/GramaSevakaDashboard";
 import NotFound from "./Components/Common/NotFound";
-import Contact from "./Components/User/Contact";
+import Contact from "./Components/Contact/Contact";
 
 import UserDashBoard from "./Components/User/UserDashboard";
 import ViewRequest from "./Components/VerificationRequests/VerificationRequests";
@@ -23,6 +23,7 @@ import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
   const { state } = useAuthContext();
+  const navigate = useNavigate();
   const { role, setRole } = useContext(UserContext);
 
   const { getBasicUserInfo } = useAuthContext();
