@@ -23,6 +23,7 @@ import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
   const { state } = useAuthContext();
+  const navigate = useNavigate();
   const { role, setRole } = useContext(UserContext);
 
   const { getBasicUserInfo } = useAuthContext();
@@ -39,7 +40,7 @@ function App() {
   useEffect(() => {
     getBasicInfo();
 
-    
+    navigate("/");
   }, [role]);
 
   return (
