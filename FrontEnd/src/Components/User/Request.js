@@ -4,6 +4,7 @@ import Header from "./UserHeader";
 // import React, { useState } from 'react';
 import { useAuthContext } from "@asgardeo/auth-react";
 import { newRequest } from "../../api/UserRequests";
+// import { useHistory } from 'react-router-dom';
 
 
 function Request() {
@@ -19,7 +20,9 @@ function Request() {
   const [loading, setLoading] = useState(false);
   const { httpRequest } = useAuthContext();
 
+  // const history = useHistory(); 
   const handleSubmit = async (e) => {
+    // const history = useHistory(); 
     e.preventDefault();
     try {
       setLoading(true);
@@ -32,14 +35,19 @@ function Request() {
       const { data } = await httpRequest(newRequest);
       setRequests(data);
       setLoading(false);
+      // history.push('/');
+      // window.location.href = "/";
     } catch (err) {
       console.log(err);
       setLoading(false);
     }
   };
-  useEffect(() => {
-    handleSubmit();
-  }, []);
+
+
+
+  // useEffect(() => {
+  //   handleSubmit();
+  // }, []);
 
   
   
@@ -72,6 +80,7 @@ function Request() {
                             type="text"
                             
                             onChange={(e) => setNic(e.target.value)}
+                            required
                             
                           />
                         </div>

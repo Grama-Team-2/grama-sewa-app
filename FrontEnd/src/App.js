@@ -89,7 +89,7 @@ function App() {
         <Route
           path="/"
           element={
-            state.isAuthenticated ?(
+            state.isAuthenticated  ?(
               <Navigate to="/user/me" />
             ) : state.isAuthenticated && role === userRoles.GRAMA ? (
               <Navigate to="/gs/me" />

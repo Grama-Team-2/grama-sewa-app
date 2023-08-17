@@ -12,7 +12,7 @@ function Header() {
 
       
       <nav class="navbar navbar-expand-lg navbar-light ">
-        <a class="navbar-brand" href="/" style={{ color: "white" }}>
+        <a class="navbar-brand" href="#" style={{ color: "white" }}>
           Grama Assist
         </a>
 
