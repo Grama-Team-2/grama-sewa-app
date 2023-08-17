@@ -94,9 +94,9 @@ function App() {
           path="/"
           element={
             state.isAuthenticated  ? (
-              <Navigate to="/gs/me" />
-            ) : state.isAuthenticated && role ===userRoles.GRAMA?(
               <Navigate to="/user/me" />
+            ) : state.isAuthenticated && role ===userRoles.GRAMA?(
+              <Navigate to="/gs/me" />
             ) : (
               <Login />
             )

@@ -26,7 +26,7 @@ function Contact() {
       // const street = "main"
       // const city = "Galle"
 // 
-      slackNotify.url = slackNotify.url + "/"+message+"/1111";
+      slackNotify.url = slackNotify.url + "/"+message;
       // newRequest.url = newRequest.url + "/1/1/1/1" ;
       
       const { data } = await httpRequest(slackNotify);
