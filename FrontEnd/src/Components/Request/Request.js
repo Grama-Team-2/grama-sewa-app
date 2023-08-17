@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import Header from "./UserHeader";
+import Header from "../Common/UserHeader";
 // import React, { useState } from 'react';
 import { useAuthContext } from "@asgardeo/auth-react";
 import { newRequest } from "../../api/UserRequests";

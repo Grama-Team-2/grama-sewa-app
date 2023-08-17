@@ -7,24 +7,25 @@ import {
   useNavigate,
 } from "react-router-dom";
 import Login from "./Components/Common/Login";
-import Request from "./Components/User/Request";
-import GSDashBoard from "./Components/GramaSevaka/GramaSevakaDashboard";
+import Request from "./Components/Request/Request";
+import GSDashBoard from "./Components/GSDashboard/GramaSevakaDashboard";
 import NotFound from "./Components/Common/NotFound";
-import Contact from "./Components/User/Contact";
+import Contact from "./Components/Contact/Contact";
 
 import UserDashBoard from "./Components/User/UserDashboard";
-import ViewRequest from "./Components/GramaSevaka/ViewRequests";
+import ViewRequest from "./Components/VerificationRequests/VerificationRequests";
 import { useAuthContext } from "@asgardeo/auth-react";
 import { useContext, useEffect, useState } from "react";
 import { userRoles } from "./utils/config";
 import Restrict from "./Components/Restrict/Restrict";
 import UserContext from "./context/UserContext";
+import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
   const { state } = useAuthContext();
 
   const { getBasicUserInfo } = useAuthContext();
-  const navigate = useNavigate();
+
   const getBasicInfo = async () => {
     try {
       const response = await getBasicUserInfo();
@@ -37,60 +38,58 @@ function App() {
   return (
     <div>
       <Routes>
+        <Route index element={<Login />}></Route>
         <Route path="/error" element={<NotFound />} />
-        <Route path="/contact" element={<Contact />} />
-
-        <Route
-          path="/user/me/request-cert"
-          element={state.isAuthenticated ? <Request /> : <Login />}
-        />
         <Route
           path="/user/me"
           element={
-            state?.isAuthenticated ? (
+            <ProtectedRoute redirectPath="/">
               <UserDashBoard />
-            ) : (
-              <Navigate to="/restricted" />
-            )
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/contact"
+          element={
+            <ProtectedRoute redirectPath="/">
+              <Contact />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/user/me/request-cert"
+          element={
+            <ProtectedRoute redirectPath="/">
+              <Request />
+            </ProtectedRoute>
           }
         />
         <Route
           path="/gs/me/requests"
           element={
-            state.isAuthenticated ? (
+            <ProtectedRoute redirectPath="/">
               <ViewRequest />
-            ) : (
-              <Navigate to="/restricted" />
-            )
+            </ProtectedRoute>
           }
         />
         <Route
           path="/gs/me"
           element={
-            state.isAuthenticated ? (
-              <GSDashBoard />
-            ) : (
-              <Navigate to="/restricted" />
-            )
+            <ProtectedRoute redirectPath="/">
+              <ViewRequest />
+            </ProtectedRoute>
           }
         />
 
-        {/* <Route
-          path="/"
+        <Route
+          path="/gs/me"
           element={
-<<<<<<< HEAD
-            state.isAuthenticated (
-=======
-            state.isAuthenticated ?(
->>>>>>> d9871a7c51e85e5a57fd7cf526b003f338582e2a
-              <Navigate to="/user/me" />
-            ) : state.isAuthenticated  (
-              <Navigate to="/gs/me" />
-            ) : (
-              <Login />
-            )
+            <ProtectedRoute redirectPath="/">
+              <GSDashBoard />
+            </ProtectedRoute>
           }
-        /> */}
+        />
         <Route path="/restricted" element={<Restrict />} />
       </Routes>
     </div>

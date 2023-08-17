@@ -1,5 +1,5 @@
 import React from "react";
-import GSHeader from "./GSHeader";
+import GSHeader from "../Common/GSHeader";
 import { useAuthContext } from "@asgardeo/auth-react";
 
 function UserDashBoard() {
