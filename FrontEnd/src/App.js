@@ -23,8 +23,7 @@ import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
   const { state } = useAuthContext();
-  const {role,setRole} = useContext(UserContext);
-
+  const { role, setRole } = useContext(UserContext);
 
   const { getBasicUserInfo } = useAuthContext();
 
@@ -37,15 +36,11 @@ function App() {
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     getBasicInfo();
 
-
     navigate("/");
-
-
   }, [role]);
-
 
   return (
     <div>
@@ -91,46 +86,6 @@ function App() {
             <ProtectedRoute redirectPath="/">
               <ViewRequest />
             </ProtectedRoute>
-          }
-        />
-
-        {/* <Route
-          path="/"
-          element={
-<<<<<<< HEAD
-            state.isAuthenticated (
-=======
-            state.isAuthenticated ?(
->>>>>>> d9871a7c51e85e5a57fd7cf526b003f338582e2a
-              <Navigate to="/user/me" />
-            ) : state.isAuthenticated  (
-              <Navigate to="/gs/me" />
-            ) : (
-              <Login />
-            )
-          }
-        />
-        <Route path="/restricted" element={<Restrict />} />
-
-
-        <Route
-          path="/user/me/contact"
-          element={
-            state.isAuthenticated ? (
-              <Contact />
-            ) : (
-              <Navigate to="/restricted" />
-            )
-          }
-        />
-        <Route
-          path="/user/me/status"
-          element={
-            state.isAuthenticated ? (
-              <Status />
-            ) : (
-              <Navigate to="/restricted" />
-            )
           }
         />
       </Routes>
