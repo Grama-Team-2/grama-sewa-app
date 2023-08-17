@@ -1,19 +1,15 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 import Header from "./UserHeader";
 // import React, { useState } from 'react';
 import { useAuthContext } from "@asgardeo/auth-react";
 import { newRequest } from "../../api/UserRequests";
 
-
 function Request() {
   const [nic, setNic] = useState("");
   const [no, setNo] = useState("");
   const [street, setStreet] = useState("");
   const [city, setCity] = useState("");
-
-
- 
 
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -28,7 +24,8 @@ function Request() {
       // const street = "main"
       // const city = "Galle"
 
-      newRequest.url = newRequest.url+"/"+nic+"/"+no+"/"+street+"/"+city
+      newRequest.url =
+        newRequest.url + "/" + nic + "/" + no + "/" + street + "/" + city;
       const { data } = await httpRequest(newRequest);
       setRequests(data);
       setLoading(false);
@@ -41,8 +38,6 @@ function Request() {
     handleSubmit();
   }, []);
 
-  
-  
   return (
     <div>
       <Header></Header>
@@ -71,17 +66,7 @@ function Request() {
                           <label>NIC No :</label>
                           <br />
                           <br />
-<<<<<<< HEAD
                           <input className="form-control" type="text" />
-=======
-                          <input
-                            className="form-control"
-                            type="text"
-                            
-                            onChange={(e) => setNic(e.target.value)}
-                            
-                          />
->>>>>>> d9871a7c51e85e5a57fd7cf526b003f338582e2a
                         </div>
                         <hr />
                         <label style={{ marginLeft: "190px" }}>
@@ -94,10 +79,6 @@ function Request() {
                           <input
                             className="form-control"
                             type="text"
-<<<<<<< HEAD
-=======
-                            onChange={(e) => setNo(e.target.value)}
->>>>>>> d9871a7c51e85e5a57fd7cf526b003f338582e2a
                             required
                           />
                         </div>
@@ -108,11 +89,6 @@ function Request() {
                           <input
                             className="form-control"
                             type="text"
-<<<<<<< HEAD
-=======
-                            onChange={(e) => setStreet(e.target.value)}
-                            
->>>>>>> d9871a7c51e85e5a57fd7cf526b003f338582e2a
                             required
                           />
                         </div>
@@ -123,11 +99,6 @@ function Request() {
                           <input
                             className="form-control"
                             type="text"
-<<<<<<< HEAD
-=======
-                            onChange={(e) => setCity(e.target.value)}
-                            
->>>>>>> d9871a7c51e85e5a57fd7cf526b003f338582e2a
                             required
                           />
                         </div>
