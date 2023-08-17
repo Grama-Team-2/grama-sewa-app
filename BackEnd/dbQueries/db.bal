@@ -1,6 +1,7 @@
 import ballerina/http;
 import ballerinax/mongodb;
 import ballerina/io;
+import ballerina/time;
 
 type requestRecord record {
     json _id;
@@ -24,6 +25,64 @@ mongodb:ConnectionConfig mongoConfig1 = {
 mongodb:Client mongoClient = check new (mongoConfig1);
 
 //service for identity check
+type ValidationResponse record {|
+    boolean identityVerificationStatus;
+    boolean addressVerificationStatus;
+    boolean policeVerificationStatus;
+|};
+
+type ErrorDetails record {|
+    time:Utc timeStamp;
+    string message;
+    string details;
+|};
+
+type AddressResponse record {
+    string NIC;
+    Address address;
+};
+
+type ValidationRequest record {
+    string NIC;
+    Address address;
+};
+
+type Address record {
+    string no;
+    string street;
+    string city;
+};
+
+type Person record {
+    string firstName;
+    string lastName;
+    string NIC;
+    Address address;
+    string civilStatus;
+    string dob;
+};
+
+type UserNotFound record {|
+    *http:NotFound;
+    ErrorDetails body;
+|};
+
+type PoliceResponse record {
+    string status;
+    CRecord[] records;
+};
+
+type CRecord record {
+    string NIC;
+    string criminalRecord;
+    string confirmedStation;
+};
+
+type AddressRequest record {
+    string NIC;
+    Address address;
+};
+
 service /requests on new http:Listener(8080) {
 
     //Create entry for new request in database
@@ -77,4 +136,38 @@ service /requests on new http:Listener(8080) {
 
         return resultData;
     }
+
+    resource function post validate(@http:Payload ValidationRequest request) returns ValidationResponse|UserNotFound|error? {
+        http:Client http_client = check new ("http://identity-check-service-3223962601:9090/identity/verify");
+        Person|error person = http_client->/nic/[request.NIC];
+        ValidationResponse val_response = {
+            identityVerificationStatus: true,
+            addressVerificationStatus: true,
+            policeVerificationStatus: true
+        };
+        if person is error {
+            val_response.identityVerificationStatus = false;
+        }
+
+        http_client = check new ("http://police-check-service-313503678:8090/police/verify");
+        PoliceResponse pol_response = check http_client->/PoliceVerification/[request.NIC];
+        if pol_response.status == "failed" {
+            val_response.policeVerificationStatus = false;
+        }
+        http_client = check new ("http://address-check-service-622955183:8070/address/verify");
+        AddressRequest addressRequest = {
+            NIC: request.NIC,
+            address: request.address
+        };
+        AddressResponse|error address_response = http_client->/.post(addressRequest);
+        if address_response is error {
+            val_response.addressVerificationStatus = false;
+        }
+        return val_response;
+
+    }
+}
+
+function buildErrorPayload(string msg, string path) returns ErrorDetails {
+    return {timeStamp: time:utcNow(), message: msg, details: string `uri = ${path}`};
 }
