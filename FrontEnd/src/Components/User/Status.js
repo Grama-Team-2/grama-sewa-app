@@ -3,7 +3,6 @@ import Header from "./UserHeader";
 import { useAuthContext } from "@asgardeo/auth-react";
 import { checkStatus } from "../../api/UserRequests";
 
-
 function Status() {
 const [nic,setNic] = useState("");
 const [status,setStatus] = useState("");
