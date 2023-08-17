@@ -34,7 +34,7 @@ export default function ViewRequest() {
       setRequests(
         requests.map((req) => {
           if (req.NIC === nic) {
-            return { ...req, status: "APPROVED" };
+            return { ...req, status:  };
           } else return req;
         })
       );
