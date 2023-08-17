@@ -22,7 +22,7 @@ slack:Client slackClient = check new(slackConfig);
 service / on new http:Listener(7070) {
 
     
-    resource function post sendNotifications(string reason, string NIC) returns string|NotificationFailError|error?  {
+    resource function post sendNotifications/[string reason]() returns string|NotificationFailError|error?  {
     
 
         //make the message
@@ -36,14 +36,8 @@ service / on new http:Listener(7070) {
                     "type": "mrkdwn",
                     "text": string `*URGENT!* -> _${reason}_`
                 }
-            },
-            {
-                "type": "section",
-                "text": {
-                    "type": "mrkdwn",
-                    "text": string `User Details -> NIC : ${NIC}`
-                }
             }
+            
             
             ]
         };
