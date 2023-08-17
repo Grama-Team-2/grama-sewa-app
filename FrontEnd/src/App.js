@@ -27,8 +27,7 @@ function App() {
   const getBasicInfo = async () => {
     try {
       const { applicationRoles } = await getBasicUserInfo();
-
-      setRole(applicationRoles[0]);
+      setRole(applicationRoles);
     } catch (error) {
       console.log(error);
     }
@@ -48,10 +47,9 @@ function App() {
           element={
             state.isAuthenticated ? (
               <Request />
-            ) : state.isAuthenticated ? (
-              <Navigate to="/user/me/request-cert" replace={true} />
             ) : (
-              <Login />
+              <Login
+               />
             )
           }
         />
@@ -91,7 +89,7 @@ function App() {
         <Route
           path="/"
           element={
-            state.isAuthenticated && role === userRoles.USER ? (
+            state.isAuthenticated ?(
               <Navigate to="/user/me" />
             ) : state.isAuthenticated && role === userRoles.GRAMA ? (
               <Navigate to="/gs/me" />
