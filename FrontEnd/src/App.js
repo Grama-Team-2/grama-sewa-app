@@ -75,9 +75,21 @@ function App() {
         <Route
           path="/gs/me/requests"
           element={
-            <ProtectedRoute redirectPath="/">
-              <ViewRequest />
-            </ProtectedRoute>
+            state.isAuthenticated ? (
+              <Navigate to="/user/me" />
+            ) : state.isAuthenticated && role === userRoles.GRAMA ? (
+              <Navigate to="/gs/me" />
+            ) : (
+              <Login />
+            )
+          }
+        />
+        <Route path="/restricted" element={<Restrict />} />
+
+        <Route
+          path="/user/me/contact"
+          element={
+            state.isAuthenticated ? <Contact /> : <Navigate to="/restricted" />
           }
         />
         <Route

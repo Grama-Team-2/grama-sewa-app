@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import Header from "../Common/UserHeader";
+import Header from "./UserHeader";
 
 function Contact() {
   const [message, setMessage] = useState("");
