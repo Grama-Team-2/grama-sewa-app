@@ -48,8 +48,6 @@ function App() {
           element={
             state.isAuthenticated ? (
               <Request />
-            ) : state.isAuthenticated ? (
-              <Navigate to="/restricted" replace={true} />
             ) : (
               <Login
                />
@@ -92,7 +90,7 @@ function App() {
         <Route
           path="/"
           element={
-            state.isAuthenticated && role === userRoles.USER ? (
+            state.isAuthenticated ?(
               <Navigate to="/user/me" />
             ) : state.isAuthenticated && role === userRoles.GRAMA ? (
               <Navigate to="/gs/me" />

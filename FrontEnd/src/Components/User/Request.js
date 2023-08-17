@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import axios from "axios";
 import Header from "./UserHeader";
 // import React, { useState } from 'react';
+import { useAuthContext } from "@asgardeo/auth-react";
+import { newRequest } from "../../api/UserRequests";
+
 
 function Request() {
   const [nic, setNic] = useState("");
@@ -9,6 +12,31 @@ function Request() {
   const [street, setStreet] = useState("");
   const [city, setCity] = useState("");
 
+  const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const { httpRequest } = useAuthContext();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const NIC = 1212
+      const no = 10
+      const street = "main"
+      const city = "Galle"
+
+      newRequest.url = newRequest.url+"/"+NIC+"/"+no+"/"+street+"/"+city
+      const { data } = await httpRequest(newRequest);
+      setRequests(data);
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    handleSubmit();
+  }, []);
 
   // const handleSubmit = (event) => {
   //   event.preventDefault();
@@ -31,69 +59,6 @@ function Request() {
   // };
 
   
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-  
-    const requestData = {
-      NIC: nic,
-      no: no,
-      street: street,
-      city: city,
-    };
-    // const [postData, setPostData] = useState({
-    //   title: '',
-    //   body: requestData,
-    // });
-  
-    console.log("Sending request data:", requestData);
-  
-    try {
-
-
-      var xhr = new XMLHttpRequest()
-
-      // get a callback when the server responds
-      xhr.addEventListener('load', () => {
-        // update the state of the component with the result here
-        console.log(xhr.responseText)
-      })
-      // open the request with the verb and the url
-      xhr.open('GET', 'https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/maoe/grama-api-service/requests-915/1.0.0/getAllRequests')
-      // xhr.setRequestHeader('Authorization', 'Bearer your-access-token');
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
-      xhr.setRequestHeader('Access-Control-Allow-Credentials',true );
-
-//Access-Control-Allow-Credentials: true
-      xhr.setRequestHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
-      xhr.setRequestHeader('Access-Control-Allow-Headers', 'Origin, X-Api-Key, X-Requested-With, Content-Type, Accept, Authorization');
-
-      // Access-Control-Allow-Headers: Origin, X-Api-Key, X-Requested-With, Content-Type, Accept, Authorization
-
-      // send the request
-      xhr.send()
-
-      // const response = await axios.post(
-        
-      //   "https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/maoe/grama-api-service/requests-915/1.0.0/newRequest",
-      //   requestData,
-      //   {
-      //     headers: {
-      //       "Content-Type": "application/json",
-
-      //       "Access-Control-Allow-Origin": "*",
-      //        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
-      //     },
-      //   }
-      // );
-      // const response = await fetch("https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/maoe/grama-api-service/requests-915/1.0.0/getAllRequests");
-      // console.log("Response data:", response);
-    } catch (error) {
-      console.error("Error sending data: ", error);
-    }
-  };
-  
-
   return (
     <div>
       <Header></Header>
