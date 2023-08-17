@@ -1,28 +1,13 @@
 import React, { useState, useEffect } from "react";
 import GSHeader from "./GSHeader";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useAuthContext } from "@asgardeo/auth-react";
-import { getAllRequests } from "../../api/GSRequests";
-import { updateStatus } from "../../api/GSUpdateStatus";
+import { getAllRequests, validateAGramaRequest,updateStatus } from "../../api/GSRequests";
+import VerificationRequest from "../VerificationRequest/VerificationRequest";
 export default function ViewRequest() {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(false);
   const { httpRequest } = useAuthContext();
-
-
-  const handleStatus = async (NIC,Status) => {
-    try {
-      setLoading(true);
-      await httpRequest(updateStatus(NIC,Status));
-      setLoading(false);
-    } catch (err) {
-      console.log(err);
-      setLoading(false);
-    }
-  };
-
   
-
   const fetchRequests = async () => {
     try {
       setLoading(true);
@@ -34,58 +19,44 @@ export default function ViewRequest() {
       setLoading(false);
     }
   };
+
+  const handleValidate = async (nic, address) => {
+    const reqBody = {
+      NIC: nic,
+      address,
+    };
+    try {
+      setLoading(true);
+      validateAGramaRequest.data = reqBody;
+      const { data } = await httpRequest(validateAGramaRequest);
+      console.log(data);
+
+      setRequests(
+        requests.map((req) => {
+          if (req.NIC === nic) {
+            return { ...req, status: "APPROVED" };
+          } else return req;
+        })
+      );
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchRequests();
   }, []);
 
   const renderedRequests = requests.map((req) => (
-    <tr>
-      <td>{req?.NIC}</td>
-      <td>
-        {"No " +
-          req?.address?.no +
-          ", " +
-          req?.address?.street +
-          ", " +
-          req?.address?.city}
-      </td>
-      <td>
-        {" "}
-        <button className="btn">
-          <CheckCircleIcon />
-        </button>
-        <input type="text" value="verified"></input>
-      </td>
-      <td>
-        <button className="btn">
-          <CheckCircleIcon />
-        </button>
-        <input type="text" value="verified"></input>
-      </td>
-      <td>
-        <button className="btn">
-          <CheckCircleIcon />
-        </button>
-        <input type="text" value="verified"></input>
-      </td>
-      <td
-        className="d-flex justify-content-between"
-        style={{ marginTop: "20px" }}
-      >
-        <button className="btn btn-danger" onClick={() => handleStatus(req.NIC, "Pending")}>Pending</button>
-
-        <button className="btn btn-info" onClick={() => handleStatus(req.NIC, "Processing")}>Processing</button>
-        <br />
-        <br />
-
-        <button className="btn btn1" onClick={() => handleStatus(req.NIC, "More Information Required")}>MIR</button>
-        <br />
-
-        <button className="btn btn-success" onClick={() => handleStatus(req.NIC, "Completed")}>Completed</button>
-        <br />
-      </td>
-      <br />
-    </tr>
+    <VerificationRequest
+      nic={req?.NIC}
+      address={req?.address}
+      key={req?.NIC}
+      status={req?.status}
+      onValidate={() => handleValidate(req?.NIC, req?.address)}
+    />
   ));
   return (
     <div>
@@ -95,7 +66,6 @@ export default function ViewRequest() {
           <div className="row justify-content-center">
             <h2 style={{ marginLeft: "100px" }}>Request List</h2>
           </div>
-          <br />
         </div>
 
         <table className="table">
