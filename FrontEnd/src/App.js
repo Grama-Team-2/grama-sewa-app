@@ -50,7 +50,8 @@ function App() {
             ) : state.isAuthenticated ? (
               <Navigate to="/restricted" replace={true} />
             ) : (
-              <Login />
+              <Login
+               />
             )
           }
         />
