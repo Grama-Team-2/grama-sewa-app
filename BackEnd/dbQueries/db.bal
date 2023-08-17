@@ -96,7 +96,7 @@ service /requests on new http:Listener(8080) {
             "city": city
         };
 
-        map<json> doc = {"NIC": NIC, "address": address, "status": "PENDING"};
+        map<json> doc = {"NIC": NIC, "address": address, "status": "Pending"};
 
         error? resultData = check mongoClient->insert(doc, collectionName = "RequestDetails");
 
@@ -106,6 +106,28 @@ service /requests on new http:Listener(8080) {
         return false;
 
     }
+
+       resource function get getStatus/[string NIC]() returns string|error {
+
+        map<json> queryString = {"NIC": NIC};
+        stream<requestRecord, error?> resultData = check mongoClient->find(collectionName = "RequestDetails",filter =queryString);
+
+
+        string result="";
+       
+        check resultData.forEach(function(requestRecord data) {
+
+            result = data.status;
+
+            
+
+        });
+        return result;
+
+        
+
+    }
+
 
     resource function get getAllRequests() returns requestRecord[]|error {
 
