@@ -67,6 +67,8 @@ function Contact() {
                     </div>
                     <div className="card-body">
                       <form method="post" onSubmit={handleSubmit}>
+                      
+                      
                         <div className="form-floating mb-3">
                           <label>Type your message here :</label>
                           <br />
