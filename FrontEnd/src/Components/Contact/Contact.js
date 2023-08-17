@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 import Header from "./UserHeader";
 
@@ -6,9 +6,8 @@ function Contact() {
   const [message, setMessage] = useState("");
   const [no, setNo] = useState("");
 
-
   const handleSubmit = async (e) => {
-    // const history = useHistory(); 
+    // const history = useHistory();
     e.preventDefault();
     try {
       setLoading(true);
@@ -29,30 +28,31 @@ function Contact() {
     }
   };
 
-
-
   // useEffect(() => {
   //   handleSubmit();
   // }, []);
 
-  
   return (
     <div>
       <Header></Header>
       <div>
         <div>
-          <main style={{backgroundColor:"#b31af01f"}}>
+          <main style={{ backgroundColor: "#b31af01f" }}>
             <div className="container1">
               <div className="row justify-content-center">
                 <div className="col-lg-5">
                   <br />
-                 
+
                   <div className="card shadow-lg border-0 rounded-lg mt-5">
                     <div className="card-header">
                       <h3 className="text-center font-weight-light my-4">
                         Contact Us
                       </h3>
-                      <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp" className="img-fluid" alt="Phone image" />
+                      <img
+                        src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
+                        className="img-fluid"
+                        alt="Phone image"
+                      />
                     </div>
                     <div className="card-body">
                       <form method="post" onSubmit={handleSubmit}>
@@ -62,21 +62,18 @@ function Contact() {
                           <br />
                           <textarea
                             className="form-control"
-                            rows ={10}
-                            cols = {40}
-                        
-                            
+                            rows={10}
+                            cols={40}
                             onChange={(e) => setMessage(e.target.value)}
-                            
                           />
                         </div>
-                        
+
                         <br />
 
                         <div className="d-grid">
                           <input
                             type="submit"
-                            className="btn1"  
+                            className="btn1"
                             value="Send"
                           ></input>
                         </div>
@@ -89,7 +86,6 @@ function Contact() {
           </main>
         </div>
       </div>
-      
     </div>
   );
 }
