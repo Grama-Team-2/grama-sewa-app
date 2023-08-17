@@ -6,6 +6,32 @@ function Contact() {
   const [message, setMessage] = useState("");
   const [no, setNo] = useState("");
 
+  const handleSubmit = async (e) => {
+    // const history = useHistory();
+    e.preventDefault();
+    try {
+      setLoading(true);
+      // const NIC = 1212
+      // const no = 10
+      // const street = "main"
+      // const city = "Galle"
+
+      newRequest.url = newRequest.url + "/" + message;
+      const { data } = await httpRequest(newRequest);
+      setRequests(data);
+      setLoading(false);
+      // history.push('/');
+      window.location.replace("/user/me");
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
+  };
+
+  // useEffect(() => {
+  //   handleSubmit();
+  // }, []);
+
   return (
     <div>
       <Header></Header>
@@ -20,7 +46,7 @@ function Contact() {
                   <div className="card shadow-lg border-0 rounded-lg mt-5">
                     <div className="card-header">
                       <h3 className="text-center font-weight-light my-4">
-                        Conact Us
+                        Contact Us
                       </h3>
                       <img
                         src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
@@ -29,14 +55,15 @@ function Contact() {
                       />
                     </div>
                     <div className="card-body">
-                      <form method="post">
+                      <form method="post" onSubmit={handleSubmit}>
                         <div className="form-floating mb-3">
                           <label>Type your message here :</label>
                           <br />
                           <br />
-                          <input
+                          <textarea
                             className="form-control"
-                            type="textarea"
+                            rows={10}
+                            cols={40}
                             onChange={(e) => setMessage(e.target.value)}
                           />
                         </div>
@@ -47,7 +74,7 @@ function Contact() {
                           <input
                             type="submit"
                             className="btn1"
-                            value="Request"
+                            value="Send"
                           ></input>
                         </div>
                       </form>

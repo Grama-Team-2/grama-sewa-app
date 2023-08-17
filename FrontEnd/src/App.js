@@ -10,7 +10,7 @@ import Login from "./Components/Common/Login";
 import Request from "./Components/Request/Request";
 import GSDashBoard from "./Components/GSDashboard/GramaSevakaDashboard";
 import NotFound from "./Components/Common/NotFound";
-import Contact from "./Components/Contact/Contact";
+import Contact from "./Components/User/Contact";
 
 import UserDashBoard from "./Components/User/UserDashboard";
 import ViewRequest from "./Components/VerificationRequests/VerificationRequests";
@@ -23,6 +23,8 @@ import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
   const { state } = useAuthContext();
+  const {role,setRole} = useContext(UserContext);
+
 
   const { getBasicUserInfo } = useAuthContext();
 
@@ -34,6 +36,16 @@ function App() {
       console.log(error);
     }
   };
+
+  useEffect(()=>{
+    getBasicInfo();
+
+
+    navigate("/");
+
+
+  }, [role]);
+
 
   return (
     <div>
@@ -82,15 +94,45 @@ function App() {
           }
         />
 
-        <Route
-          path="/gs/me"
+        {/* <Route
+          path="/"
           element={
-            <ProtectedRoute redirectPath="/">
-              <GSDashBoard />
-            </ProtectedRoute>
+<<<<<<< HEAD
+            state.isAuthenticated (
+=======
+            state.isAuthenticated ?(
+>>>>>>> d9871a7c51e85e5a57fd7cf526b003f338582e2a
+              <Navigate to="/user/me" />
+            ) : state.isAuthenticated  (
+              <Navigate to="/gs/me" />
+            ) : (
+              <Login />
+            )
           }
         />
         <Route path="/restricted" element={<Restrict />} />
+
+
+        <Route
+          path="/user/me/contact"
+          element={
+            state.isAuthenticated ? (
+              <Contact />
+            ) : (
+              <Navigate to="/restricted" />
+            )
+          }
+        />
+        <Route
+          path="/user/me/status"
+          element={
+            state.isAuthenticated ? (
+              <Status />
+            ) : (
+              <Navigate to="/restricted" />
+            )
+          }
+        />
       </Routes>
     </div>
   );
