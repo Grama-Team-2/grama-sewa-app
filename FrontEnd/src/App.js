@@ -1,3 +1,4 @@
+import React from "react";
 import "./App.css";
 import {
   BrowserRouter as Router,
@@ -39,8 +40,6 @@ function App() {
 
   useEffect(() => {
     getBasicInfo();
-
-    
   }, [role]);
 
   return (
