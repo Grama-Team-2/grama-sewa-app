@@ -18,7 +18,7 @@ function Header() {
   return (
     <div>
       <nav class="navbar navbar-expand-lg navbar-light ">
-        <a class="navbar-brand" href="/" style={{ color: "white" }}>
+        <a class="navbar-brand" href="/user/me" style={{ color: "white" }}>
           Grama Assist
         </a>
 
@@ -65,14 +65,30 @@ function Header() {
                </a> */}
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/status" style={{ color: "white" }}>
+              <Link
+                class="nav-link"
+                to="/user/me/status"
+                style={{ color: "white" }}
+              >
+                Check Status{" "}
+              </Link>
+              {/* <a class="nav-link" href="/status" style={{ color: "white" }}>
                 Check Status
-              </a>
+              </a> */}
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/contact" style={{ color: "white" }}>
+
+
+            <Link
+                class="nav-link"
+                to="/user/me/contact"
+                style={{ color: "white" }}
+              >
+                Contact{" "}
+              </Link>
+              {/* <a class="nav-link" href="/user/me/contact" style={{ color: "white" }}>
                 Contact
-              </a>
+              </a> */}
             </li>
           </ul>
         </div>

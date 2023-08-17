@@ -15,7 +15,9 @@ function Request() {
   const [loading, setLoading] = useState(false);
   const { httpRequest } = useAuthContext();
 
+  // const history = useHistory(); 
   const handleSubmit = async (e) => {
+    // const history = useHistory(); 
     e.preventDefault();
     try {
       setLoading(true);
@@ -24,20 +26,26 @@ function Request() {
       // const street = "main"
       // const city = "Galle"
 
-      newRequest.url =
-        newRequest.url + "/" + nic + "/" + no + "/" + street + "/" + city;
+      newRequest.url = newRequest.url + "/" + nic + "/" + no + "/" + street + "/" + city;
       const { data } = await httpRequest(newRequest);
       setRequests(data);
       setLoading(false);
+      // history.push('/');
+      window.location.replace("/user/me");
     } catch (err) {
       console.log(err);
       setLoading(false);
     }
   };
-  useEffect(() => {
-    handleSubmit();
-  }, []);
 
+
+
+  // useEffect(() => {
+  //   handleSubmit();
+  // }, []);
+
+  
+  
   return (
     <div>
       <Header></Header>
@@ -66,10 +74,17 @@ function Request() {
                           <label>NIC No :</label>
                           <br />
                           <br />
-                          <input className="form-control" type="text" />
+                          <input
+                            className="form-control"
+                            type="text"
+                            
+                            onChange={(e) => setNic(e.target.value)}
+                            required
+                            
+                          />
                         </div>
                         <hr />
-                        <label style={{ marginLeft: "190px" }}>
+                        <label style={{ marginLeft: "150px" }}>
                           Address Details
                         </label>
                         <div className="form-floating mb-3">
@@ -79,6 +94,7 @@ function Request() {
                           <input
                             className="form-control"
                             type="text"
+                            onChange={(e) => setNo(e.target.value)}
                             required
                           />
                         </div>
@@ -89,6 +105,7 @@ function Request() {
                           <input
                             className="form-control"
                             type="text"
+                            onChange={(e) => setStreet(e.target.value)}
                             required
                           />
                         </div>
@@ -99,6 +116,7 @@ function Request() {
                           <input
                             className="form-control"
                             type="text"
+                            onChange={(e) => setCity(e.target.value)}
                             required
                           />
                         </div>

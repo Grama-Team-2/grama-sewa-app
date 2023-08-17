@@ -11,6 +11,9 @@ import Request from "./Components/User/Request";
 import GSDashBoard from "./Components/GramaSevaka/GramaSevakaDashboard";
 import NotFound from "./Components/Common/NotFound";
 import Contact from "./Components/User/Contact";
+import Status from "./Components/User/Status";
+
+
 
 import UserDashBoard from "./Components/User/UserDashboard";
 import ViewRequest from "./Components/GramaSevaka/ViewRequests";
@@ -22,6 +25,8 @@ import UserContext from "./context/UserContext";
 
 function App() {
   const { state } = useAuthContext();
+  const {role,setRole} = useContext(UserContext);
+
 
   const { getBasicUserInfo } = useAuthContext();
   const navigate = useNavigate();
@@ -33,6 +38,16 @@ function App() {
       console.log(error);
     }
   };
+
+  useEffect(()=>{
+    getBasicInfo();
+
+
+    navigate("/");
+
+
+  }, [role]);
+
 
   return (
     <div>
@@ -75,23 +90,41 @@ function App() {
           }
         />
 
-        {/* <Route
+        <Route
           path="/"
           element={
-<<<<<<< HEAD
-            state.isAuthenticated (
-=======
             state.isAuthenticated ?(
->>>>>>> d9871a7c51e85e5a57fd7cf526b003f338582e2a
               <Navigate to="/user/me" />
-            ) : state.isAuthenticated  (
+            ) : state.isAuthenticated && role ===userRoles.GRAMA ? (
               <Navigate to="/gs/me" />
             ) : (
               <Login />
             )
           }
-        /> */}
+        />
         <Route path="/restricted" element={<Restrict />} />
+
+
+        <Route
+          path="/user/me/contact"
+          element={
+            state.isAuthenticated ? (
+              <Contact />
+            ) : (
+              <Navigate to="/restricted" />
+            )
+          }
+        />
+        <Route
+          path="/user/me/status"
+          element={
+            state.isAuthenticated ? (
+              <Status />
+            ) : (
+              <Navigate to="/restricted" />
+            )
+          }
+        />
       </Routes>
     </div>
   );

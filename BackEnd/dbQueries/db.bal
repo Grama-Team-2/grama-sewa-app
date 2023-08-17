@@ -96,7 +96,7 @@ service /requests on new http:Listener(8080) {
             "city": city
         };
 
-        map<json> doc = {"NIC": NIC, "address": address, "status": "Pending"};
+        map<json> doc = {"NIC": NIC, "address": address, "status": "PENDING"};
 
         error? resultData = check mongoClient->insert(doc, collectionName = "RequestDetails");
 
