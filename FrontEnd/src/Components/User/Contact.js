@@ -1,8 +1,17 @@
 import React, { useState,useEffect } from "react";
 
 import Header from "./UserHeader";
+import { useAuthContext } from "@asgardeo/auth-react";
+
+import { slackNotify } from "../../api/SlackNotify";
+import { newRequest } from "../../api/UserRequests";
+
 
 function Contact() {
+
+  const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const { httpRequest } = useAuthContext();
   const [message, setMessage] = useState("");
   const [no, setNo] = useState("");
 
@@ -16,9 +25,11 @@ function Contact() {
       // const no = 10
       // const street = "main"
       // const city = "Galle"
-
-      newRequest.url = newRequest.url + "/" + message;
-      const { data } = await httpRequest(newRequest);
+// 
+      slackNotify.url = slackNotify.url + "/"+message+"/1111";
+      // newRequest.url = newRequest.url + "/1/1/1/1" ;
+      
+      const { data } = await httpRequest(slackNotify);
       setRequests(data);
       setLoading(false);
       // history.push('/');
