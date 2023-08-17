@@ -39,7 +39,7 @@ function App() {
   useEffect(() => {
     getBasicInfo();
 
-    navigate("/");
+    
   }, [role]);
 
   return (
