@@ -8,7 +8,7 @@ import {
   Link,
   useNavigate,
 } from "react-router-dom";
-import Request from "./Request";
+import Request from "../Request/Request";
 {
   /* <Route path="/request" component={Request} /> */
 }

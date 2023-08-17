@@ -7,29 +7,26 @@ import {
   useNavigate,
 } from "react-router-dom";
 import Login from "./Components/Common/Login";
-import Request from "./Components/User/Request";
-import GSDashBoard from "./Components/GramaSevaka/GramaSevakaDashboard";
+import Request from "./Components/Request/Request";
+import GSDashBoard from "./Components/GSDashboard/GramaSevakaDashboard";
 import NotFound from "./Components/Common/NotFound";
 import Contact from "./Components/User/Contact";
-import Status from "./Components/User/Status";
-
-
 
 import UserDashBoard from "./Components/User/UserDashboard";
-import ViewRequest from "./Components/GramaSevaka/ViewRequests";
+import ViewRequest from "./Components/VerificationRequests/VerificationRequests";
 import { useAuthContext } from "@asgardeo/auth-react";
 import { useContext, useEffect, useState } from "react";
 import { userRoles } from "./utils/config";
 import Restrict from "./Components/Restrict/Restrict";
 import UserContext from "./context/UserContext";
+import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
   const { state } = useAuthContext();
-  const {role,setRole} = useContext(UserContext);
-
+  const { role, setRole } = useContext(UserContext);
 
   const { getBasicUserInfo } = useAuthContext();
-  const navigate = useNavigate();
+
   const getBasicInfo = async () => {
     try {
       const response = await getBasicUserInfo();
@@ -39,64 +36,49 @@ function App() {
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     getBasicInfo();
 
-
     navigate("/");
-
-
   }, [role]);
-
 
   return (
     <div>
       <Routes>
+        <Route index element={<Login />}></Route>
         <Route path="/error" element={<NotFound />} />
-        <Route path="/contact" element={<Contact />} />
-
-        <Route
-          path="/user/me/request-cert"
-          element={state.isAuthenticated ? <Request /> : <Login />}
-        />
         <Route
           path="/user/me"
           element={
-            state?.isAuthenticated ? (
+            <ProtectedRoute redirectPath="/">
               <UserDashBoard />
-            ) : (
-              <Navigate to="/restricted" />
-            )
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/contact"
+          element={
+            <ProtectedRoute redirectPath="/">
+              <Contact />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/user/me/request-cert"
+          element={
+            <ProtectedRoute redirectPath="/">
+              <Request />
+            </ProtectedRoute>
           }
         />
         <Route
           path="/gs/me/requests"
           element={
             state.isAuthenticated ? (
-              <ViewRequest />
-            ) : (
-              <Navigate to="/restricted" />
-            )
-          }
-        />
-        <Route
-          path="/gs/me"
-          element={
-            state.isAuthenticated ? (
-              <GSDashBoard />
-            ) : (
-              <Navigate to="/restricted" />
-            )
-          }
-        />
-
-        <Route
-          path="/"
-          element={
-            state.isAuthenticated  ? (
-              <Navigate to="/gs/me" />
-            ) : state.isAuthenticated && role ===userRoles.GRAMA?(
               <Navigate to="/user/me" />
+            ) : state.isAuthenticated && role === userRoles.GRAMA ? (
+              <Navigate to="/gs/me" />
             ) : (
               <Login />
             )
@@ -104,25 +86,18 @@ function App() {
         />
         <Route path="/restricted" element={<Restrict />} />
 
-
         <Route
           path="/user/me/contact"
           element={
-            state.isAuthenticated ? (
-              <Contact />
-            ) : (
-              <Navigate to="/restricted" />
-            )
+            state.isAuthenticated ? <Contact /> : <Navigate to="/restricted" />
           }
         />
         <Route
-          path="/user/me/status"
+          path="/gs/me"
           element={
-            state.isAuthenticated ? (
-              <Status />
-            ) : (
-              <Navigate to="/restricted" />
-            )
+            <ProtectedRoute redirectPath="/">
+              <ViewRequest />
+            </ProtectedRoute>
           }
         />
       </Routes>

@@ -26,6 +26,7 @@ mongodb:Client mongoClient = check new (mongoConfig1);
 
 //service for identity check
 type ValidationResponse record {
+    string NIC;
     boolean identityVerificationStatus;
     boolean addressVerificationStatus;
     boolean policeVerificationStatus;
@@ -164,6 +165,7 @@ service /requests on new http:Listener(8080) {
         http:Client http_client = check new ("http://identity-check-service-3223962601:9090/identity/verify");
         Person|error person = http_client->/nic/[request.NIC];
         ValidationResponse val_response = {
+            NIC: "",
             identityVerificationStatus: true,
             addressVerificationStatus: true,
             policeVerificationStatus: true,
@@ -202,6 +204,12 @@ service /requests on new http:Listener(8080) {
             _ = check mongoClient->update(queryString, "RequestDetails", filter = filter);
             val_response.validationResult = "REJECTED";
         }
+        val_response.NIC = request.NIC;
+
+        map<json> doc = {"NIC": request.NIC, "identityVerificationStatus": val_response.identityVerificationStatus, "addressVerificationStatus": val_response.addressVerificationStatus, "policeVerificationStatus": val_response.policeVerificationStatus};
+
+        _ = check mongoClient->insert(doc, collectionName = "RequestValidation");
+
         return val_response;
 
     }
