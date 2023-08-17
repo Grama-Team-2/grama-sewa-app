@@ -2,22 +2,26 @@ import React from "react";
 import LogoutIcon from "@mui/icons-material/Logout";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useAuthContext } from "@asgardeo/auth-react";
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import Request from './Request';
-{/* <Route path="/request" component={Request} /> */}
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  useNavigate,
+} from "react-router-dom";
+import Request from "./Request";
+{
+  /* <Route path="/request" component={Request} /> */
+}
 function Header() {
   const { signOut } = useAuthContext();
+  const navigate = useNavigate();
   return (
     <div>
-
-      
       <nav class="navbar navbar-expand-lg navbar-light ">
         <a class="navbar-brand" href="/" style={{ color: "white" }}>
           Grama Assist
         </a>
 
-        
-      
         {/* <a class="navbar-brand" href="/user/me/request-cert" style={{ color: "white" }}>
           Request letter
         </a>
@@ -29,7 +33,7 @@ function Header() {
         <a class="navbar-brand" href="#" style={{ color: "white" }}>
           Help
         </a> */}
-        
+
         <button
           class="navbar-toggler"
           type="button"
@@ -38,8 +42,8 @@ function Header() {
           aria-controls="navbarNav"
           aria-expanded="false"
           aria-label="Toggle navigation"
-        > 
-           <span class="navbar-toggler-icon"></span>
+        >
+          <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
@@ -49,9 +53,14 @@ function Header() {
                 href="/user/me/request-cert"
                 style={{ color: "white" }}
               >
-                Request letter 
-                <span class="sr-only" href="user/me/request-cert">(current)</span>
-               </a>
+                Request letter
+                <span
+                  class="sr-only"
+                  onClick={navigate("/user/me/request-cert")}
+                >
+                  (current)
+                </span>
+              </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/status" style={{ color: "white" }}>

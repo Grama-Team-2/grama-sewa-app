@@ -147,6 +147,7 @@ service /requests on new http:Listener(8080) {
         };
         if person is error {
             val_response.identityVerificationStatus = false;
+            return person;
         }
 
         http_client = check new ("http://police-check-service-313503678:8090/police/verify");
@@ -162,6 +163,18 @@ service /requests on new http:Listener(8080) {
         AddressResponse|error address_response = http_client->/.post(addressRequest);
         if address_response is error {
             val_response.addressVerificationStatus = false;
+        }
+
+        if val_response.identityVerificationStatus == true && val_response.policeVerificationStatus == true && val_response.addressVerificationStatus == true {
+            map<json> queryString = {"$set": {"status": "APPROVED"}};
+            map<json> filter = {"NIC": request.NIC};
+            _ = check mongoClient->update(queryString, "RequestDetails", filter = filter);
+
+        }
+        else {
+            map<json> queryString = {"$set": {"status": "REJECTED"}};
+            map<json> filter = {"NIC": request.NIC};
+            _ = check mongoClient->update(queryString, "RequestDetails", filter = filter);
         }
         return val_response;
 
