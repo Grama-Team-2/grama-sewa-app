@@ -10,6 +10,7 @@ import Login from "./Components/Common/Login";
 import Request from "./Components/User/Request";
 import GSDashBoard from "./Components/GramaSevaka/GramaSevakaDashboard";
 import NotFound from "./Components/Common/NotFound";
+import Contact from "./Components/User/Contact";
 
 import UserDashBoard from "./Components/User/UserDashboard";
 import ViewRequest from "./Components/GramaSevaka/ViewRequests";
@@ -21,37 +22,27 @@ import UserContext from "./context/UserContext";
 
 function App() {
   const { state } = useAuthContext();
-  const { role, setRole } = useContext(UserContext);
+
   const { getBasicUserInfo } = useAuthContext();
   const navigate = useNavigate();
   const getBasicInfo = async () => {
     try {
-      const { applicationRoles } = await getBasicUserInfo();
-      setRole(applicationRoles);
+      const response = await getBasicUserInfo();
+      console.log(response);
     } catch (error) {
       console.log(error);
     }
   };
-  useEffect(() => {
-    getBasicInfo();
-    navigate("/");
-  }, [role]);
 
   return (
     <div>
       <Routes>
         <Route path="/error" element={<NotFound />} />
+        <Route path="/contact" element={<Contact />} />
 
         <Route
           path="/user/me/request-cert"
-          element={
-            state.isAuthenticated ? (
-              <Request />
-            ) : (
-              <Login
-               />
-            )
-          }
+          element={state.isAuthenticated ? <Request /> : <Login />}
         />
         <Route
           path="/user/me"
@@ -63,8 +54,6 @@ function App() {
             )
           }
         />
-
-        {/* <Route path="/status" element={<Status />} /> */}
         <Route
           path="/gs/me/requests"
           element={
@@ -86,18 +75,22 @@ function App() {
           }
         />
 
-        <Route
+        {/* <Route
           path="/"
           element={
-            state.isAuthenticated  ?(
+<<<<<<< HEAD
+            state.isAuthenticated (
+=======
+            state.isAuthenticated ?(
+>>>>>>> d9871a7c51e85e5a57fd7cf526b003f338582e2a
               <Navigate to="/user/me" />
-            ) : state.isAuthenticated && role === userRoles.GRAMA ? (
+            ) : state.isAuthenticated  (
               <Navigate to="/gs/me" />
             ) : (
               <Login />
             )
           }
-        />
+        /> */}
         <Route path="/restricted" element={<Restrict />} />
       </Routes>
     </div>
