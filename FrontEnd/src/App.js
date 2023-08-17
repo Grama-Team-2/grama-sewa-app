@@ -11,6 +11,9 @@ import Request from "./Components/User/Request";
 import GSDashBoard from "./Components/GramaSevaka/GramaSevakaDashboard";
 import NotFound from "./Components/Common/NotFound";
 import Contact from "./Components/User/Contact";
+import Status from "./Components/User/Status";
+
+
 
 import UserDashBoard from "./Components/User/UserDashboard";
 import ViewRequest from "./Components/GramaSevaka/ViewRequests";
@@ -107,6 +110,16 @@ function App() {
           element={
             state.isAuthenticated ? (
               <Contact />
+            ) : (
+              <Navigate to="/restricted" />
+            )
+          }
+        />
+        <Route
+          path="/user/me/status"
+          element={
+            state.isAuthenticated ? (
+              <Status />
             ) : (
               <Navigate to="/restricted" />
             )
