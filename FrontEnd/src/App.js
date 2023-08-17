@@ -76,7 +76,11 @@ function App() {
         {/* <Route
           path="/"
           element={
+<<<<<<< HEAD
             state.isAuthenticated (
+=======
+            state.isAuthenticated ?(
+>>>>>>> d9871a7c51e85e5a57fd7cf526b003f338582e2a
               <Navigate to="/user/me" />
             ) : state.isAuthenticated  (
               <Navigate to="/gs/me" />

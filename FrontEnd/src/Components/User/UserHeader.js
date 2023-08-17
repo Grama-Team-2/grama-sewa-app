@@ -48,19 +48,21 @@ function Header() {
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item active">
-              <a
+              <Link
+                class="nav-link"
+                to="/user/me/request-cert"
+                style={{ color: "white" }}
+              >
+                Request letter{" "}
+              </Link>
+              {/* <a
                 class="nav-link"
                 href="/user/me/request-cert"
                 style={{ color: "white" }}
               >
-                Request letter
-                <span
-                  class="sr-only"
-                  onClick={navigate("/user/me/request-cert")}
-                >
-                  (current)
-                </span>
-              </a>
+                Request letter 
+                <span class="sr-only" href="/user/me/request-cert">(current)</span>
+               </a> */}
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/status" style={{ color: "white" }}>

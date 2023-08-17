@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import GSHeader from "./GSHeader";
 import { useAuthContext } from "@asgardeo/auth-react";
-import { getAllRequests, validateAGramaRequest } from "../../api/GSRequests";
+import { getAllRequests, validateAGramaRequest,updateStatus } from "../../api/GSRequests";
 import VerificationRequest from "../VerificationRequest/VerificationRequest";
 export default function ViewRequest() {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(false);
   const { httpRequest } = useAuthContext();
-
+  
   const fetchRequests = async () => {
     try {
       setLoading(true);
