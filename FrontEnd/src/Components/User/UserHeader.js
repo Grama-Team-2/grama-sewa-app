@@ -60,8 +60,8 @@ function Header() {
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#" style={{ color: "white" }}>
-                Help
+              <a class="nav-link" href="/contact" style={{ color: "white" }}>
+                Contact
               </a>
             </li>
           </ul>

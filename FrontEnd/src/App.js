@@ -10,6 +10,7 @@ import Login from "./Components/Common/Login";
 import Request from "./Components/User/Request";
 import GSDashBoard from "./Components/GramaSevaka/GramaSevakaDashboard";
 import NotFound from "./Components/Common/NotFound";
+import Contact from "./Components/User/Contact";
 
 import UserDashBoard from "./Components/User/UserDashboard";
 import ViewRequest from "./Components/GramaSevaka/ViewRequests";
@@ -41,6 +42,7 @@ function App() {
     <div>
       <Routes>
         <Route path="/error" element={<NotFound />} />
+        <Route path="/contact" element={<Contact />} />
 
         <Route
           path="/user/me/request-cert"
