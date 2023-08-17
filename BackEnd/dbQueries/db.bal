@@ -25,11 +25,12 @@ mongodb:ConnectionConfig mongoConfig1 = {
 mongodb:Client mongoClient = check new (mongoConfig1);
 
 //service for identity check
-type ValidationResponse record {|
+type ValidationResponse record {
     boolean identityVerificationStatus;
     boolean addressVerificationStatus;
     boolean policeVerificationStatus;
-|};
+    string validationResult;
+};
 
 type ErrorDetails record {|
     time:Utc timeStamp;
@@ -143,11 +144,12 @@ service /requests on new http:Listener(8080) {
         ValidationResponse val_response = {
             identityVerificationStatus: true,
             addressVerificationStatus: true,
-            policeVerificationStatus: true
+            policeVerificationStatus: true,
+            validationResult: "APPROVED"
         };
         if person is error {
             val_response.identityVerificationStatus = false;
-            return person;
+
         }
 
         http_client = check new ("http://police-check-service-313503678:8090/police/verify");
@@ -169,12 +171,14 @@ service /requests on new http:Listener(8080) {
             map<json> queryString = {"$set": {"status": "APPROVED"}};
             map<json> filter = {"NIC": request.NIC};
             _ = check mongoClient->update(queryString, "RequestDetails", filter = filter);
+            val_response.validationResult = "APPROVED";
 
         }
         else {
             map<json> queryString = {"$set": {"status": "REJECTED"}};
             map<json> filter = {"NIC": request.NIC};
             _ = check mongoClient->update(queryString, "RequestDetails", filter = filter);
+            val_response.validationResult = "REJECTED";
         }
         return val_response;
 
