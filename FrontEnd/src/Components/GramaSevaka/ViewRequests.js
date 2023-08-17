@@ -3,10 +3,25 @@ import GSHeader from "./GSHeader";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useAuthContext } from "@asgardeo/auth-react";
 import { getAllRequests } from "../../api/GSRequests";
+import { updateStatus } from "../../api/GSUpdateStatus";
 export default function ViewRequest() {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(false);
   const { httpRequest } = useAuthContext();
+
+
+  const handleStatus = async (NIC,Status) => {
+    try {
+      setLoading(true);
+      await httpRequest(updateStatus(NIC,Status));
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
+  };
+
+  
 
   const fetchRequests = async () => {
     try {
@@ -57,16 +72,16 @@ export default function ViewRequest() {
         className="d-flex justify-content-between"
         style={{ marginTop: "20px" }}
       >
-        <button className="btn btn-danger">Pending</button>
+        <button className="btn btn-danger" onClick={() => handleStatus(req.NIC, "Pending")}>Pending</button>
 
-        <button className="btn btn-info">Processing</button>
+        <button className="btn btn-info" onClick={() => handleStatus(req.NIC, "Processing")}>Processing</button>
         <br />
         <br />
 
-        <button className="btn btn1">MIR</button>
+        <button className="btn btn1" onClick={() => handleStatus(req.NIC, "More Information Required")}>MIR</button>
         <br />
 
-        <button className="btn btn-success">Completed</button>
+        <button className="btn btn-success" onClick={() => handleStatus(req.NIC, "Completed")}>Completed</button>
         <br />
       </td>
       <br />
