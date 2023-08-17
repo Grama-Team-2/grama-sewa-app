@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from "react";
-import axios from "axios";
+
 import Header from "./UserHeader";
 // import React, { useState } from 'react';
 import { useAuthContext } from "@asgardeo/auth-react";
@@ -12,6 +12,9 @@ function Request() {
   const [street, setStreet] = useState("");
   const [city, setCity] = useState("");
 
+
+ 
+
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(false);
   const { httpRequest } = useAuthContext();
@@ -20,12 +23,12 @@ function Request() {
     e.preventDefault();
     try {
       setLoading(true);
-      const NIC = 1212
-      const no = 10
-      const street = "main"
-      const city = "Galle"
+      // const NIC = 1212
+      // const no = 10
+      // const street = "main"
+      // const city = "Galle"
 
-      newRequest.url = newRequest.url+"/"+NIC+"/"+no+"/"+street+"/"+city
+      newRequest.url = newRequest.url+"/"+nic+"/"+no+"/"+street+"/"+city
       const { data } = await httpRequest(newRequest);
       setRequests(data);
       setLoading(false);
@@ -38,26 +41,7 @@ function Request() {
     handleSubmit();
   }, []);
 
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-
-  //   const xhr = new XMLHttpRequest();
-  //   xhr.open('POST', 'https://jsonplaceholder.typicode.com/posts', true);
-  //   xhr.setRequestHeader('Content-Type', 'application/json');
-  //   xhr.onload = () => {
-  //     if (xhr.status === 201) {
-  //       const responseData = JSON.parse(xhr.responseText);
-  //       console.log('Post successful:', responseData);
-  //     } else {
-  //       console.error('Error posting data:', xhr.statusText);
-  //     }
-  //   };
-  //   xhr.onerror = () => {
-  //     console.error('Network error occurred');
-  //   };
-  //   xhr.send(JSON.stringify(postData));
-  // };
-
+  
   
   return (
     <div>
@@ -87,6 +71,8 @@ function Request() {
                             className="form-control"
                             type="text"
                             
+                            onChange={(e) => setNic(e.target.value)}
+                            
                           />
                         </div>
                         <hr/>
@@ -98,7 +84,7 @@ function Request() {
                           <input
                             className="form-control"
                             type="text"
-                            
+                            onChange={(e) => setNo(e.target.value)}
                             required
                           />
                         </div>
@@ -109,6 +95,7 @@ function Request() {
                           <input
                             className="form-control"
                             type="text"
+                            onChange={(e) => setStreet(e.target.value)}
                             
                             required
                           />
@@ -120,6 +107,7 @@ function Request() {
                           <input
                             className="form-control"
                             type="text"
+                            onChange={(e) => setCity(e.target.value)}
                             
                             required
                           />

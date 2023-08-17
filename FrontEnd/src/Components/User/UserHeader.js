@@ -44,7 +44,7 @@ function Header() {
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item active">
-              <Link to="/user/me/request-cert">Request letter </Link>
+              <Link class="nav-link" to="/user/me/request-cert" style={{ color: "white" }}>Request letter </Link>
               {/* <a
                 class="nav-link"
                 href="/user/me/request-cert"
