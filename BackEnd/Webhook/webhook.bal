@@ -2,7 +2,7 @@ import ballerinax/trigger.asgardeo;
 import ballerina/http;
 import ballerina/log;
 import ballerinax/scim;
-import ballerina/regex;
+// import ballerina/regex;
 
 configurable asgardeo:ListenerConfig config = ?;
 configurable string org = ?;
