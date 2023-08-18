@@ -81,6 +81,11 @@ type VerificationFailError record {|
     ErrorDetails body;
 |};
 
+type NoRequestFoundError record {|
+    *http:NotFound;
+    ErrorDetails body;
+|};
+
 type AddressRequest record {
     string NIC;
     Address address;
@@ -101,7 +106,6 @@ service /requests on new http:Listener(8080) {
         map<json> doc = {
             "NIC": NIC,
             "address": address,
-            "status": "Pending",
             "identityVerificationStatus": false,
             "addressVerificationStatus": false,
             "policeVerificationStatus": false,
@@ -117,21 +121,27 @@ service /requests on new http:Listener(8080) {
 
     }
 
-    // resource function get getStatus/[string NIC]() returns string|error {
+    resource function get status/[string NIC]() returns ValidationResponse|NoRequestFoundError|error {
 
-    //     map<json> queryString = {"NIC": NIC};
-    //     stream<requestRecord, error?> resultData = check mongoClient->find(collectionName = "RequestDetails", filter = queryString);
+        map<json> queryString = {"NIC": NIC};
+        stream<ValidationResponse, error?>|error resultData = check mongoClient->find(collectionName = "RequestDetails", filter = queryString);
 
-    //     string result = "";
+        if resultData is error {
+            return resultData;
+        }
+        var val = resultData.next();
+        if val is error? {
+            ErrorDetails errorDetails = buildErrorPayload(string `NIC: ${NIC}`, string `requests/status`);
+            NoRequestFoundError noRequestFoundError = {
+                body: errorDetails
+            };
+            return noRequestFoundError;
+        }
+        ValidationResponse[] reqs = from ValidationResponse req in val
+            select req;
 
-    //     check resultData.forEach(function(requestRecord data) {
-
-    //         result = data.status;
-
-    //     });
-    //     return result;
-
-    // }
+        return reqs[0];
+    }
 
     resource function get getAllRequests() returns ValidationResponse[]|error {
 
@@ -175,7 +185,7 @@ service /requests on new http:Listener(8080) {
         }
         var val = resultData.next();
         if val is error? {
-            ErrorDetails errorDetails = buildErrorPayload(string `NIC: ${nic}`, string `address/verify`);
+            ErrorDetails errorDetails = buildErrorPayload(string `NIC: ${nic}`, string `requests/validate`);
             VerificationFailError verificationFailError = {
                 body: errorDetails
             };
