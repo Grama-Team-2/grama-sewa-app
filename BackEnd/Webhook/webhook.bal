@@ -82,8 +82,8 @@ service asgardeo:RegistrationService on webhookListener {
                 "content": currentMSG
             };
 
-            http:Client clientEndpoint = check new("https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/maoe/twilio-service/twilio-09e/1.0.0/sms");
-            http:Response response = check clientEndpoint->post("/sms",msg);
+            http:Client clientEndpoint = check new("http://twilio-service-2012579124:2020/twilio");
+           http:Response _ = check clientEndpoint->post("/sms",msg);
       
 
         }
