@@ -82,6 +82,13 @@ service asgardeo:RegistrationService on webhookListener {
             return;
         }
         else{
+
+            Message newmsg = {
+                content: "string",
+                fromMobile: "+17069898836",
+                toMobile: "+94752958651"
+
+            };
             // map<json> msg ={
             //     "content": "string",
             //     "fromMobile": "+17069898836",
@@ -91,12 +98,7 @@ service asgardeo:RegistrationService on webhookListener {
 
             // log:printInfo(msg2);
             http:Client clientEndpoint = check new("https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/maoe/twilio-service/twilio-09e/1.0.0");
-            http:Response _ = check clientEndpoint->/sms.post({
-                "content": "hi",
-                "fromMobile": "+17069898836",
-                "toMobile": "+94752958651"
-
-            });
+            http:Response _ = check clientEndpoint->/sms.post(newmsg);
             // log:printInfo(check res.getTextPayload());
             
 
