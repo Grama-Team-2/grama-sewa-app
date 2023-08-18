@@ -12046,7 +12046,7 @@ flex-direction: row;
   height: 420px;
   left: 86px;
   position: absolute;
-  top: -10px;
+ 
   width: 1192px;
 }
 
@@ -12059,7 +12059,7 @@ flex-direction: row;
   left: 0;
   padding: 10px;
   position: absolute;
-  top: 0;
+  top: -80px;
   width: 1000px;
 }
 
@@ -12068,7 +12068,7 @@ flex-direction: row;
   margin-left: -4px;
   margin-right: -79px;
   object-fit: cover;
-  margin-top: -60px;
+  margin-top: -5px;
   position: relative;
   width: 1200px;
 }
@@ -12083,7 +12083,7 @@ flex-direction: row;
   letter-spacing: 0;
   line-height: normal;
   position: absolute;
-  top: 500px;
+  top: 480px;
 }
 
 .desktop .overlap-group {
@@ -12124,3 +12124,13 @@ flex-direction: row;
 .error{
   margin-left: 450px;
 }
+
+.textBox{
+  font-weight:"bolder";
+  margin-left:"25px";
+  text-align: center;
+  border-radius: 20px;
+  width: "5px";
+  
+}
+
