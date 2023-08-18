@@ -12,6 +12,7 @@ import Request from "./Components/Request/Request";
 import GSDashBoard from "./Components/GSDashboard/GramaSevakaDashboard";
 import NotFound from "./Components/Common/NotFound";
 import Contact from "./Components/Contact/Contact";
+import Status from "./Components/User/Status";
 
 import UserDashBoard from "./Components/User/UserDashboard";
 import ViewRequest from "./Components/VerificationRequests/VerificationRequests";
@@ -84,6 +85,15 @@ function App() {
           element={
             <ProtectedRoute redirectPath="/">
               <Request />
+            </ProtectedRoute>
+          }
+        />
+
+<Route
+          path="/user/me/status"
+          element={
+            <ProtectedRoute redirectPath="/">
+              <Status />
             </ProtectedRoute>
           }
         />

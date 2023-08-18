@@ -1,5 +1,5 @@
 import React,{useState} from "react";
-import Header from "./UserHeader";
+import Header from "../Common/UserHeader";
 import { useAuthContext } from "@asgardeo/auth-react";
 import { checkStatus } from "../../api/UserRequests";
 
@@ -15,11 +15,12 @@ const handleSubmit = async (e) => {
     setLoading(true);
     checkStatus.url =
       checkStatus.url + "/" + nic;
-    setStatus(await httpRequest(checkStatus));
+      const {data} = await httpRequest(checkStatus);
+    setStatus(data);
     setLoading(false);
     console.log(status);
   } catch (err) {
-    console.log(err);
+    
     setLoading(false);
   }
 };
@@ -43,9 +44,9 @@ const handleSubmit = async (e) => {
                       <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp" class="img-fluid" alt="Phone image" />
                     </div>
                     <div className="card-body">
-                    <form className="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                  <div className="input-group">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <form className="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" >
+                  <div className="input-group" style={{marginLeft:"75px"}}>
+                    
                     <input
                       className="form-control"
                       type="text"
@@ -53,7 +54,6 @@ const handleSubmit = async (e) => {
                       aria-label="Search for..."
                       aria-describedby="btnNavbarSearch"
                       onChange={(e) => setNic(e.target.value)}
-                      
                     />
                     <input
                       type="button"
