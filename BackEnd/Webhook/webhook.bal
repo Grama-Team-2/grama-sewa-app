@@ -2,6 +2,7 @@ import ballerinax/trigger.asgardeo;
 import ballerina/http;
 import ballerina/log;
 import ballerinax/scim;
+import ballerina/regex;
 
 configurable asgardeo:ListenerConfig config = ?;
 configurable string org = ?;
@@ -27,6 +28,8 @@ scim:ConnectorConfig config1 = {
     ]
 };
 
+
+string MESSAGE_TEMPLATE = "Hi {USER_NAME}, Welcome to Grama Assist!";
 service asgardeo:RegistrationService on webhookListener {
 
     remote function onAddUser(asgardeo:AddUserEvent event) returns error? {
@@ -68,8 +71,24 @@ service asgardeo:RegistrationService on webhookListener {
 
         scim:UserResource user = check client1->getUser(userId);
         scim:Phone[]? phoneNumbers = user?.phoneNumbers;
+        log:printInfo(string ` ${phoneNumbers.count()} `);
         if phoneNumbers is () {
             return;
+        }
+        else{
+            string currentMSG = regex:replace(MESSAGE_TEMPLATE,"{USER_NAME}",userName);
+            var msg ={
+                "fromMobile": "+17069898836",
+                "toMobile": "+94752958651",
+                "content": currentMSG
+            };
+
+            http:Client clientEndpoint = check new("http://twilio-service-2012579124:2020/twilio");
+           http:Response response = check clientEndpoint->post("/sms",msg);
+
+           log:printInfo(string `success !!! `);
+      
+
         }
 
     }
