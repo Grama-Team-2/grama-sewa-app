@@ -1,16 +1,8 @@
 {
-<<<<<<< HEAD
-  "last_build_time": 1692263836814,
-  "last_update_time": 1692202316070,
+  "last_build_time": 1692335066731,
+  "last_update_time": 1692331895740,
   "distribution_version": "2201.7.1",
   "last_modified_time": {
-    "mainAPI": 1692263814049
-=======
-  "last_build_time": 1692261054191,
-  "last_update_time": 1692202316070,
-  "distribution_version": "2201.7.1",
-  "last_modified_time": {
-    "mainAPI": 1692261016865
->>>>>>> 56732b38e67696f62435f14e6e91ee689fc59c4c
+    "mainAPI": 1692335053705
   }
 }

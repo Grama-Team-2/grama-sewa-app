@@ -27,6 +27,7 @@ mongodb:Client mongoClient = check new (mongoConfig1);
 //service for identity check
 type ValidationResponse record {
     string NIC;
+    Address address;
     boolean identityVerificationStatus;
     boolean addressVerificationStatus;
     boolean policeVerificationStatus;
@@ -40,11 +41,6 @@ type ErrorDetails record {|
 |};
 
 type AddressResponse record {
-    string NIC;
-    Address address;
-};
-
-type ValidationRequest record {
     string NIC;
     Address address;
 };
@@ -80,6 +76,11 @@ type CRecord record {
     string confirmedStation;
 };
 
+type VerificationFailError record {|
+    *http:BadRequest;
+    ErrorDetails body;
+|};
+
 type AddressRequest record {
     string NIC;
     Address address;
@@ -97,7 +98,15 @@ service /requests on new http:Listener(8080) {
             "city": city
         };
 
-        map<json> doc = {"NIC": NIC, "address": address, "status": "Pending"};
+        map<json> doc = {
+            "NIC": NIC,
+            "address": address,
+            "status": "Pending",
+            "identityVerificationStatus": false,
+            "addressVerificationStatus": false,
+            "policeVerificationStatus": false,
+            "validationResult": "PENDING"
+        };
 
         error? resultData = check mongoClient->insert(doc, collectionName = "RequestDetails");
 
@@ -108,42 +117,35 @@ service /requests on new http:Listener(8080) {
 
     }
 
-       resource function get getStatus/[string NIC]() returns string|error {
+    // resource function get getStatus/[string NIC]() returns string|error {
 
-        map<json> queryString = {"NIC": NIC};
-        stream<requestRecord, error?> resultData = check mongoClient->find(collectionName = "RequestDetails",filter =queryString);
+    //     map<json> queryString = {"NIC": NIC};
+    //     stream<requestRecord, error?> resultData = check mongoClient->find(collectionName = "RequestDetails", filter = queryString);
 
+    //     string result = "";
 
-        string result="";
-       
-        check resultData.forEach(function(requestRecord data) {
+    //     check resultData.forEach(function(requestRecord data) {
 
-            result = data.status;
+    //         result = data.status;
 
-            
+    //     });
+    //     return result;
 
-        });
-        return result;
+    // }
 
-        
+    resource function get getAllRequests() returns ValidationResponse[]|error {
 
-    }
+        stream<ValidationResponse, error?> resultData = check mongoClient->find(collectionName = "RequestDetails");
 
-
-    resource function get getAllRequests() returns requestRecord[]|error {
-
-        stream<requestRecord, error?> resultData = check mongoClient->find(collectionName = "RequestDetails");
-
-        requestRecord[] allData = [];
+        ValidationResponse[] allData = [];
         int index = 0;
-        check resultData.forEach(function(requestRecord data) {
+        check resultData.forEach(function(ValidationResponse data) {
 
             allData[index] = data;
             index += 1;
 
             io:println(data.NIC);
             io:println(data.address);
-            io:println(data.status);
 
         });
 
@@ -161,54 +163,63 @@ service /requests on new http:Listener(8080) {
         return resultData;
     }
 
-    resource function post validate(@http:Payload ValidationRequest request) returns ValidationResponse|UserNotFound|error? {
+    resource function get validate/[string nic]() returns ValidationResponse|VerificationFailError|error? {
         http:Client http_client = check new ("http://identity-check-service-3223962601:9090/identity/verify");
-        Person|error person = http_client->/nic/[request.NIC];
+
+        map<json> queryString1 = {"NIC": nic};
+
+        stream<ValidationResponse, error?>|error resultData = check mongoClient->find(collectionName = "RequestDetails", filter = (queryString1));
+
+        if resultData is error {
+            return resultData;
+        }
+        var val = resultData.next();
+        if val is error? {
+            ErrorDetails errorDetails = buildErrorPayload(string `NIC: ${nic}`, string `address/verify`);
+            VerificationFailError verificationFailError = {
+                body: errorDetails
+            };
+            return verificationFailError;
+        }
+
+        ValidationResponse[] res = from ValidationResponse resp in val
+            select resp;
+        ValidationResponse response = res[0];
         ValidationResponse val_response = {
-            NIC: "",
+            NIC: response.NIC,
+            address: response.address,
             identityVerificationStatus: true,
             addressVerificationStatus: true,
             policeVerificationStatus: true,
             validationResult: "APPROVED"
         };
+        Person|error person = http_client->/nic/[nic];
+
         if person is error {
             val_response.identityVerificationStatus = false;
 
         }
 
         http_client = check new ("http://police-check-service-313503678:8090/police/verify");
-        PoliceResponse pol_response = check http_client->/PoliceVerification/[request.NIC];
+        PoliceResponse pol_response = check http_client->/PoliceVerification/[nic];
         if pol_response.status == "failed" {
             val_response.policeVerificationStatus = false;
         }
         http_client = check new ("http://address-check-service-622955183:8070/address/verify");
         AddressRequest addressRequest = {
-            NIC: request.NIC,
-            address: request.address
+            NIC: response.NIC,
+            address: response.address
         };
         AddressResponse|error address_response = http_client->/.post(addressRequest);
         if address_response is error {
             val_response.addressVerificationStatus = false;
         }
 
-        if val_response.identityVerificationStatus == true && val_response.policeVerificationStatus == true && val_response.addressVerificationStatus == true {
-            map<json> queryString = {"$set": {"status": "APPROVED"}};
-            map<json> filter = {"NIC": request.NIC};
-            _ = check mongoClient->update(queryString, "RequestDetails", filter = filter);
-            val_response.validationResult = "APPROVED";
-
-        }
-        else {
-            map<json> queryString = {"$set": {"status": "REJECTED"}};
-            map<json> filter = {"NIC": request.NIC};
-            _ = check mongoClient->update(queryString, "RequestDetails", filter = filter);
-            val_response.validationResult = "REJECTED";
-        }
-        val_response.NIC = request.NIC;
-
-        map<json> doc = {"NIC": request.NIC, "identityVerificationStatus": val_response.identityVerificationStatus, "addressVerificationStatus": val_response.addressVerificationStatus, "policeVerificationStatus": val_response.policeVerificationStatus};
-
-        _ = check mongoClient->insert(doc, collectionName = "RequestValidation");
+        string val_result = val_response.identityVerificationStatus && val_response.addressVerificationStatus && response.policeVerificationStatus ? "APPROVED" : "REJECTED";
+        val_response.validationResult = val_result;
+        map<json> queryString = {"$set": {"identityVerificationStatus": val_response.identityVerificationStatus, "addressVerificationStatus": val_response.addressVerificationStatus, "policeVerificationStatus": val_response.policeVerificationStatus, validationResult: "REJECTED"}};
+        map<json> filter = {"NIC": nic};
+        _ = check mongoClient->update(queryString, "RequestDetails", filter = filter);
 
         return val_response;
 

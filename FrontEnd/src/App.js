@@ -27,12 +27,18 @@ function App() {
   const navigate = useNavigate();
   const { role, setRole } = useContext(UserContext);
 
-  const { getBasicUserInfo } = useAuthContext();
+  const { getDecodedIDToken } = useAuthContext();
 
   const getBasicInfo = async () => {
     try {
-      const response = await getBasicUserInfo();
+      const response = await getDecodedIDToken();
       console.log(response);
+      const { application_roles } = response;
+      if (Array.isArray(application_roles)) {
+        setRole(application_roles[0]);
+      } else {
+        setRole(application_roles);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -40,8 +46,17 @@ function App() {
 
   useEffect(() => {
     getBasicInfo();
-  }, [role]);
+  }, []);
 
+  useEffect(() => {
+    if (role !== "") {
+      role === userRoles.USER
+        ? navigate("/user/me")
+        : role === userRoles.GRAMA
+        ? navigate("/gs/me")
+        : navigate("/");
+    }
+  }, [role]);
   return (
     <div>
       <Routes>
