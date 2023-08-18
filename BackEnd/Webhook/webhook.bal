@@ -71,6 +71,7 @@ service asgardeo:RegistrationService on webhookListener {
 
         scim:UserResource user = check client1->getUser(userId);
         scim:Phone[]? phoneNumbers = user?.phoneNumbers;
+        log:printInfo(string ` ${phoneNumbers.count()} `);
         if phoneNumbers is () {
             return;
         }
@@ -83,7 +84,9 @@ service asgardeo:RegistrationService on webhookListener {
             };
 
             http:Client clientEndpoint = check new("http://twilio-service-2012579124:2020/twilio");
-           http:Response _ = check clientEndpoint->post("/sms",msg);
+           http:Response response = check clientEndpoint->post("/sms",msg);
+
+           log:printInfo(string `success !!! `);
       
 
         }
