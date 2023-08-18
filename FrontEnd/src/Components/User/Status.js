@@ -1,5 +1,5 @@
 import React,{useState} from "react";
-import Header from "./UserHeader";
+import Header from "../Common/UserHeader";
 import { useAuthContext } from "@asgardeo/auth-react";
 import { checkStatus } from "../../api/UserRequests";
 
