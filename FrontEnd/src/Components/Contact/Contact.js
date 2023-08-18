@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState, useEffect } from "react";
 import Header from "../Common/UserHeader";
 import { useAuthContext } from "@asgardeo/auth-react";
@@ -60,11 +61,6 @@ function Contact() {
                       <h3 className="text-center font-weight-light my-4">
                         Contact Us
                       </h3>
-                      <img
-                        src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
-                        className="img-fluid"
-                        alt="Phone image"
-                      />
                       <img
                         src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
                         className="img-fluid"
