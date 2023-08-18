@@ -77,7 +77,7 @@ service asgardeo:RegistrationService on webhookListener {
 
         scim:UserResource user = check client1->getUser(userId);
         scim:Phone[]? phoneNumbers = user?.phoneNumbers;
-        log:printInfo(string ` ${phoneNumbers.count()} `);
+        // log:printInfo(string ` ${phoneNumbers.count()} `);
         if phoneNumbers is () {
             return;
         }
