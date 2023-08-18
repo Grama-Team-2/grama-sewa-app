@@ -118,6 +118,12 @@ function App() {
           }
         />
         <Route
+          path="/user/me/status"
+          element={
+            state.isAuthenticated ? <Status /> : <Navigate to="/restricted" />
+          }
+        />
+        <Route
           path="/gs/me"
           element={
             <ProtectedRoute redirectPath="/">
