@@ -40,6 +40,7 @@ const handleSubmit = async (e) => {
                 <div className="col-lg-5">
                   <br />
                   <br/>
+                  <br/>
                  
                   <div className="card shadow-lg border-0 rounded-lg ">
                     <div className="card-header">
@@ -151,7 +152,7 @@ const handleSubmit = async (e) => {
                             style={{
                               backgroundColor:
                                 request.validationResult === "REJECTED"
-                                  ? "red" : request.validationResult === "PENDING" ? "blue"
+                                  ? "red" : request.validationResult === "PENDING" ? "#0abab5"
                                   : request.validationResult === "COMPLETED" ? "#7fff00" :"white",
                                   marginLeft:"115px",
                                   width: "150px"
