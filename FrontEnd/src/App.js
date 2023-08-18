@@ -13,6 +13,7 @@ import GSDashBoard from "./Components/GSDashboard/GramaSevakaDashboard";
 import NotFound from "./Components/Common/NotFound";
 import Contact from "./Components/Contact/Contact";
 import Status from "./Components/User/Status";
+
 import UserDashBoard from "./Components/User/UserDashboard";
 import ViewRequest from "./Components/VerificationRequests/VerificationRequests";
 import { useAuthContext } from "@asgardeo/auth-react";
@@ -27,12 +28,18 @@ function App() {
   const navigate = useNavigate();
   const { role, setRole } = useContext(UserContext);
 
-  const { getBasicUserInfo } = useAuthContext();
+  const { getDecodedIDToken } = useAuthContext();
 
   const getBasicInfo = async () => {
     try {
-      const response = await getBasicUserInfo();
+      const response = await getDecodedIDToken();
       console.log(response);
+      const { application_roles } = response;
+      if (Array.isArray(application_roles)) {
+        setRole(application_roles[0]);
+      } else {
+        setRole(application_roles);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -40,8 +47,17 @@ function App() {
 
   useEffect(() => {
     getBasicInfo();
-  }, [role]);
+  }, []);
 
+  useEffect(() => {
+    if (role !== "") {
+      role === userRoles.USER
+        ? navigate("/user/me")
+        : role === userRoles.GRAMA
+        ? navigate("/gs/me")
+        : navigate("/");
+    }
+  }, [role]);
   return (
     <div>
       <Routes>
@@ -69,6 +85,15 @@ function App() {
           element={
             <ProtectedRoute redirectPath="/">
               <Request />
+            </ProtectedRoute>
+          }
+        />
+
+<Route
+          path="/user/me/status"
+          element={
+            <ProtectedRoute redirectPath="/">
+              <Status />
             </ProtectedRoute>
           }
         />

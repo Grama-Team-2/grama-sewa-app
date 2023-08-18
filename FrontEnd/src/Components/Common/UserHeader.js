@@ -77,9 +77,7 @@ function Header() {
               </a> */}
             </li>
             <li class="nav-item">
-
-
-            <Link
+              <Link
                 class="nav-link"
                 to="/user/me/contact"
                 style={{ color: "white" }}
@@ -101,8 +99,11 @@ function Header() {
           class="navbar-actions"
           style={{ marginRight: "15px", cursor: "pointer" }}
         >
-          <span class="logout-icon" onClick={() => signOut()}>
-            <LogoutIcon style={{ cursor: "pointer" }} />
+          <span class="logout-icon">
+            <LogoutIcon
+              style={{ cursor: "pointer" }}
+              onClick={() => signOut()}
+            />
           </span>
         </div>
       </nav>
