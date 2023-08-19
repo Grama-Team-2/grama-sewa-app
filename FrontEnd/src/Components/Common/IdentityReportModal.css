@@ -1,0 +1,23 @@
+.identity-report-heading {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.identity-report-item {
+  font-size: 1rem;
+  border: 1px solid #bbb;
+  padding: 0.3rem;
+}
+
+.identity-report-item-address {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+}
+
+.identity-report-item-status {
+  font-size: 1.5rem;
+  color: #e32f0f;
+  font-weight: 600;
+}
