@@ -53,6 +53,15 @@ service /requests on new http:Listener(8080) {
         return pol_response;
     }
 
+    resource function post address\-report(@http:Payload AddressRequest addressRequest) returns AddressResponse|VerificationFailError|error {
+        http:Client http_client = check new ("http://police-check-service-313503678:8090/police/verify");
+        AddressResponse|error address_response = http_client->/.post(addressRequest);
+        if address_response is error|VerificationFailError {
+            return address_response;
+        }
+        return address_response;
+    }
+
     resource function get status/[string NIC]() returns ValidationResponse|NoRequestFoundError|error {
 
         map<json> queryString = {"NIC": NIC};
