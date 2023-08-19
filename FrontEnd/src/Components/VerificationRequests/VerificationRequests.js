@@ -6,11 +6,14 @@ import {
   validateAGramaRequest,
   updateStatus,
 } from "../../api/GSRequests";
+
 import VerificationRequest from "../VerificationRequest/VerificationRequest";
 import Loader from "../Common/Loader";
+
 export default function ViewRequest() {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(false);
+
   const { httpRequest } = useAuthContext();
 
   const fetchRequests = async () => {

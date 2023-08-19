@@ -156,7 +156,6 @@ service /requests on new http:Listener(8080) {
 
         if person is error {
             val_response.identityVerificationStatus = false;
-
         }
 
         http_client = check new ("http://police-check-service-313503678:8090/police/verify");
