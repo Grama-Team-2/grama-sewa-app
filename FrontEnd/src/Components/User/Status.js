@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React,{useState} from "react";
 import Header from "../Common/UserHeader";
 import { useAuthContext } from "@asgardeo/auth-react";
@@ -5,9 +6,11 @@ import { checkStatus } from "../../api/UserRequests";
 
 function Status() {
 const [nic,setNic] = useState("");
-const [status,setStatus] = useState("");
+const [request,setRequests] = useState([]);
 const [loading, setLoading] = useState(false);
 const { httpRequest } = useAuthContext();
+
+
 
 const handleSubmit = async (e) => { 
   e.preventDefault();
@@ -16,11 +19,12 @@ const handleSubmit = async (e) => {
     checkStatus.url =
       checkStatus.url + "/" + nic;
       const {data} = await httpRequest(checkStatus);
-    setStatus(data);
+    setRequests(data);
     setLoading(false);
-    console.log(status);
+    console.log(data);
+
   } catch (err) {
-    
+    console.log(err);
     setLoading(false);
   }
 };
@@ -35,6 +39,8 @@ const handleSubmit = async (e) => {
               <div className="row justify-content-center">
                 <div className="col-lg-5">
                   <br />
+                  <br/>
+                  <br/>
                  
                   <div className="card shadow-lg border-0 rounded-lg ">
                     <div className="card-header">
@@ -45,12 +51,12 @@ const handleSubmit = async (e) => {
                     </div>
                     <div className="card-body">
                     <form className="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" >
-                  <div className="input-group" style={{marginLeft:"75px"}}>
+                  <div className="input-group" style={{marginLeft:"70px"}}>
                     
                     <input
                       className="form-control"
                       type="text"
-                      placeholder="Type NIC here"
+                      placeholder="Type NIC No here"
                       aria-label="Search for..."
                       aria-describedby="btnNavbarSearch"
                       onChange={(e) => setNic(e.target.value)}
@@ -69,11 +75,94 @@ const handleSubmit = async (e) => {
                 <br/>
                 <br/>
                 <br/>
-                    <div className="card p-4" style = {{backgroundColor:"#483248",color:"white",marginLeft:"100px",marginRight:"100px"}} >
-          
-            <h5>{status}</h5>
-          
-        </div>
+                <div className="form-floating mb-3" style={{marginLeft:"50px"}}>
+                          Identity Verification Status 
+                          
+                          <input className="textBox"
+                          
+                          type="text"
+                          value={request.identityVerificationStatus}
+                          readOnly
+                          style={{
+                            backgroundColor:
+                              request.identityVerificationStatus === true
+                                ? "#7fff00" : request.identityVerificationStatus === false ? "red"
+                                : "white",
+                                marginLeft:"50px",
+                                width: "150px"
+                                
+                          }}
+                        />
+                        </div>
+                        <br/>
+
+                        <div className="form-floating mb-3" style={{marginLeft:"50px"}}>
+                          Address Verification Status 
+                         
+                          <input
+                            className="textBox"
+                            type="text"
+                            readOnly
+                            value={request.addressVerificationStatus}
+                            style={{
+                              backgroundColor:
+                                request.addressVerificationStatus === true
+                                  ? "#7fff00" : request.addressVerificationStatus === false ? "red"
+                                  : "white",
+                                  marginLeft:"43px",
+                                  width: "150px"
+                                  
+                            }}
+                            
+                            
+                          />
+                        </div>
+                        <br/>
+
+                        <div className="form-floating mb-3" style={{marginLeft:"50px"}}>
+                          Police Verification Status 
+                          
+                         
+                          <input
+                            className="textBox"
+                            type="text"    
+                            value={request.policeVerificationStatus}
+                            readOnly
+                            style={{
+                              backgroundColor:
+                                request.policeVerificationStatus === true
+                                  ? "#7fff00" : request.policeVerificationStatus === false ? "red"
+                                  : "white",
+                                  marginLeft:"57px",
+                                  width: "150px"
+                                  
+                            }}
+                            
+                          />
+                        </div>
+                        <br/>
+
+                        <div className="form-floating mb-3" style={{marginLeft:"50px"}}>
+                          Validation Status 
+                          <input
+                            className="textBox"
+                            type="text"    
+                            value={request.validationResult}
+                            readOnly
+                            style={{
+                              backgroundColor:
+                                request.validationResult === "REJECTED"
+                                  ? "red" : request.validationResult === "PENDING" ? "#0abab5"
+                                  : request.validationResult === "COMPLETED" ? "#7fff00" :"white",
+                                  marginLeft:"115px",
+                                  width: "150px"
+                                  
+                            }}
+                            
+                          />
+                          
+                          
+                        </div>
                     </div>
                   </div>
                 </div>

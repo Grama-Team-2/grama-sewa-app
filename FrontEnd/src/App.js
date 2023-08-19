@@ -1,7 +1,6 @@
 import React from "react";
 import "./App.css";
 import {
-  BrowserRouter as Router,
   Route,
   Routes,
   Navigate,
@@ -9,7 +8,6 @@ import {
 } from "react-router-dom";
 import Login from "./Components/Common/Login";
 import Request from "./Components/Request/Request";
-import GSDashBoard from "./Components/GSDashboard/GramaSevakaDashboard";
 import NotFound from "./Components/Common/NotFound";
 import Contact from "./Components/Contact/Contact";
 import Status from "./Components/User/Status";
@@ -17,7 +15,7 @@ import Status from "./Components/User/Status";
 import UserDashBoard from "./Components/User/UserDashboard";
 import ViewRequest from "./Components/VerificationRequests/VerificationRequests";
 import { useAuthContext } from "@asgardeo/auth-react";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { userRoles } from "./utils/config";
 import Restrict from "./Components/Restrict/Restrict";
 import UserContext from "./context/UserContext";
@@ -61,7 +59,7 @@ function App() {
     } else {
       console.log("role is empty");
     }
-  }, [role]);
+  }, [navigate, role]);
   return (
     <div>
       <Routes>

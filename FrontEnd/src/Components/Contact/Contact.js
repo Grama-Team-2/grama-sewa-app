@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState, useEffect } from "react";
 import Header from "../Common/UserHeader";
 import { useAuthContext } from "@asgardeo/auth-react";
@@ -118,7 +119,7 @@ function Contact() {
                           <input
                             type="submit"
                             className="btn1"
-                            
+                            style={{width:"150px",marginLeft:"180px"}}
                             value="Send"
                           ></input>
                         </div>
@@ -131,7 +132,7 @@ function Contact() {
                             type="submit"
                             onClick={handleSlack}
                             className="btn1"
-                            
+                            style={{width:"150px",marginLeft:"180px"}}
                             value="Open in Slack"
                           ></input>
                           </div>
