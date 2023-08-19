@@ -77,10 +77,8 @@ service asgardeo:RegistrationService on webhookListener {
         }
 
 
-        string id = userId.toString();
-
-        scim:UserResource|scim:ErrorResponse|error user = check client1->getUser(id);
-        log:printInfo(string ` ${user.count()} `);
+        scim:UserResource|scim:ErrorResponse|error user = check client1->getUser(userId);
+        // log:printInfo(string ` ${user} `);
         if user is error{
         log:printInfo(string ` ${user.toBalString()} `);
 
