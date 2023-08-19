@@ -1,11 +1,6 @@
 import React from "react";
 import "./App.css";
-import {
-  Route,
-  Routes,
-  Navigate,
-  useNavigate,
-} from "react-router-dom";
+import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
 import Login from "./Components/Common/Login";
 import Request from "./Components/Request/Request";
 import NotFound from "./Components/Common/NotFound";
@@ -15,7 +10,7 @@ import Status from "./Components/User/Status";
 import UserDashBoard from "./Components/User/UserDashboard";
 import ViewRequest from "./Components/VerificationRequests/VerificationRequests";
 import { useAuthContext } from "@asgardeo/auth-react";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { userRoles } from "./utils/config";
 import Restrict from "./Components/Restrict/Restrict";
 import UserContext from "./context/UserContext";
