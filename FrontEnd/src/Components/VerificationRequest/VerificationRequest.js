@@ -3,7 +3,11 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { requestStatus } from "../../utils/config";
 import { useAuthContext } from "@asgardeo/auth-react";
-import { getIdentityReport, getPoliceReport } from "../../api/GSRequests";
+import {
+  getAddressReport,
+  getIdentityReport,
+  getPoliceReport,
+} from "../../api/GSRequests";
 import IdentityReportModal from "../Common/IdentityReportModal";
 import { Tooltip } from "@mui/material";
 import PoliceReportModal from "../Common/PoliceReportModal";
@@ -22,10 +26,14 @@ function VerificationRequest({
   const [openIdentityModal, setOpenIdentityModal] = useState(false);
   const [openPoliceModal, setOpenPoliceModal] = useState(false);
   const [identityLoading, setIdentityLoading] = useState(false);
+  const [addressLoading, setAddressLoading] = useState(false);
   const [policeLoading, setPoliceLoading] = useState(false);
   const { httpRequest } = useAuthContext();
   const [identityData, setIdentityData] = useState(null);
   const [policeData, setPoliceData] = useState(null);
+  const [addressData, setAddressData] = useState(null);
+  const [openAddressModal, setOpenAddressModal] = useState(false);
+
   const fetchIdentityReport = async (nic) => {
     try {
       const identityReportConfig = { ...getIdentityReport };
@@ -54,17 +62,38 @@ function VerificationRequest({
     }
   };
 
-  const handleIdentityReport = async () => {
+  const fetchAddressReport = async (nic, address) => {
+    try {
+      setAddressLoading(true);
+      const addressReportConfig = { ...getAddressReport };
+      addressReportConfig.data = {
+        NIC: nic,
+        address: address,
+      };
+      const { data } = await httpRequest(addressReportConfig);
+      setAddressData(data);
+      setAddressLoading(false);
+    } catch (error) {
+      console.log(error);
+      setAddressLoading(false);
+    }
+  };
+
+  const handleIdentityReport = async (nic) => {
     setIdentityLoading(true);
     await fetchIdentityReport(nic);
     setIdentityLoading(false);
     setOpenIdentityModal(true);
   };
-  const handlePoliceReport = async () => {
+  const handlePoliceReport = async (nic) => {
     setPoliceLoading(true);
     await fetchPoliceReport(nic);
     setPoliceLoading(false);
     setOpenPoliceModal(true);
+  };
+  const handleAddressReport = async (nic, address) => {
+    await fetchAddressReport(nic, address);
+    setOpenAddressModal(true);
   };
   return (
     <>
@@ -80,6 +109,13 @@ function VerificationRequest({
           open={openPoliceModal}
           setOpen={setOpenPoliceModal}
           data={policeData}
+        />
+      )}
+      {openAddressModal && (
+        <PoliceReportModal
+          open={openAddressModal}
+          setOpen={setOpenAddressModal}
+          data={addressData}
         />
       )}
       <tr>
@@ -151,7 +187,10 @@ function VerificationRequest({
         <td>
           <button className="btn">
             {addressVerificationStatus ? (
-              <CheckCircleIcon style={{ color: "green" }} />
+              <CheckCircleIcon
+                style={{ color: "green" }}
+                onClick={() => handleAddressReport(nic, address)}
+              />
             ) : (
               <CancelIcon style={{ color: "tomato" }} />
             )}

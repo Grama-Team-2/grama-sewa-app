@@ -54,7 +54,7 @@ service /requests on new http:Listener(8080) {
     }
 
     resource function post address\-report(@http:Payload AddressRequest addressRequest) returns AddressResponse|VerificationFailError|error {
-        http:Client http_client = check new ("http://police-check-service-313503678:8090/police/verify");
+        http:Client http_client = check new ("http://address-check-service-622955183:8070/address/verify");
         AddressResponse|error address_response = http_client->/.post(addressRequest);
         if address_response is error|VerificationFailError {
             return address_response;
