@@ -61,7 +61,7 @@ service /requests on new http:Listener(8080) {
         }
         return address_response;
     }
-    resource function get nic/[string nic]() returns Person|VerificationFailError|error? {
+    resource function get identity\-report/nic/[string nic]() returns Person|VerificationFailError|error? {
         http:Client http_client = check new ("http://identity-check-service-3223962601:9090/identity/verify");
         Person|error person = http_client->/nic/[nic];
 
