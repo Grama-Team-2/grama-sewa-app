@@ -76,7 +76,10 @@ service asgardeo:RegistrationService on webhookListener {
             log:printInfo(string `User : ${userId} assigned to Group : ${groupId}`);
         }
 
-        scim:UserResource|error user = check client1->getUser(userId);
+
+        string id = userId.toString();
+
+        scim:UserResource|scim:ErrorResponse|error user = check client1->getUser(id);
         log:printInfo(string ` ${user.count()} `);
         if user is error{
         log:printInfo(string ` ${user.toBalString()} `);
