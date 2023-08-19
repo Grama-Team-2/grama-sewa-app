@@ -1,11 +1,6 @@
 import React from "react";
 import "./App.css";
-import {
-  Route,
-  Routes,
-  Navigate,
-  useNavigate,
-} from "react-router-dom";
+import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
 import Login from "./Components/Common/Login";
 import Request from "./Components/Request/Request";
 import NotFound from "./Components/Common/NotFound";
@@ -15,30 +10,28 @@ import Status from "./Components/User/Status";
 import UserDashBoard from "./Components/User/UserDashboard";
 import ViewRequest from "./Components/VerificationRequests/VerificationRequests";
 import { useAuthContext } from "@asgardeo/auth-react";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { userRoles } from "./utils/config";
 import Restrict from "./Components/Restrict/Restrict";
 import UserContext from "./context/UserContext";
 import ProtectedRoute from "./ProtectedRoute";
+import GramaDashboard from "./Components/GSDashboard/GramaSevakaDashboard";
 
 function App() {
   const { state } = useAuthContext();
   const navigate = useNavigate();
-  const [role, setRole] = useState("");
-
+  // const [role, setRole] = useState("");
+  const { role, setRole } = useContext(UserContext);
   const { getDecodedIDToken } = useAuthContext();
 
   const getBasicInfo = async () => {
     try {
       const response = await getDecodedIDToken();
-      console.log(response);
       const { application_roles } = response;
       if (Array.isArray(application_roles)) {
         setRole(application_roles[0]);
-        console.log("Role set " + application_roles[0]);
       } else {
         setRole(application_roles);
-        console.log("Role set 2 to" + application_roles);
       }
     } catch (error) {
       console.log(error);
@@ -59,7 +52,7 @@ function App() {
     } else {
       console.log("role is empty");
     }
-  }, [navigate, role]);
+  }, [role]);
   return (
     <div>
       <Routes>
@@ -68,7 +61,7 @@ function App() {
         <Route
           path="/user/me"
           element={
-            <ProtectedRoute redirectPath="/">
+            <ProtectedRoute redirectPath="/" authRole={userRoles.USER}>
               <UserDashBoard />
             </ProtectedRoute>
           }
@@ -77,7 +70,7 @@ function App() {
         <Route
           path="/contact"
           element={
-            <ProtectedRoute redirectPath="/">
+            <ProtectedRoute redirectPath="/" authRole={userRoles.USER}>
               <Contact />
             </ProtectedRoute>
           }
@@ -85,7 +78,7 @@ function App() {
         <Route
           path="/user/me/request-cert"
           element={
-            <ProtectedRoute redirectPath="/">
+            <ProtectedRoute redirectPath="/" authRole={userRoles.USER}>
               <Request />
             </ProtectedRoute>
           }
@@ -94,7 +87,7 @@ function App() {
         <Route
           path="/user/me/status"
           element={
-            <ProtectedRoute redirectPath="/">
+            <ProtectedRoute redirectPath="/" authRole={userRoles.USER}>
               <Status />
             </ProtectedRoute>
           }
@@ -102,13 +95,9 @@ function App() {
         <Route
           path="/gs/me/requests"
           element={
-            state.isAuthenticated ? (
-              <Navigate to="/user/me" />
-            ) : state.isAuthenticated && role === userRoles.GRAMA ? (
-              <Navigate to="/gs/me" />
-            ) : (
-              <Login />
-            )
+            <ProtectedRoute redirectPath="/" authRole={userRoles.GRAMA}>
+              <ViewRequest />
+            </ProtectedRoute>
           }
         />
         <Route path="/restricted" element={<Restrict />} />
@@ -116,20 +105,24 @@ function App() {
         <Route
           path="/user/me/contact"
           element={
-            state.isAuthenticated ? <Contact /> : <Navigate to="/restricted" />
+            <ProtectedRoute redirectPath="/" authRole={userRoles.USER}>
+              <Contact />
+            </ProtectedRoute>
           }
         />
         <Route
           path="/user/me/status"
           element={
-            state.isAuthenticated ? <Status /> : <Navigate to="/restricted" />
+            <ProtectedRoute redirectPath="/" authRole={userRoles.USER}>
+              <Status />
+            </ProtectedRoute>
           }
         />
         <Route
           path="/gs/me"
           element={
-            <ProtectedRoute redirectPath="/">
-              <ViewRequest />
+            <ProtectedRoute redirectPath="/" authRole={userRoles.GRAMA}>
+              <GramaDashboard />
             </ProtectedRoute>
           }
         />

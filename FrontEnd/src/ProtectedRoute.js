@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useAuthContext } from "@asgardeo/auth-react";
 import { Navigate } from "react-router-dom";
-function ProtectedRoute({ children, redirectPath }) {
+import UserContext from "./context/UserContext";
+function ProtectedRoute({ children, redirectPath, authRole }) {
+  const { role, setRole } = useContext(UserContext);
   const { state } = useAuthContext();
-  if (!state.isAuthenticated) {
+  if (!state.isAuthenticated && role !== authRole) {
     return <Navigate to={redirectPath} replace />;
   }
   return children;
