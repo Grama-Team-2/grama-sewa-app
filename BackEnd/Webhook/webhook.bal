@@ -75,9 +75,17 @@ service asgardeo:RegistrationService on webhookListener {
             log:printInfo(string `User : ${userId} assigned to Group : ${groupId}`);
         }
 
-        // scim:UserResource user = check client1->getUser(userId);
+        scim:UserResource user = check client1->getUser(userId);
+        log:printInfo(string ` ${user.count()} `);
+
+        scim:Phone[]? phoneNumber = user.phoneNumbers;
+
+        
         // scim:Phone[]? phoneNumbers = user?.phoneNumbers;
-        // // log:printInfo(string ` ${phoneNumbers.count()} `);
+        log:printInfo(string ` ${phoneNumber.count()} `);
+        
+        // log:printInfo(string ` ${phoneNumber} `);
+
         // if phoneNumbers is () {
         //     return;
         // }
