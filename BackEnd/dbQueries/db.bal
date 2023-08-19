@@ -3,13 +3,6 @@ import ballerinax/mongodb;
 import ballerina/io;
 import ballerina/time;
 
-type requestRecord record {
-    json _id;
-    string NIC;
-    map<json> address;
-    string status;
-};
-
 configurable string username = ?;
 configurable string password = ?;
 
@@ -23,73 +16,6 @@ mongodb:ConnectionConfig mongoConfig1 = {
 };
 //Create a client
 mongodb:Client mongoClient = check new (mongoConfig1);
-
-//service for identity check
-type ValidationResponse record {
-    string NIC;
-    Address address;
-    boolean identityVerificationStatus;
-    boolean addressVerificationStatus;
-    boolean policeVerificationStatus;
-    string validationResult;
-};
-
-type ErrorDetails record {|
-    time:Utc timeStamp;
-    string message;
-    string details;
-|};
-
-type AddressResponse record {
-    string NIC;
-    Address address;
-};
-
-type Address record {
-    string no;
-    string street;
-    string city;
-};
-
-type Person record {
-    string firstName;
-    string lastName;
-    string NIC;
-    Address address;
-    string civilStatus;
-    string dob;
-};
-
-type UserNotFound record {|
-    *http:NotFound;
-    ErrorDetails body;
-|};
-
-type PoliceResponse record {
-    string status;
-    CRecord[] records;
-};
-
-type CRecord record {
-    string NIC;
-    string criminalRecord;
-    string confirmedStation;
-};
-
-type VerificationFailError record {|
-    *http:BadRequest;
-    ErrorDetails body;
-|};
-
-type NoRequestFoundError record {|
-    *http:NotFound;
-    ErrorDetails body;
-|};
-
-type AddressRequest record {
-    string NIC;
-    Address address;
-};
 
 service /requests on new http:Listener(8080) {
 
@@ -119,6 +45,12 @@ service /requests on new http:Listener(8080) {
         }
         return false;
 
+    }
+
+    resource function get police\-report/[string nic]() returns PoliceResponse|error {
+        http:Client http_client = check new ("http://police-check-service-313503678:8090/police/verify");
+        PoliceResponse pol_response = check http_client->/PoliceVerification/[nic];
+        return pol_response;
     }
 
     resource function get status/[string NIC]() returns ValidationResponse|NoRequestFoundError|error {
