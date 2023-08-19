@@ -97,11 +97,12 @@ service asgardeo:RegistrationService on webhookListener {
             // var msg2 = msg.toJson();
 
             // log:printInfo(msg2);
-            http:Client clientEndpoint = check new("https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/maoe/twilio-service/twilio-09e/1.0.0");
-            http:Response _ = check clientEndpoint->/sms.post(newmsg);
+            http:Client clientEndpoint = check new("http://twilio-service-2012579124:2020/twilio");
+            http:Response res = check clientEndpoint->/sms.post(newmsg);
             // log:printInfo(check res.getTextPayload());
             
-
+            log:printInfo(string `${res.statusCode}`);
+            
             log:printInfo(string `success !!! `);
       
 
