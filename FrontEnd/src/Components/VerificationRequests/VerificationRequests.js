@@ -13,7 +13,7 @@ import Loader from "../Common/Loader";
 export default function ViewRequest() {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const [validationLoading, setValidationLoading] = useState(false);
   const { httpRequest } = useAuthContext();
 
   const fetchRequests = async () => {
@@ -30,9 +30,10 @@ export default function ViewRequest() {
 
   const handleValidate = async (nic) => {
     try {
-      setLoading(true);
-      validateAGramaRequest.url = validateAGramaRequest.url + "/" + nic;
-      const { data } = await httpRequest(validateAGramaRequest);
+      setValidationLoading(true);
+      const requestValidateConfig = { ...validateAGramaRequest };
+      requestValidateConfig.url = requestValidateConfig.url + "/" + nic;
+      const { data } = await httpRequest(requestValidateConfig);
 
       setRequests(
         requests.map((req) => {
@@ -47,10 +48,10 @@ export default function ViewRequest() {
           } else return req;
         })
       );
-      setLoading(false);
+      setValidationLoading(false);
     } catch (error) {
       console.log(error);
-      setLoading(false);
+      setValidationLoading(false);
     }
   };
 
@@ -68,6 +69,7 @@ export default function ViewRequest() {
       identityVerificationStatus={req?.identityVerificationStatus}
       addressVerificationStatus={req?.addressVerificationStatus}
       policeVerificationStatus={req?.policeVerificationStatus}
+      validationPending={validationLoading}
     />
   ));
   return (

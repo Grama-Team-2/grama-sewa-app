@@ -8,7 +8,7 @@ import IdentityReportModal from "../Common/IdentityReportModal";
 import { Tooltip } from "@mui/material";
 import PoliceReportModal from "../Common/PoliceReportModal";
 import Loader from "../Common/Loader";
-
+import HourglassBottomIcon from "@mui/icons-material/HourglassBottom";
 function VerificationRequest({
   nic,
   address,
@@ -17,6 +17,7 @@ function VerificationRequest({
   identityVerificationStatus,
   addressVerificationStatus,
   policeVerificationStatus,
+  validationPending,
 }) {
   const [openIdentityModal, setOpenIdentityModal] = useState(false);
   const [openPoliceModal, setOpenPoliceModal] = useState(false);
@@ -87,56 +88,64 @@ function VerificationRequest({
           {"No " + address?.no + ", " + address?.street + ", " + address?.city}
         </td>
         <td>
-          {!policeLoading ? (
-            <button className="btn">
-              {policeVerificationStatus ? (
-                <CheckCircleIcon
-                  style={{ color: "green" }}
-                  onClick={() => handlePoliceReport(nic)}
-                />
-              ) : (
-                <CancelIcon
-                  style={{ color: "tomato" }}
-                  onClick={() => handlePoliceReport(nic)}
-                />
-              )}
-            </button>
+          {validationResult !== requestStatus.pending ? (
+            !policeLoading ? (
+              <button className="btn">
+                {policeVerificationStatus ? (
+                  <CheckCircleIcon
+                    style={{ color: "green" }}
+                    onClick={() => handlePoliceReport(nic)}
+                  />
+                ) : (
+                  <CancelIcon
+                    style={{ color: "tomato" }}
+                    onClick={() => handlePoliceReport(nic)}
+                  />
+                )}
+              </button>
+            ) : (
+              <Loader />
+            )
           ) : (
-            <Loader />
+            <HourglassBottomIcon />
           )}
         </td>
         <td>
-          {!identityLoading ? (
-            <button className="btn">
-              {identityVerificationStatus ? (
-                <CheckCircleIcon
-                  style={{ color: "green" }}
-                  onClick={() => handleIdentityReport(nic)}
-                />
-              ) : (
-                <Tooltip
-                  title={
-                    <h1
-                      style={{
-                        color: "#e32f0f",
-                        fontSize: "1.2rem",
-                        background: "#fff",
-                      }}
-                    >
-                      Failed to generate identity report. Identity verification
-                      failed!
-                    </h1>
-                  }
-                  arrow
-                >
-                  <CancelIcon
-                    style={{ color: "tomato", cursor: "not-allowed" }}
+          {validationResult !== requestStatus.pending ? (
+            !identityLoading ? (
+              <button className="btn">
+                {identityVerificationStatus ? (
+                  <CheckCircleIcon
+                    style={{ color: "green" }}
+                    onClick={() => handleIdentityReport(nic)}
                   />
-                </Tooltip>
-              )}
-            </button>
+                ) : (
+                  <Tooltip
+                    title={
+                      <h1
+                        style={{
+                          color: "#e32f0f",
+                          fontSize: "1.2rem",
+                          background: "#fff",
+                        }}
+                      >
+                        Failed to generate identity report. Identity
+                        verification failed!
+                      </h1>
+                    }
+                    arrow
+                  >
+                    <CancelIcon
+                      style={{ color: "tomato", cursor: "not-allowed" }}
+                    />
+                  </Tooltip>
+                )}
+              </button>
+            ) : (
+              <Loader />
+            )
           ) : (
-            <Loader />
+            <HourglassBottomIcon />
           )}
         </td>
         <td>
@@ -153,9 +162,13 @@ function VerificationRequest({
           // style={{ marginTop: "20px" }}
         >
           {validationResult === requestStatus.pending ? (
-            <button className="btn btn-info" onClick={onValidate}>
-              VALIDATE
-            </button>
+            !validationPending ? (
+              <button className="btn btn-info" onClick={onValidate}>
+                VALIDATE
+              </button>
+            ) : (
+              <Loader />
+            )
           ) : validationResult === requestStatus.rejected ? (
             <button className="btn btn-danger" disabled>
               REJECTED
