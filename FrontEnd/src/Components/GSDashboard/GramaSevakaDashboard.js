@@ -2,7 +2,7 @@ import React from "react";
 import GSHeader from "../Common/GSHeader";
 import { useAuthContext } from "@asgardeo/auth-react";
 
-function UserDashBoard() {
+function GramaDashboard() {
   return (
     <>
       <div>
@@ -28,4 +28,4 @@ function UserDashBoard() {
   );
 }
 
-export default UserDashBoard;
+export default GramaDashboard;

@@ -1,14 +1,14 @@
 import React from "react";
-import { createContext, useEffect, useRef, useState } from "react";
+import { createContext, useState } from "react";
 
 const UserContext = createContext();
 
 function ContextProvider({ children }) {
-  // const [role, setRole] = useState("");
+  const [role, setRole] = useState("");
   const [accessToken, setAccessToken] = useState("");
   const valueToShare = {
-    // role,
-    // setRole,
+    role,
+    setRole,
     accessToken,
     setAccessToken,
     test: "test",
