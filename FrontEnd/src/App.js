@@ -24,7 +24,7 @@ import ProtectedRoute from "./ProtectedRoute";
 function App() {
   const { state } = useAuthContext();
   const navigate = useNavigate();
-  const { role, setRole } = useContext(UserContext);
+  const [role, setRole] = useState("");
 
   const { getDecodedIDToken } = useAuthContext();
 
@@ -35,8 +35,10 @@ function App() {
       const { application_roles } = response;
       if (Array.isArray(application_roles)) {
         setRole(application_roles[0]);
+        console.log("Role set " + application_roles[0]);
       } else {
         setRole(application_roles);
+        console.log("Role set 2 to" + application_roles);
       }
     } catch (error) {
       console.log(error);
@@ -44,8 +46,8 @@ function App() {
   };
 
   useEffect(() => {
-    getBasicInfo();
-  }, []);
+    state?.isAuthenticated && getBasicInfo();
+  });
 
   useEffect(() => {
     if (role !== "") {
@@ -54,6 +56,8 @@ function App() {
         : role === userRoles.GRAMA
         ? navigate("/gs/me")
         : navigate("/");
+    } else {
+      console.log("role is empty");
     }
   }, [navigate, role]);
   return (
@@ -87,7 +91,7 @@ function App() {
           }
         />
 
-<Route
+        <Route
           path="/user/me/status"
           element={
             <ProtectedRoute redirectPath="/">

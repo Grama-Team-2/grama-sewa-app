@@ -3,7 +3,15 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { requestStatus } from "../../utils/config";
 
-function VerificationRequest({ nic, address, status, onValidate }) {
+function VerificationRequest({
+  nic,
+  address,
+  validationResult,
+  onValidate,
+  identityVerificationStatus,
+  addressVerificationStatus,
+  policeVerificationStatus,
+}) {
   return (
     <tr>
       <td>{nic}</td>
@@ -12,31 +20,40 @@ function VerificationRequest({ nic, address, status, onValidate }) {
       </td>
       <td>
         <button className="btn">
-          <CheckCircleIcon style={{ color: "green" }} />
+          {policeVerificationStatus ? (
+            <CheckCircleIcon style={{ color: "green" }} />
+          ) : (
+            <CancelIcon style={{ color: "tomato" }} />
+          )}
         </button>
-        <input type="text" value="verified"></input>
       </td>
       <td>
         <button className="btn">
-          <CheckCircleIcon />
+          {identityVerificationStatus ? (
+            <CheckCircleIcon style={{ color: "green" }} />
+          ) : (
+            <CancelIcon style={{ color: "tomato" }} />
+          )}
         </button>
-        <input type="text" value="verified"></input>
       </td>
       <td>
         <button className="btn">
-          <CheckCircleIcon />
+          {addressVerificationStatus ? (
+            <CheckCircleIcon style={{ color: "green" }} />
+          ) : (
+            <CancelIcon style={{ color: "tomato" }} />
+          )}
         </button>
-        <input type="text" value="verified"></input>
       </td>
       <td
         className="d-flex justify-content-between"
-        style={{ marginTop: "20px" }}
+        // style={{ marginTop: "20px" }}
       >
-        {status === requestStatus.pending ? (
+        {validationResult === requestStatus.pending ? (
           <button className="btn btn-info" onClick={onValidate}>
             VALIDATE
           </button>
-        ) : status === requestStatus.rejected ? (
+        ) : validationResult === requestStatus.rejected ? (
           <button className="btn btn-danger" disabled>
             REJECTED
           </button>
