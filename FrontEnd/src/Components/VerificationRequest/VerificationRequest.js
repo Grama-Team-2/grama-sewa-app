@@ -13,6 +13,7 @@ import { Tooltip } from "@mui/material";
 import PoliceReportModal from "../Common/PoliceReportModal";
 import Loader from "../Common/Loader";
 import HourglassBottomIcon from "@mui/icons-material/HourglassBottom";
+import AddressReportModal from "../Common/AddressReportModal";
 function VerificationRequest({
   nic,
   address,
@@ -71,6 +72,7 @@ function VerificationRequest({
         address: address,
       };
       const { data } = await httpRequest(addressReportConfig);
+
       setAddressData(data);
       setAddressLoading(false);
     } catch (error) {
@@ -112,7 +114,7 @@ function VerificationRequest({
         />
       )}
       {openAddressModal && (
-        <PoliceReportModal
+        <AddressReportModal
           open={openAddressModal}
           setOpen={setOpenAddressModal}
           data={addressData}
@@ -185,16 +187,42 @@ function VerificationRequest({
           )}
         </td>
         <td>
-          <button className="btn">
-            {addressVerificationStatus ? (
-              <CheckCircleIcon
-                style={{ color: "green" }}
-                onClick={() => handleAddressReport(nic, address)}
-              />
+          {validationResult !== requestStatus.pending ? (
+            !addressLoading ? (
+              <button className="btn">
+                {addressVerificationStatus ? (
+                  <CheckCircleIcon
+                    style={{ color: "green" }}
+                    onClick={() => handleAddressReport(nic, address)}
+                  />
+                ) : (
+                  <Tooltip
+                    title={
+                      <h1
+                        style={{
+                          color: "#e32f0f",
+                          fontSize: "1.2rem",
+                          background: "#fff",
+                        }}
+                      >
+                        Failed to generate address report. Address verification
+                        failed!
+                      </h1>
+                    }
+                    arrow
+                  >
+                    <CancelIcon
+                      style={{ color: "tomato", cursor: "not-allowed" }}
+                    />
+                  </Tooltip>
+                )}
+              </button>
             ) : (
-              <CancelIcon style={{ color: "tomato" }} />
-            )}
-          </button>
+              <Loader />
+            )
+          ) : (
+            <HourglassBottomIcon />
+          )}
         </td>
         <td
           className="d-flex justify-content-between"
