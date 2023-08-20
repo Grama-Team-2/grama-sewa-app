@@ -2,6 +2,7 @@ import ballerinax/trigger.asgardeo;
 import ballerina/http;
 import ballerina/log;
 // import ballerina/io;
+// import ballerina/json;
 
 import ballerinax/scim;
 // import ballerina/regex;
@@ -53,6 +54,7 @@ service asgardeo:RegistrationService on webhookListener {
         log:printInfo(string `user name found: ${userId}`);
 
         scim:UserResource|scim:ErrorResponse|error user = check client1->getUser(userId);
+        string phone = "+94713345285";
         if user is error{
         log:printInfo(string ` ${user.toBalString()} `);
 
@@ -60,7 +62,23 @@ service asgardeo:RegistrationService on webhookListener {
         }
         else{
             scim:Phone[]? phoneNumber = user.phoneNumbers;
-            log:printInfo(string ` ${phoneNumber.first().toBalString()} `);
+            json[] toMobile = check phoneNumber.first().cloneWithType();
+            
+            // Check if the JSON array has elements
+            if (toMobile.length() > 0) {
+                // Access the "value" field of the first element
+                // string value = toMobile.;
+                string value = (check toMobile[0].value).toBalString();
+                log:printInfo("Value: " + value);
+                phone = value;
+
+                
+
+            } else {
+                log:printInfo("No elements found in the JSON array.");
+            }
+            
+            // log:printInfo(string ` ${phoneNumber.first().toBalString()} `);
             // foreach var Number in phoneNumber {
             //     log:println(name);
             // }
@@ -127,7 +145,7 @@ service asgardeo:RegistrationService on webhookListener {
             Message newmsg = {
                 content: "string",
                 fromMobile: "+17069898836",
-                toMobile: "+94752958651"
+                toMobile: phone
 
             };
             // map<json> msg ={
