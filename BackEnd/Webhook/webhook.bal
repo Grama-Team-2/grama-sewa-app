@@ -1,6 +1,8 @@
 import ballerinax/trigger.asgardeo;
 import ballerina/http;
 import ballerina/log;
+// import ballerina/io;
+
 import ballerinax/scim;
 // import ballerina/regex;
 
@@ -41,9 +43,23 @@ service asgardeo:RegistrationService on webhookListener {
     remote function onAddUser(asgardeo:AddUserEvent event) returns error? {
 
         scim:Client client1 = check new (config1);
+        // scim:UserResource|scim:ErrorResponse|error user = check client1->getUser(userId);
+
         log:printInfo(string `The add user webhook activated`);
         string userId = <string>event?.eventData?.userId;
         log:printInfo(string `user name found: ${userId}`);
+        scim:UserResource|scim:ErrorResponse|error user = check client1->getUser(userId);
+        if user is error{
+        log:printInfo(string ` ${user.toBalString()} `);
+
+
+        }
+        else{
+            scim:Phone[]? phoneNumber = user.phoneNumbers;
+            log:printInfo(string ` ${phoneNumber.count()} `);
+
+        }
+
 
         string userName = <string>event?.eventData?.userName;
         // string userName2 = <string>event?.eventData?.;
@@ -75,20 +91,18 @@ service asgardeo:RegistrationService on webhookListener {
         } else {
             log:printInfo(string `User : ${userId} assigned to Group : ${groupId}`);
         }
-
-
-        scim:UserResource|scim:ErrorResponse|error user = check client1->getUser(userId);
+        // scim:UserResource|scim:ErrorResponse|error user = check client1->getUser(userId);
+        // try{
+        //     scim:UserResource|scim:ErrorResponse|error user = check client1->getUser(userId);
+            
+        // }
+        // catch{
+        //     continue;
+        // }
+        
+        // scim:UserResource|scim:ErrorResponse|error user2 = check client1->getUser(userId);
         // log:printInfo(string ` ${user} `);
-        if user is error{
-        log:printInfo(string ` ${user.toBalString()} `);
-
-
-        }
-        else{
-            scim:Phone[]? phoneNumber = user.phoneNumbers;
-            log:printInfo(string ` ${phoneNumber.count()} `);
-
-        }
+        
 
         // scim:Phone[]? phoneNumber = user.phoneNumbers;
 

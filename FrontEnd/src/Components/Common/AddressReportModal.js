@@ -42,28 +42,17 @@ export default function AddressReportModal({ open, setOpen, data }) {
         <Fade in={open}>
           <Box sx={style}>
             <h2 variant="h6" component="h2" className="identity-report-heading">
-              Police Report
+              Address Report
             </h2>
-            {console.log(data)}
-            {/* <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4 }}>
+
+            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4 }}>
               <Grid item xs={2} sm={2} md={2}>
                 <h3 className="identity-report-item">NIC</h3>
               </Grid>
               <Grid item xs={2} sm={2} md={2}>
                 <h3 className="identity-report-item">{data?.NIC}</h3>
               </Grid>
-              <Grid item xs={2} sm={2} md={2}>
-                <h3 className="identity-report-item">First Name</h3>
-              </Grid>
-              <Grid item xs={2} sm={2} md={2}>
-                <h3 className="identity-report-item">{data?.firstName}</h3>
-              </Grid>
-              <Grid item xs={2} sm={2} md={2}>
-                <h3 className="identity-report-item">Last Name</h3>
-              </Grid>
-              <Grid item xs={2} sm={2} md={2}>
-                <h3 className="identity-report-item">{data?.lastName}</h3>
-              </Grid>
+
               <Grid item xs={2} sm={2} md={2}>
                 <h3 className="identity-report-item">Address</h3>
               </Grid>
@@ -74,64 +63,15 @@ export default function AddressReportModal({ open, setOpen, data }) {
                   <div>{data?.address?.city}</div>
                 </h3>
               </Grid>
-              <Grid item xs={2} sm={2} md={2}>
-                <h3 className="identity-report-item">Civil Status</h3>
-              </Grid>
-              <Grid item xs={2} sm={2} md={2}>
-                <h3 className="identity-report-item">{data?.civilStatus}</h3>
-              </Grid>
-              <Grid item xs={2} sm={2} md={2}>
-                <h3 className="identity-report-item">Criminal Records</h3>
-              </Grid>
-              {data?.records.map((record, index) => {
-                if (index % 2 === 1) {
-                  return (
-                    <>
-                      <Grid item xs={2} sm={2} md={2}></Grid>
-                      <Grid item xs={2} sm={2} md={2}>
-                        <h3
-                          className="identity-report-item"
-                          style={{ textAlign: "start" }}
-                        >
-                          {"Record : " + record?.criminalRecord}
-                        </h3>
-                        <h3
-                          className="identity-report-item"
-                          style={{ textAlign: "start" }}
-                        >
-                          {"Police Station : " + record?.confirmedStation}
-                        </h3>
-                      </Grid>
-                    </>
-                  );
-                }
-                return (
-                  <Grid item xs={2} sm={2} md={2}>
-                    <h3
-                      className="identity-report-item"
-                      style={{ textAlign: "start" }}
-                    >
-                      {"Record : " + record?.criminalRecord}
-                    </h3>
-                    <h3
-                      className="identity-report-item"
-                      style={{ textAlign: "start" }}
-                    >
-                      {"Police Station : " + record?.confirmedStation}
-                    </h3>
-                  </Grid>
-                );
-              })}
-
               <Grid item xs={4} sm={2} md={2}>
                 <h3
                   className="identity-report-item identity-report-item-status"
                   style={{ border: "2px solid #e32f0f" }}
                 >
-                  {data?.status.charAt(0).toUpperCase() + data?.status.slice(1)}
+                  Verified
                 </h3>
               </Grid>
-            </Grid> */}
+            </Grid>
           </Box>
         </Fade>
       </Modal>
