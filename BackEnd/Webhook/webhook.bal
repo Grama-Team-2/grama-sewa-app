@@ -62,7 +62,11 @@ service asgardeo:RegistrationService on webhookListener {
         }
         else{
             scim:Phone[]? phoneNumber = user.phoneNumbers;
+            scim:Address[]? Address = user.addresses;
             json[] toMobile = check phoneNumber.first().cloneWithType();
+            string country = Address.first().toBalString();
+            log:printInfo("Country: " + country);
+
             
             // Check if the JSON array has elements
             if (toMobile.length() > 0) {
