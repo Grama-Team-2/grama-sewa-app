@@ -19,6 +19,7 @@ scim:ConnectorConfig config1 = {
     clientId: client_id,
     clientSecret: client_secret,
     scope: [
+        "internal_user_mgt_view",
         "internal_user_mgt_list",
         "internal_user_mgt_create",
         "internal_user_mgt_update",
@@ -46,7 +47,7 @@ service asgardeo:RegistrationService on webhookListener {
         // scim:UserResource|scim:ErrorResponse|error user = check client1->getUser(userId);
 
         log:printInfo(string `The add user webhook activated`);
-        string userId = <string>event?.eventData?.userId;
+        final string & readonly userId = <string>event?.eventData?.userId;
         log:printInfo(string `user name found: ${userId}`);
         scim:UserResource|scim:ErrorResponse|error user = check client1->getUser(userId);
         if user is error{
