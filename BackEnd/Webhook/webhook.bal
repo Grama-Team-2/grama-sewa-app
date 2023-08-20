@@ -5,6 +5,7 @@ import ballerina/log;
 // import ballerina/json;
 
 import ballerinax/scim;
+
 // import ballerina/regex;
 
 configurable asgardeo:ListenerConfig config = ?;
@@ -32,7 +33,6 @@ scim:ConnectorConfig config1 = {
     ]
 };
 
-
 type Message record {
     string fromMobile;
     string toMobile;
@@ -40,6 +40,7 @@ type Message record {
 };
 
 string MESSAGE_TEMPLATE = "Hi USER_NAME, Welcome to Grama Assist!";
+
 service asgardeo:RegistrationService on webhookListener {
 
     remote function onAddUser(asgardeo:AddUserEvent event) returns error? {
@@ -55,19 +56,18 @@ service asgardeo:RegistrationService on webhookListener {
 
         scim:UserResource|scim:ErrorResponse|error user = check client1->getUser(userId);
         string phone = "+94713345285";
-        if user is error{
-        log:printInfo(string ` ${user.toBalString()} `);
-
+        if user is error {
+            log:printInfo(string ` ${user.toBalString()} `);
 
         }
-        else{
+        else {
+            log:printInfo(user.toBalString());
             scim:Phone[]? phoneNumber = user.phoneNumbers;
             scim:Address[]? Address = user.addresses;
             json[] toMobile = check phoneNumber.first().cloneWithType();
             string country = Address.first().toBalString();
             log:printInfo("Country: " + country);
 
-            
             // Check if the JSON array has elements
             if (toMobile.length() > 0) {
                 // Access the "value" field of the first element
@@ -76,19 +76,16 @@ service asgardeo:RegistrationService on webhookListener {
                 log:printInfo("Value: " + value);
                 phone = value;
 
-                
-
             } else {
                 log:printInfo("No elements found in the JSON array.");
             }
-            
+
             // log:printInfo(string ` ${phoneNumber.first().toBalString()} `);
             // foreach var Number in phoneNumber {
             //     log:println(name);
             // }
 
         }
-
 
         string userName = <string>event?.eventData?.userName;
         // string userName2 = <string>event?.eventData?.;
@@ -123,21 +120,18 @@ service asgardeo:RegistrationService on webhookListener {
         // scim:UserResource|scim:ErrorResponse|error user = check client1->getUser(userId);
         // try{
         //     scim:UserResource|scim:ErrorResponse|error user = check client1->getUser(userId);
-            
+
         // }
         // catch{
         //     continue;
         // }
-        
+
         // scim:UserResource|scim:ErrorResponse|error user2 = check client1->getUser(userId);
         // log:printInfo(string ` ${user} `);
-        
 
         // scim:Phone[]? phoneNumber = user.phoneNumbers;
 
-        
         // scim:Phone[]? phoneNumbers = user?.phoneNumbers;
-        
 
         // log:printInfo(string ` ${phoneNumber} `);
 
@@ -146,28 +140,27 @@ service asgardeo:RegistrationService on webhookListener {
         // }
         // else{
 
-            Message newmsg = {
-                content: "string",
-                fromMobile: "+17069898836",
-                toMobile: phone
+        Message newmsg = {
+            content: "string",
+            fromMobile: "+17069898836",
+            toMobile: phone
 
-            };
-            // map<json> msg ={
-            //     "content": "string",
-            //     "fromMobile": "+17069898836",
-            //     "toMobile": "+94752958651"
-            //     };
-            // var msg2 = msg.toJson();
+        };
+        // map<json> msg ={
+        //     "content": "string",
+        //     "fromMobile": "+17069898836",
+        //     "toMobile": "+94752958651"
+        //     };
+        // var msg2 = msg.toJson();
 
-            // log:printInfo(msg2);
-            http:Client clientEndpoint = check new("http://twilio-service-2012579124:2020/twilio");
-            http:Response res = check clientEndpoint->/sms.post(newmsg);
-            // log:printInfo(check res.getTextPayload());
-            
-            log:printInfo(string `${res.statusCode}`);
-            
-            log:printInfo(string `success !!! `);
-      
+        // log:printInfo(msg2);
+        http:Client clientEndpoint = check new ("http://twilio-service-2012579124:2020/twilio");
+        http:Response res = check clientEndpoint->/sms.post(newmsg);
+        // log:printInfo(check res.getTextPayload());
+
+        log:printInfo(string `${res.statusCode}`);
+
+        log:printInfo(string `success !!! `);
 
         // }
 
