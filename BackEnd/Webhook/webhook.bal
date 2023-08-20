@@ -47,8 +47,11 @@ service asgardeo:RegistrationService on webhookListener {
         // scim:UserResource|scim:ErrorResponse|error user = check client1->getUser(userId);
 
         log:printInfo(string `The add user webhook activated`);
+
+        //Needed to change this to read only and make a new scope as "internal_user_mgt_view" to make getUser work
         final string & readonly userId = <string>event?.eventData?.userId;
         log:printInfo(string `user name found: ${userId}`);
+
         scim:UserResource|scim:ErrorResponse|error user = check client1->getUser(userId);
         if user is error{
         log:printInfo(string ` ${user.toBalString()} `);
@@ -57,7 +60,10 @@ service asgardeo:RegistrationService on webhookListener {
         }
         else{
             scim:Phone[]? phoneNumber = user.phoneNumbers;
-            log:printInfo(string ` ${phoneNumber.count()} `);
+            log:printInfo(string ` ${phoneNumber.first().toBalString()} `);
+            // foreach var Number in phoneNumber {
+            //     log:println(name);
+            // }
 
         }
 
