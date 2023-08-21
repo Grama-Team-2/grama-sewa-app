@@ -1,7 +1,7 @@
 import ballerinax/trigger.asgardeo;
 import ballerina/http;
 import ballerina/log;
-
+import ballerina/regex;
 // import ballerina/io;
 // import ballerina/json;
 
@@ -18,10 +18,12 @@ configurable string group_name = ?;
 listener http:Listener httpListener = new (8090);
 listener asgardeo:Listener webhookListener = new (config, httpListener);
 map<string> countryCodes = {
+        "Sri Lanka": "+94",
         "United States": "+1",
         "Canada": "+1",
         "United Kingdom": "+44",
         "India": "+91"
+
         // Add more country mappings as needed
 };
 
@@ -161,9 +163,11 @@ service asgardeo:RegistrationService on webhookListener {
         //     return;
         // }
         // else{
+            string cuurentMSG = regex:replace(MESSAGE_TEMPLATE,"USER_NAME",userName);
+            //MESSAGE_TEMPLATE.replace("USER_NAME",userName);
         
             Message newmsg = {
-                content: MESSAGE_TEMPLATE,
+                content: cuurentMSG,
                 fromMobile: "+17069898836",
                 toMobile: phone
 
