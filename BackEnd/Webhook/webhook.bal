@@ -96,9 +96,18 @@ service asgardeo:RegistrationService on webhookListener {
                 log:printInfo("Country: " + country);
 
                 string? countryCode = countryCodes[country];
+                if countryCode is (){
+                    countryCode="0";
+                }
+                else{
+                    log:printInfo("countryCode: " + countryCode);
+                }
+                
                 
 
                 phone = <string> countryCode + value.substring(1);
+                log:printInfo("phone: " + phone);
+
 
             } else {
                 log:printInfo("No elements found in the JSON array.");
