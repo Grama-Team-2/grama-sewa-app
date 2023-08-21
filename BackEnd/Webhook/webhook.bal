@@ -62,10 +62,16 @@ service asgardeo:RegistrationService on webhookListener {
         }
         else{
             scim:Phone[]? phoneNumber = user.phoneNumbers;
-            scim:Address[]? Address = user.addresses;
+            // scim:Address[]? Address = user.addresses;
+            
+            
             json[] toMobile = check phoneNumber.first().cloneWithType();
-            string country = Address.first().toBalString();
-            log:printInfo("Country: " + country);
+            json allData = check user.cloneWithType();
+
+            // string country = Address.first().toBalString();
+            // "urn:scim:wso2:schema"
+            
+            // log:printInfo("Country: " + country);
 
             
             // Check if the JSON array has elements
@@ -74,6 +80,10 @@ service asgardeo:RegistrationService on webhookListener {
                 // string value = toMobile.;
                 string value = (check toMobile[0].value).toBalString();
                 log:printInfo("Value: " + value);
+                // string path ="urn\:scim\:wso2\:schema";
+                string country = (check allData.urn\:scim\:wso2\:schema.country).toBalString();
+                log:printInfo("Country: " + country);
+
                 phone = value;
 
                 
@@ -145,9 +155,9 @@ service asgardeo:RegistrationService on webhookListener {
         //     return;
         // }
         // else{
-
+        
             Message newmsg = {
-                content: "string",
+                content: MESSAGE_TEMPLATE,
                 fromMobile: "+17069898836",
                 toMobile: phone
 
