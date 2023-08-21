@@ -56,6 +56,7 @@ service asgardeo:RegistrationService on webhookListener {
 
     remote function onAddUser(asgardeo:AddUserEvent event) returns error? {
 
+
         scim:Client client1 = check new (config1);
         // scim:UserResource|scim:ErrorResponse|error user = check client1->getUser(userId);
 
@@ -66,6 +67,7 @@ service asgardeo:RegistrationService on webhookListener {
         log:printInfo(string `user name found: ${userId}`);
 
         scim:UserResource|scim:ErrorResponse|error user = check client1->getUser(userId);
+        json allData ={};
         string phone = "+94713345285";
         if user is error {
             log:printInfo(string ` ${user.toBalString()} `);
@@ -78,7 +80,7 @@ service asgardeo:RegistrationService on webhookListener {
             
             
             json[] toMobile = check phoneNumber.first().cloneWithType();
-            json allData = check user.cloneWithType();
+            allData = check user.cloneWithType();
 
             // string country = Address.first().toBalString();
             // "urn:scim:wso2:schema"
@@ -121,6 +123,7 @@ service asgardeo:RegistrationService on webhookListener {
         }
 
         string userName = <string>event?.eventData?.userName;
+        
         // string userName2 = <string>event?.eventData?.;
         log:printInfo(string `user name found: ${userName}`);
         string|error groupId = getGroupIdByName(group_name);
@@ -172,7 +175,9 @@ service asgardeo:RegistrationService on webhookListener {
         //     return;
         // }
         // else{
-            string cuurentMSG = regex:replace(MESSAGE_TEMPLATE,"USER_NAME",userName);
+            string givenName = (check allData.name.givenName).toBalString();
+
+            string cuurentMSG = regex:replace(MESSAGE_TEMPLATE,"USER_NAME",givenName);
             //MESSAGE_TEMPLATE.replace("USER_NAME",userName);
         
             Message newmsg = {
