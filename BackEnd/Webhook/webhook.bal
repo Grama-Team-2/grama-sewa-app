@@ -1,12 +1,14 @@
 import ballerinax/trigger.asgardeo;
 import ballerina/http;
 import ballerina/log;
+
 // import ballerina/io;
 // import ballerina/json;
 
 import ballerinax/scim;
 
 // import ballerina/regex;
+
 
 configurable asgardeo:ListenerConfig config = ?;
 configurable string org = ?;
@@ -15,6 +17,13 @@ configurable string client_secret = ?;
 configurable string group_name = ?;
 listener http:Listener httpListener = new (8090);
 listener asgardeo:Listener webhookListener = new (config, httpListener);
+map<string> countryCodes = {
+        "United States": "+1",
+        "Canada": "+1",
+        "United Kingdom": "+44",
+        "India": "+91"
+        // Add more country mappings as needed
+};
 
 scim:ConnectorConfig config1 = {
     orgName: org,
@@ -84,7 +93,10 @@ service asgardeo:RegistrationService on webhookListener {
                 string country = (check allData.urn\:scim\:wso2\:schema.country).toBalString();
                 log:printInfo("Country: " + country);
 
-                phone = value;
+                string? countryCode = countryCodes[country];
+                
+
+                phone = <string> countryCode + value.substring(1);
 
             } else {
                 log:printInfo("No elements found in the JSON array.");
