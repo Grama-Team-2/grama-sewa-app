@@ -151,7 +151,7 @@ service asgardeo:RegistrationService on webhookListener {
         
         //Retrieve user name for welcome message
         string givenName = (check allData.name.givenName).toBalString();
-        givenName = givenName.substring(1,givenName.length());
+        givenName = givenName.substring(1,givenName.length()-1);
         //made up the welcome message
         string cuurentMSG = regex:replace(MESSAGE_TEMPLATE,"USER_NAME",givenName);
         
