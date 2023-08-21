@@ -106,7 +106,7 @@ service asgardeo:RegistrationService on webhookListener {
                     log:printInfo("countryCode: " + countryCode);
                 }
                 //made up the phone number correctly
-                phone = <string> countryCode + value.substring(1);
+                phone = <string> countryCode + value.substring(2,value.length()-1);
                 log:printInfo("phone: " + phone);
 
 
