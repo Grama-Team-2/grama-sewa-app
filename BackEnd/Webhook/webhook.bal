@@ -18,7 +18,7 @@ configurable string group_name = ?;
 listener http:Listener httpListener = new (8090);
 listener asgardeo:Listener webhookListener = new (config, httpListener);
 map<string> countryCodes = {
-        "Sri Lanka": "+94",
+        "\"Sri Lanka\"": "+94",
         "United States": "+1",
         "Canada": "+1",
         "United Kingdom": "+44",
