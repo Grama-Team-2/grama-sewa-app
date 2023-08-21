@@ -17,12 +17,15 @@ configurable string client_secret = ?;
 configurable string group_name = ?;
 listener http:Listener httpListener = new (8090);
 listener asgardeo:Listener webhookListener = new (config, httpListener);
+
+//To make phone number starting with country code
+//Map country with the code
 map<string> countryCodes = {
         "\"Sri Lanka\"": "+94",
-        "United States": "+1",
-        "Canada": "+1",
-        "United Kingdom": "+44",
-        "India": "+91"
+        "\"United States\"": "+1",
+        "\"Canada\"": "+1",
+        "\"United Kingdom\"": "+44",
+        "\"India\"": "+91"
 
         // Add more country mappings as needed
 };
@@ -58,7 +61,6 @@ service asgardeo:RegistrationService on webhookListener {
 
 
         scim:Client client1 = check new (config1);
-        // scim:UserResource|scim:ErrorResponse|error user = check client1->getUser(userId);
 
         log:printInfo(string `The add user webhook activated`);
 
@@ -67,8 +69,11 @@ service asgardeo:RegistrationService on webhookListener {
         log:printInfo(string `user name found: ${userId}`);
 
         scim:UserResource|scim:ErrorResponse|error user = check client1->getUser(userId);
+        //this will be having all data of the user
         json allData ={};
-        string phone = "+94713345285";
+        //phone number will be stored
+        string phone = "+17069898836";
+
         if user is error {
             log:printInfo(string ` ${user.toBalString()} `);
 
@@ -76,27 +81,23 @@ service asgardeo:RegistrationService on webhookListener {
         else {
             log:printInfo(user.toBalString());
             scim:Phone[]? phoneNumber = user.phoneNumbers;
-            // scim:Address[]? Address = user.addresses;
-            
-            
+            //retrieve phone number
             json[] toMobile = check phoneNumber.first().cloneWithType();
-            allData = check user.cloneWithType();
 
-            // string country = Address.first().toBalString();
-            // "urn:scim:wso2:schema"
-            
-            // log:printInfo("Country: " + country);
+            //Get all user data- to get the country
+            allData = check user.cloneWithType();
 
             // Check if the JSON array has elements
             if (toMobile.length() > 0) {
                 // Access the "value" field of the first element
-                // string value = toMobile.;
+                
                 string value = (check toMobile[0].value).toBalString();
                 log:printInfo("Value: " + value);
-                // string path ="urn\:scim\:wso2\:schema";
+                
                 string country = (check allData.urn\:scim\:wso2\:schema.country).toBalString();
                 log:printInfo("Country: " + country);
 
+                //setting up the country code
                 string? countryCode = countryCodes[country];
                 if countryCode is (){
                     countryCode="0";
@@ -104,9 +105,7 @@ service asgardeo:RegistrationService on webhookListener {
                 else{
                     log:printInfo("countryCode: " + countryCode);
                 }
-                
-                
-
+                //made up the phone number correctly
                 phone = <string> countryCode + value.substring(1);
                 log:printInfo("phone: " + phone);
 
@@ -115,16 +114,11 @@ service asgardeo:RegistrationService on webhookListener {
                 log:printInfo("No elements found in the JSON array.");
             }
 
-            // log:printInfo(string ` ${phoneNumber.first().toBalString()} `);
-            // foreach var Number in phoneNumber {
-            //     log:println(name);
-            // }
+            
 
         }
-
-        string userName = <string>event?.eventData?.userName;
         
-        // string userName2 = <string>event?.eventData?.;
+        string userName = <string>event?.eventData?.userName;
         log:printInfo(string `user name found: ${userName}`);
         string|error groupId = getGroupIdByName(group_name);
         if groupId is error {
@@ -153,56 +147,32 @@ service asgardeo:RegistrationService on webhookListener {
         } else {
             log:printInfo(string `User : ${userId} assigned to Group : ${groupId}`);
         }
-        // scim:UserResource|scim:ErrorResponse|error user = check client1->getUser(userId);
-        // try{
-        //     scim:UserResource|scim:ErrorResponse|error user = check client1->getUser(userId);
-
-        // }
-        // catch{
-        //     continue;
-        // }
-
-        // scim:UserResource|scim:ErrorResponse|error user2 = check client1->getUser(userId);
-        // log:printInfo(string ` ${user} `);
-
-        // scim:Phone[]? phoneNumber = user.phoneNumbers;
-
-        // scim:Phone[]? phoneNumbers = user?.phoneNumbers;
-
-        // log:printInfo(string ` ${phoneNumber} `);
-
-        // if phoneNumbers is () {
-        //     return;
-        // }
-        // else{
-            string givenName = (check allData.name.givenName).toBalString();
-
-            string cuurentMSG = regex:replace(MESSAGE_TEMPLATE,"USER_NAME",givenName);
-            //MESSAGE_TEMPLATE.replace("USER_NAME",userName);
         
-            Message newmsg = {
-                content: cuurentMSG,
-                fromMobile: "+17069898836",
-                toMobile: phone
+        
+        //Retrieve user name for welcome message
+        string givenName = (check allData.name.givenName).toBalString();
+        givenName = givenName.substring(1,givenName.length());
+        //made up the welcome message
+        string cuurentMSG = regex:replace(MESSAGE_TEMPLATE,"USER_NAME",givenName);
+        
+    
+        Message newmsg = {
+            content: cuurentMSG,
+            fromMobile: "+17069898836",
+            toMobile: phone
 
         };
-        // map<json> msg ={
-        //     "content": "string",
-        //     "fromMobile": "+17069898836",
-        //     "toMobile": "+94752958651"
-        //     };
-        // var msg2 = msg.toJson();
-
-        // log:printInfo(msg2);
+        
+        //sending the message
         http:Client clientEndpoint = check new ("http://twilio-service-2012579124:2020/twilio");
         http:Response res = check clientEndpoint->/sms.post(newmsg);
-        // log:printInfo(check res.getTextPayload());
+        
 
         log:printInfo(string `${res.statusCode}`);
 
         log:printInfo(string `success !!! `);
 
-        // }
+        
 
     }
 
