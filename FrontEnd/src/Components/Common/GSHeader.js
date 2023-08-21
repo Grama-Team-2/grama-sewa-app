@@ -32,7 +32,16 @@ function GSHeader() {
               style={{ cursor: "pointer" }}
             >
               <span className="nav-link" style={{ color: "white" }}>
-                View Requests <span className="sr-only">(current)</span>
+                Requests <span className="sr-only">(current)</span>
+              </span>
+            </li>
+            <li
+              className="nav-item active"
+              onClick={() => navigate("/gs/me/requests")}
+              style={{ cursor: "pointer" }}
+            >
+              <span className="nav-link" style={{ color: "white" }}>
+                Users <span className="sr-only">(current)</span>
               </span>
             </li>
           </ul>

@@ -5,7 +5,7 @@ function Login() {
   const { state } = useAuthContext();
   const { signIn } = useAuthContext();
   return (
-    <div className={`desktop`}>
+    <div className="desktop">
       <div className="overlap">
         <div className="frame">
           <img
