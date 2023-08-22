@@ -2,9 +2,48 @@ import ballerina/http;
 import ballerinax/mongodb;
 import ballerina/io;
 import ballerina/time;
+import ballerinax/scim;
+import ballerina/log;
+import ballerina/regex;
 
 configurable string username = ?;
 configurable string password = ?;
+configurable string org = ?;
+configurable string client_id = ?;
+configurable string client_secret = ?;
+string MESSAGE_TEMPLATE = "Hi USER_NAME,Your process has been completed!";
+map<string> countryCodes = {
+    "\"Sri Lanka\"": "+94",
+    "\"United States\"": "+1",
+    "\"Canada\"": "+1",
+    "\"United Kingdom\"": "+44",
+    "\"India\"": "+91"
+
+    // Add more country mappings as needed
+};
+
+scim:ConnectorConfig config1 = {
+    orgName: org,
+    clientId: client_id,
+    clientSecret: client_secret,
+    scope: [
+        "internal_user_mgt_view",
+        "internal_user_mgt_list",
+        "internal_user_mgt_create",
+        "internal_user_mgt_update",
+        "internal_user_mgt_delete",
+        "internal_group_mgt_view",
+        "internal_group_mgt_create",
+        "internal_group_mgt_update",
+        "internal_group_mgt_delete"
+    ]
+};
+
+type Message record {
+    string fromMobile;
+    string toMobile;
+    string content;
+};
 
 //SETUP mongoDB Connection
 mongodb:ConnectionConfig mongoConfig1 = {
@@ -150,7 +189,8 @@ service /requests on new http:Listener(8080) {
             identityVerificationStatus: true,
             addressVerificationStatus: true,
             policeVerificationStatus: true,
-            validationResult: "APPROVED"
+            validationResult: "APPROVED",
+            sender: response.sender
         };
         Person|error person = http_client->/nic/[nic];
 
@@ -178,6 +218,71 @@ service /requests on new http:Listener(8080) {
         map<json> queryString = {"$set": {"identityVerificationStatus": val_response.identityVerificationStatus, "addressVerificationStatus": val_response.addressVerificationStatus, "policeVerificationStatus": val_response.policeVerificationStatus, validationResult: "REJECTED"}};
         map<json> filter = {"NIC": nic};
         _ = check mongoClient->update(queryString, "RequestDetails", filter = filter);
+
+        scim:Client client1 = check new (config1);
+        scim:UserResource|scim:ErrorResponse|error user = check client1->getUser(response.sender);
+        //this will be having all data of the user
+        json allData = {};
+        //phone number will be stored
+        string phone = "+17069898836";
+
+        if user is error {
+            log:printInfo(string ` ${user.toBalString()} `);
+
+        }
+        else {
+            log:printInfo(user.toBalString());
+            scim:Phone[]? phoneNumber = user.phoneNumbers;
+            //retrieve phone number
+            json[] toMobile = check phoneNumber.first().cloneWithType();
+
+            //Get all user data- to get the country
+            allData = check user.cloneWithType();
+
+            // Check if the JSON array has elements
+            if (toMobile.length() > 0) {
+                // Access the "value" field of the first element
+
+                string value = (check toMobile[0].value).toBalString();
+                log:printInfo("Value: " + value);
+
+                string country = (check allData.urn\:scim\:wso2\:schema.country).toBalString();
+                log:printInfo("Country: " + country);
+
+                //setting up the country code
+                string? countryCode = countryCodes[country];
+                if countryCode is () {
+                    countryCode = "0";
+                }
+                else {
+                    log:printInfo("countryCode: " + countryCode);
+                }
+                //made up the phone number correctly
+                phone = <string>countryCode + value.substring(2, value.length() - 1);
+                log:printInfo("phone: " + phone);
+
+            } else {
+                log:printInfo("No elements found in the JSON array.");
+            }
+
+        }
+
+        //Retrieve user name for welcome message
+        string givenName = (check allData.name.givenName).toBalString();
+        givenName = givenName.substring(1, givenName.length() - 1);
+        //made up the welcome message
+        string _ = regex:replace(MESSAGE_TEMPLATE, "USER_NAME", givenName);
+
+        Message newmsg = {
+            content: "h",
+            fromMobile: "+17069898836",
+            toMobile: phone
+
+        };
+
+        //sending the message
+        http:Client clientEndpoint = check new ("http://twilio-service-2012579124:2020/twilio");
+        http:Response _ = check clientEndpoint->/sms.post(newmsg);
 
         return val_response;
 
