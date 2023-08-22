@@ -173,7 +173,7 @@ service /requests on new http:Listener(8080) {
         }
         var val = resultData.next();
         if val is error? {
-            ErrorDetails errorDetails = buildErrorPayload(string `NIC: ${nic}`, string `requests/validate`);
+            ErrorDetails errorDetails = buildErrorPayload(string `NIC: ${nic} not found`, string `requests/validate`);
             VerificationFailError verificationFailError = {
                 body: errorDetails
             };
