@@ -10,27 +10,44 @@ function Request() {
   const [no, setNo] = useState("");
   const [street, setStreet] = useState("");
   const [city, setCity] = useState("");
-
+  const [senderId, setSenderId] = useState("");
+  const { getDecodedIDToken } = useAuthContext();
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(false);
   const { httpRequest } = useAuthContext();
 
-  // const history = useHistory(); 
+  const fetchUserData = async () => {
+    try {
+      const { sub } = await getDecodedIDToken();
+      setSenderId(sub);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+  // const history = useHistory();
   const handleSubmit = async (e) => {
-    // const history = useHistory(); 
     e.preventDefault();
     try {
       setLoading(true);
-      // const NIC = 1212
-      // const no = 10
-      // const street = "main"
-      // const city = "Galle"
 
-      newRequest.url = newRequest.url + "/" + nic + "/" + no + "/" + street + "/" + city;
-      const { data } = await httpRequest(newRequest);
+      const formData = {
+        sender: senderId,
+        NIC: nic,
+        address: {
+          no,
+          street,
+          city,
+        },
+      };
+      const submitRequestConfig = { ...newRequest };
+      submitRequestConfig.data = formData;
+      const { data } = await httpRequest(submitRequestConfig);
       setRequests(data);
       setLoading(false);
-      // history.push('/');
+
       window.location.replace("/user/me");
     } catch (err) {
       console.log(err);
@@ -38,14 +55,6 @@ function Request() {
     }
   };
 
-
-
-  // useEffect(() => {
-  //   handleSubmit();
-  // }, []);
-
-  
-  
   return (
     <div>
       <Header></Header>
@@ -77,10 +86,8 @@ function Request() {
                           <input
                             className="form-control"
                             type="text"
-                            
                             onChange={(e) => setNic(e.target.value)}
                             required
-                            
                           />
                         </div>
                         <hr />
