@@ -17,21 +17,21 @@ mongodb:ConnectionConfig mongoConfig1 = {
 //Create a client
 mongodb:Client mongoClient = check new (mongoConfig1);
 
+type GSRequest record {|
+    string sender;
+    string NIC;
+    Address address;
+
+|};
+
 service /requests on new http:Listener(8080) {
 
-    //Create entry for new request in database
-
-    resource function post newRequest/[string NIC]/[string no]/[string street]/[string city]() returns boolean|error {
-
-        json address = {
-            "no": no,
-            "street": street,
-            "city": city
-        };
+    resource function post newRequest(@http:Payload GSRequest request) returns boolean|error {
 
         map<json> doc = {
-            "NIC": NIC,
-            "address": address,
+            "sender": request.sender,
+            "NIC": request.NIC,
+            "address": request.address.toJson(),
             "identityVerificationStatus": false,
             "addressVerificationStatus": false,
             "policeVerificationStatus": false,
