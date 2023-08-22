@@ -12,6 +12,7 @@ type ValidationResponse record {
     boolean addressVerificationStatus;
     boolean policeVerificationStatus;
     string validationResult;
+    string sender;
 };
 
 type Address record {
