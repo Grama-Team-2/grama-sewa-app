@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
-import React,{useState} from "react";
+import React,{useState,useEffect} from "react";
 import Header from "../Common/UserHeader";
 import { useAuthContext } from "@asgardeo/auth-react";
 import { checkStatus } from "../../api/UserRequests";
@@ -9,15 +9,27 @@ const [nic,setNic] = useState("");
 const [request,setRequests] = useState([]);
 const [loading, setLoading] = useState(false);
 const { httpRequest } = useAuthContext();
+const [senderId, setSenderId] = useState("");
+const { getDecodedIDToken } = useAuthContext();
 
-
+const fetchUserData = async () => {
+  try {
+    const { sub } = await getDecodedIDToken();
+    setSenderId(sub);
+  } catch (error) {
+    console.log(error);
+  }
+};
+useEffect(() => {
+  fetchUserData();
+}, []);
 
 const handleSubmit = async (e) => { 
   e.preventDefault();
   try {
     setLoading(true);
     checkStatus.url =
-      checkStatus.url + "/" + nic;
+      checkStatus.url + "/" + nic+"/"+senderId;
       const {data} = await httpRequest(checkStatus);
     setRequests(data);
     setLoading(false);
