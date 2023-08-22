@@ -64,6 +64,12 @@ type GSRequest record {|
     Address address;
 
 |};
+type StatusRequest record {|
+    string sender;
+    string NIC;
+
+
+|};
 
 service /requests on new http:Listener(8080) {
 
@@ -111,9 +117,9 @@ service /requests on new http:Listener(8080) {
         }
         return person;
     }
-    resource function get status/[string NIC]() returns ValidationResponse|NoRequestFoundError|error {
+    resource function get status/[string NIC]/[string sender]() returns ValidationResponse|NoRequestFoundError|error {
 
-        map<json> queryString = {"NIC": NIC};
+        map<json> queryString = {"NIC": NIC, "sender":sender};
         stream<ValidationResponse, error?>|error resultData = check mongoClient->find(collectionName = "RequestDetails", filter = queryString);
 
         if resultData is error {

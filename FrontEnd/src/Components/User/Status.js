@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../Common/UserHeader";
 import { useAuthContext } from "@asgardeo/auth-react";
 import { checkStatus } from "../../api/UserRequests";
@@ -10,7 +10,9 @@ import { getIdentityReport } from "../../api/GSRequests";
 function Status() {
   const [nic, setNic] = useState("");
   const [request, setRequests] = useState(null);
+  const [senderId, setSenderId] = useState("");
   const [loading, setLoading] = useState(false);
+  const { getDecodedIDToken } = useAuthContext();
   const { httpRequest } = useAuthContext();
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
@@ -18,10 +20,13 @@ function Status() {
     try {
       setLoading(true);
       const checkStatusConfig = { ...checkStatus };
-      checkStatusConfig.url = checkStatusConfig.url + "/" + nic;
+      checkStatusConfig.url =
+        checkStatusConfig.url + "/" + nic + "/" + senderId;
+      console.log(checkStatusConfig.url);
       const { data } = await httpRequest(checkStatusConfig);
       const identityReportConfig = { ...getIdentityReport };
       identityReportConfig.url = identityReportConfig.url + "/" + nic;
+
       const { data: personalData } = await httpRequest(identityReportConfig);
 
       setRequests({ ...personalData, ...data });
@@ -31,7 +36,18 @@ function Status() {
       setLoading(false);
     }
   };
-
+  const fetchUserData = async () => {
+    try {
+      const { sub } = await getDecodedIDToken();
+      setSenderId(sub);
+      console.log(sub);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchUserData();
+  }, []);
   return (
     <div>
       <Header></Header>
