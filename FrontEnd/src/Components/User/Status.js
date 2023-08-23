@@ -106,7 +106,11 @@ function Status() {
                         <input
                           className="textBox"
                           type="text"
-                          value={request?.identityVerificationStatus}
+                          value={
+                            request?.identityVerificationStatus
+                              ? "Verified"
+                              : "Failed"
+                          }
                           readOnly
                           style={{
                             backgroundColor:
@@ -131,7 +135,11 @@ function Status() {
                           className="textBox"
                           type="text"
                           readOnly
-                          value={request?.addressVerificationStatus}
+                          value={
+                            request?.addressVerificationStatus
+                              ? "Verified"
+                              : "Failed"
+                          }
                           style={{
                             backgroundColor:
                               request?.addressVerificationStatus === true
@@ -154,7 +162,11 @@ function Status() {
                         <input
                           className="textBox"
                           type="text"
-                          value={request?.policeVerificationStatus}
+                          value={
+                            request?.policeVerificationStatus
+                              ? "Verified"
+                              : "Failed"
+                          }
                           readOnly
                           style={{
                             backgroundColor:
@@ -191,6 +203,9 @@ function Status() {
                                 : "white",
                             marginLeft: "115px",
                             width: "150px",
+                            color: "red",
+                            fontWeight: "bold",
+                            fontSize: "1.2rem",
                           }}
                         />
                       </div>
@@ -205,6 +220,14 @@ function Status() {
                             },
                           })
                         }
+                        size="small"
+                        style={{
+                          width: "100px",
+                          margin: "auto",
+                          marginBottom: "1rem",
+                          marginTop: "-1rem",
+                          padding: "0.2rem 1rem",
+                        }}
                       >
                         Download
                       </Button>
