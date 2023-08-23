@@ -11,7 +11,9 @@ configurable string password = ?;
 configurable string org = ?;
 configurable string client_id = ?;
 configurable string client_secret = ?;
-string MESSAGE_TEMPLATE = "Hi USER_NAME,Your process has been completed!";
+
+string MESSAGE_TEMPLATE = "Hi USER_NAME,Your request has been STATUS!";
+
 map<string> countryCodes = {
     "\"Sri Lanka\"": "+94",
     "\"United States\"": "+1",
@@ -277,10 +279,10 @@ service /requests on new http:Listener(8080) {
         string givenName = (check allData.name.givenName).toBalString();
         givenName = givenName.substring(1, givenName.length() - 1);
         //made up the welcome message
-        string _ = regex:replace(MESSAGE_TEMPLATE, "USER_NAME", givenName);
-
+        string nameReplacedMsg = regex:replace(MESSAGE_TEMPLATE, "USER_NAME", givenName);
+        string finalMessage = regex:replace(nameReplacedMsg, "STATUS", val_response.validationResult);
         Message newmsg = {
-            content: "h",
+            content: finalMessage,
             fromMobile: "+17069898836",
             toMobile: phone
 
