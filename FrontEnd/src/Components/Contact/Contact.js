@@ -7,8 +7,9 @@ import { useAuthContext } from "@asgardeo/auth-react";
 
 import { slackNotify } from "../../api/SlackNotify";
 import { alignProperty } from "@mui/material/styles/cssUtils";
+import { useNavigate } from "react-router-dom";
 
-//slackNotify
+//slackNotify\
 function Contact() {
   const [message, setMessage] = useState("");
   const [no, setNo] = useState("");
@@ -16,6 +17,7 @@ function Contact() {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(false);
   const { httpRequest } = useAuthContext();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     // const history = useHistory();
@@ -28,15 +30,18 @@ function Contact() {
       // const street = "main"
       // const city = "Galle"
 
-      slackNotify.url = slackNotify.url + "/" + message;
+      slackNotify.url = "https://cf3a4176-54c9-4547-bcd6-c6fe400ad0d8-dev.e1-us-east-azure.choreoapis.dev/maoe/slacknotifications/endpoint-7070-070/1.0.0/sendNotifications/" + message;
       const { data } = await httpRequest(slackNotify);
       setRequests(data);
       setLoading(false);
       // history.push('/');
       
+      navigate('/');
+      
     // Open the Slack app in a new window or tab
       
-      window.location.replace("/user/me");
+      // window.location.replace("/user/me");
+      
     } catch (err) {
       console.log(err);
       setLoading(false);
