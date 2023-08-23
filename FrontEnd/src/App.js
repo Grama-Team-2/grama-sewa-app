@@ -16,6 +16,7 @@ import Restrict from "./Components/Restrict/Restrict";
 import UserContext from "./context/UserContext";
 import ProtectedRoute from "./ProtectedRoute";
 import GramaDashboard from "./Components/GSDashboard/GramaSevakaDashboard";
+import FinalReport from "./Components/FinalReport/FinalReport";
 
 function App() {
   const { state } = useAuthContext();
@@ -66,7 +67,14 @@ function App() {
             </ProtectedRoute>
           }
         />
-
+        <Route
+          path="/user/report/download"
+          element={
+            <ProtectedRoute redirectPath="/" authRole={userRoles.USER}>
+              <FinalReport />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/contact"
           element={
