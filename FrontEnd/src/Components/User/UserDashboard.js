@@ -1,13 +1,13 @@
 import React from "react";
 import Header from "../Common/UserHeader";
 import { useAuthContext } from "@asgardeo/auth-react";
-
+import "./style.css";
 
 function UserDashBoard() {
   return (
     <>
     
-      <main >
+    <main >
         
         <div className={`desktop`}>
           <div className="overlap">
@@ -22,8 +22,9 @@ function UserDashBoard() {
               />
             </div>
             <div className="text-wrapper" style={{marginTop:"50px"}}>GRAMA ASSIST</div>
+
           </div>
-          <div className="overlap-group"></div>
+          
         </div>
       </main>
       <Header></Header>
