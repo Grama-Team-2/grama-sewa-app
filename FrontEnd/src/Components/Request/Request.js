@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState, useEffect } from "react";
 
 import Header from "../Common/UserHeader";
@@ -91,7 +92,7 @@ function Request() {
                           />
                         </div>
                         <hr />
-                        <label style={{ marginLeft: "150px" }}>
+                        <label style={{ marginLeft: "190px" }}>
                           Address Details
                         </label>
                         <div className="form-floating mb-3">

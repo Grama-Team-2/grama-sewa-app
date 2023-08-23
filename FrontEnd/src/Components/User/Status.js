@@ -61,6 +61,8 @@ function Status() {
                   <br />
                   <br />
 
+                  <br/>
+                 
                   <div className="card shadow-lg border-0 rounded-lg ">
                     <div className="card-header">
                       <h3 className="text-center font-weight-light my-4">
@@ -203,7 +205,7 @@ function Status() {
                                 : "white",
                             marginLeft: "115px",
                             width: "150px",
-                            color: "red",
+                            
                             fontWeight: "bold",
                             fontSize: "1.2rem",
                           }}
