@@ -10,12 +10,12 @@ function UserDashBoard() {
     <main >
         
     <div className="desktop" style={{backgroundColor:"grey",width:"100%",margin: 0,padding: 0,justifyContent:"center"}}>
-      <div className="overlap"style={{backgroundColor:"grey",width:"100%",alignItems: "center",padding: 0,marginRight:-80,marginLeft:-80}}>
+      <div className="overlap"style={{backgroundColor:"grey",width:"100%",alignItems: "center",padding: 0,marginRight:-100,marginLeft:-80}}>
         <div className="frame"style={{alignItems:"center"}}>
           <img
                 className="logo"
                 alt="Logo"
-                style={{alignContent:"center",marginTop:"70px"}}
+                style={{alignContent:"center",marginTop:"70px",marginLeft:"200px"}}
                 
                 
                 src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
