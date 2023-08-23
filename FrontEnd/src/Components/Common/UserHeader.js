@@ -18,7 +18,7 @@ function Header() {
   return (
     <div>
       <nav class="navbar navbar-expand-lg navbar-light ">
-        <a class="navbar-brand" href="/user/me" style={{ color: "white" }}>
+        <a class="navbar-brand" href="/" style={{ color: "white" }}>
           Grama Assist
         </a>
 
