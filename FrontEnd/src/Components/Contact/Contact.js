@@ -36,7 +36,7 @@ function Contact() {
       setLoading(false);
       // history.push('/');
       
-      navigate('/');
+      navigate('/user/me');
       
     // Open the Slack app in a new window or tab
       
