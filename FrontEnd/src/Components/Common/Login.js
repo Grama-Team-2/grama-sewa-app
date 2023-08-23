@@ -29,7 +29,7 @@ function Login() {
           <img
             className="logo"
             alt="Logo"
-            style={{alignContent:"center"}}
+            style={{alignContent:"center",marginLeft:"200px"}}
             src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
           />
           
