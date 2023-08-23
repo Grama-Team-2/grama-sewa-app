@@ -205,7 +205,7 @@ function Status() {
                                 : "white",
                             marginLeft: "115px",
                             width: "150px",
-                            color: "red",
+                            
                             fontWeight: "bold",
                             fontSize: "1.2rem",
                           }}

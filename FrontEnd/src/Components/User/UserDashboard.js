@@ -15,13 +15,13 @@ function UserDashBoard() {
               <img
                 className="logo"
                 alt="Logo"
-                style={{marginTop:"80px"}}
+                style={{marginTop:"70px"}}
                 
                 
                 src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
               />
             </div>
-            <div className="text-wrapper" style={{marginTop:"90px"}}>GRAMA ASSIST</div>
+            <div className="text-wrapper" style={{marginTop:"50px"}}>GRAMA ASSIST</div>
           </div>
           <div className="overlap-group"></div>
         </div>
