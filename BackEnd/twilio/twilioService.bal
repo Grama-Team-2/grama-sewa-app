@@ -5,7 +5,7 @@ import ballerinax/twilio;
 configurable string accountSId = ?;
 configurable string authToken = ?;
 
-// string MESSAGE_TEMPLATE = "Hi {USER_NAME}, Welcome to Grama Assist!";
+
 
 type Message record {
     string fromMobile;

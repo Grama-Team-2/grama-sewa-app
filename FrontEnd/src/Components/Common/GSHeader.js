@@ -9,12 +9,12 @@ function GSHeader() {
   const navigate = useNavigate();
   return (
     <div>
-      <nav class="navbar navbar-expand-lg navbar-light ">
-        <a class="navbar-brand" href="/" style={{ color: "white" }}>
+      <nav className="navbar navbar-expand-lg navbar-light ">
+        <a className="navbar-brand" href="/" style={{ color: "white" }}>
           Grama Assist
         </a>
         <button
-          class="navbar-toggler"
+          className="navbar-toggler"
           type="button"
           data-toggle="collapse"
           data-target="#navbarNav"
@@ -22,28 +22,37 @@ function GSHeader() {
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span class="navbar-toggler-icon"></span>
+          <span className="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav">
             <li
-              class="nav-item active"
+              className="nav-item active"
               onClick={() => navigate("/gs/me/requests")}
               style={{ cursor: "pointer" }}
             >
-              <span class="nav-link" style={{ color: "white" }}>
-                View Requests <span class="sr-only">(current)</span>
+              <span className="nav-link" style={{ color: "white" }}>
+                Requests <span className="sr-only">(current)</span>
+              </span>
+            </li>
+            <li
+              className="nav-item active"
+              onClick={() => navigate("/gs/me/requests")}
+              style={{ cursor: "pointer" }}
+            >
+              <span className="nav-link" style={{ color: "white" }}>
+                Users <span className="sr-only">(current)</span>
               </span>
             </li>
           </ul>
         </div>
-        <div class="navbar-notification" style={{ marginRight: "15px" }}>
-          <span class="notification-icon">
+        <div className="navbar-notification" style={{ marginRight: "15px" }}>
+          <span className="notification-icon">
             <NotificationsIcon />
           </span>
         </div>
-        <div class="navbar-actions" style={{ marginRight: "15px" }}>
-          <span class="logout-icon" onClick={() => signOut()}>
+        <div className="navbar-actions" style={{ marginRight: "15px" }}>
+          <span className="logout-icon" onClick={() => signOut()}>
             <LogoutIcon />
           </span>
         </div>

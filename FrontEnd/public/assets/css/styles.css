@@ -12047,6 +12047,7 @@ flex-direction: row;
   left: 86px;
   position: absolute;
  
+ 
   width: 1192px;
 }
 
@@ -12059,7 +12060,7 @@ flex-direction: row;
   left: 0;
   padding: 10px;
   position: absolute;
-  top: 0;
+  top: -80px;
   width: 1000px;
 }
 
@@ -12068,7 +12069,7 @@ flex-direction: row;
   margin-left: -4px;
   margin-right: -79px;
   object-fit: cover;
-  margin-top: -10px;
+  margin-top: -60px;
   position: relative;
   width: 1200px;
 }
@@ -12083,7 +12084,7 @@ flex-direction: row;
   letter-spacing: 0;
   line-height: normal;
   position: absolute;
-  top: 550px;
+  top: 500px;
 }
 
 .desktop .overlap-group {

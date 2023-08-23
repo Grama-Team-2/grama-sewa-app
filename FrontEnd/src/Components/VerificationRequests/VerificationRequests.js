@@ -6,10 +6,14 @@ import {
   validateAGramaRequest,
   updateStatus,
 } from "../../api/GSRequests";
+
 import VerificationRequest from "../VerificationRequest/VerificationRequest";
+import Loader from "../Common/Loader";
+
 export default function ViewRequest() {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [validationLoading, setValidationLoading] = useState(false);
   const { httpRequest } = useAuthContext();
 
   const fetchRequests = async () => {
@@ -24,28 +28,30 @@ export default function ViewRequest() {
     }
   };
 
-  const handleValidate = async (nic, address) => {
-    const reqBody = {
-      NIC: nic,
-      address,
-    };
+  const handleValidate = async (nic) => {
     try {
-      setLoading(true);
-      validateAGramaRequest.data = reqBody;
-      const { data } = await httpRequest(validateAGramaRequest);
-      console.log(data);
+      setValidationLoading(true);
+      const requestValidateConfig = { ...validateAGramaRequest };
+      requestValidateConfig.url = requestValidateConfig.url + "/" + nic;
+      const { data } = await httpRequest(requestValidateConfig);
 
       setRequests(
         requests.map((req) => {
           if (req.NIC === nic) {
-            return { ...req, status: data.validationResult };
+            return {
+              ...req,
+              identityVerificationStatus: data.identityVerificationStatus,
+              addressVerificationStatus: data.addressVerificationStatus,
+              policeVerificationStatus: data.policeVerificationStatus,
+              validationResult: data.validationResult,
+            };
           } else return req;
         })
       );
-      setLoading(false);
+      setValidationLoading(false);
     } catch (error) {
       console.log(error);
-      setLoading(false);
+      setValidationLoading(false);
     }
   };
 
@@ -58,8 +64,12 @@ export default function ViewRequest() {
       nic={req?.NIC}
       address={req?.address}
       key={req?.NIC}
-      status={req?.status}
-      onValidate={() => handleValidate(req?.NIC, req?.address)}
+      validationResult={req?.validationResult}
+      onValidate={() => handleValidate(req?.NIC)}
+      identityVerificationStatus={req?.identityVerificationStatus}
+      addressVerificationStatus={req?.addressVerificationStatus}
+      policeVerificationStatus={req?.policeVerificationStatus}
+      validationPending={validationLoading}
     />
   ));
   return (
@@ -71,20 +81,23 @@ export default function ViewRequest() {
             <h2 style={{ marginLeft: "100px" }}>Request List</h2>
           </div>
         </div>
-
-        <table className="table">
-          <thead>
-            <tr className="table-dark">
-              <th scope="col">NIC</th>
-              <th scope="col">Address</th>
-              <th scope="col">Police Check</th>
-              <th scope="col">Identity Check</th>
-              <th scope="col">Address Check</th>
-              <th scope="col">Status</th>
-            </tr>
-          </thead>
-          <tbody>{renderedRequests}</tbody>
-        </table>
+        {loading ? (
+          <Loader />
+        ) : (
+          <table className="table">
+            <thead>
+              <tr className="table-dark">
+                <th scope="col">NIC</th>
+                <th scope="col">Address</th>
+                <th scope="col">Police Check</th>
+                <th scope="col">Identity Check</th>
+                <th scope="col">Address Check</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody>{renderedRequests}</tbody>
+          </table>
+        )}
       </div>
     </div>
   );

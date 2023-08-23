@@ -1,10 +1,12 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState, useEffect } from "react";
 import Header from "../Common/UserHeader";
 import { useAuthContext } from "@asgardeo/auth-react";
 // import { slackNotify } from "../../api/slackNotify";
 
 import { slackNotify } from "../../api/SlackNotify";
+import { alignProperty } from "@mui/material/styles/cssUtils";
 
 //slackNotify
 function Contact() {
@@ -31,12 +33,40 @@ function Contact() {
       setRequests(data);
       setLoading(false);
       // history.push('/');
+      
+    // Open the Slack app in a new window or tab
+      
       window.location.replace("/user/me");
     } catch (err) {
       console.log(err);
       setLoading(false);
     }
   };
+
+  const handleSlack = async (e) => {
+    // const history = useHistory();
+    // const history = useHistory();
+    e.preventDefault();
+    try {
+      setLoading(true);
+      // const NIC = 1212
+      // const no = 10
+      // const street = "main"
+      // const city = "Galle"
+
+      
+      // history.push('/');
+      const slackAppURL = 'https://join.slack.com/t/gramaapp/shared_invite/zt-219mbndki-UJQhp~BKESDUBfw8luBP7A';
+    
+    // Open the Slack app in a new window or tab
+      window.open(slackAppURL, '_blank');
+      // window.location.replace("/user/me");
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
+  };
+
 
   // useEffect(() => {
   //   handleSubmit();
@@ -66,6 +96,7 @@ function Contact() {
                         className="img-fluid"
                         alt="Phone image"
                       />
+                     
                     </div>
                     <div className="card-body">
                       <form method="post" onSubmit={handleSubmit}>
@@ -89,11 +120,23 @@ function Contact() {
                           <input
                             type="submit"
                             className="btn1"
-                            
+                            style={{width:"150px",marginLeft:"180px"}}
                             value="Send"
                           ></input>
                         </div>
                       </form>
+                      <br />
+                      <span style={{ display: 'block', textAlign: 'center' }}>Or</span>
+                      <br />
+                      <div className="d-grid">
+                      <input 
+                            type="submit"
+                            onClick={handleSlack}
+                            className="btn1"
+                            style={{width:"150px",marginLeft:"180px"}}
+                            value="Open in Slack"
+                          ></input>
+                          </div>
                     </div>
                   </div>
                 </div>
