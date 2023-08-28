@@ -1,9 +1,11 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState, useEffect } from "react";
 
 import Header from "../Common/UserHeader";
 // import React, { useState } from 'react';
 import { useAuthContext } from "@asgardeo/auth-react";
 import { newRequest } from "../../api/UserRequests";
+import { useNavigate } from "react-router-dom";
 
 function Request() {
   const [nic, setNic] = useState("");
@@ -15,6 +17,7 @@ function Request() {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(false);
   const { httpRequest } = useAuthContext();
+  const navigate = useNavigate();
 
   const fetchUserData = async () => {
     try {
@@ -48,7 +51,7 @@ function Request() {
       setRequests(data);
       setLoading(false);
 
-      window.location.replace("/user/me");
+      navigate('/user/me');
     } catch (err) {
       console.log(err);
       setLoading(false);
@@ -91,7 +94,7 @@ function Request() {
                           />
                         </div>
                         <hr />
-                        <label style={{ marginLeft: "150px" }}>
+                        <label style={{ marginLeft: "190px" }}>
                           Address Details
                         </label>
                         <div className="form-floating mb-3">
