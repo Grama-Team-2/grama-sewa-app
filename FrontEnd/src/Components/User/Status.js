@@ -32,6 +32,7 @@ function Status() {
       setRequests({ ...personalData, ...data });
       setLoading(false);
     } catch (err) {
+      window.alert("Enter a correct NIC!!!");
       console.log(err);
       setLoading(false);
     }
