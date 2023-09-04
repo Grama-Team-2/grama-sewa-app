@@ -64,10 +64,10 @@ type GSRequest record {|
     Address address;
 
 |};
-
 type StatusRequest record {|
     string sender;
     string NIC;
+
 
 |};
 
@@ -119,7 +119,7 @@ service /requests on new http:Listener(8080) {
     }
     resource function get status/[string NIC]/[string sender]() returns ValidationResponse|NoRequestFoundError|error {
 
-        map<json> queryString = {"NIC": NIC, "sender": sender};
+        map<json> queryString = {"NIC": NIC, "sender":sender};
         stream<ValidationResponse, error?>|error resultData = check mongoClient->find(collectionName = "RequestDetails", filter = queryString);
 
         if resultData is error {
@@ -223,7 +223,7 @@ service /requests on new http:Listener(8080) {
 
         string val_result = val_response.identityVerificationStatus && val_response.addressVerificationStatus && response.policeVerificationStatus ? "APPROVED" : "REJECTED";
         val_response.validationResult = val_result;
-        map<json> queryString = {"$set": {"identityVerificationStatus": val_response.identityVerificationStatus, "addressVerificationStatus": val_response.addressVerificationStatus, "policeVerificationStatus": val_response.policeVerificationStatus, validationResult: val_response.validationResult}};
+        map<json> queryString = {"$set": {"identityVerificationStatus": val_response.identityVerificationStatus, "addressVerificationStatus": val_response.addressVerificationStatus, "policeVerificationStatus": val_response.policeVerificationStatus, validationResult:  val_response.validationResult}};
         map<json> filter = {"NIC": nic};
         _ = check mongoClient->update(queryString, "RequestDetails", filter = filter);
 
