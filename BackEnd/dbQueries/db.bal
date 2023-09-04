@@ -223,6 +223,7 @@ service /requests on new http:Listener(8080) {
 
         string val_result = val_response.identityVerificationStatus && val_response.addressVerificationStatus && response.policeVerificationStatus ? "APPROVED" : "REJECTED";
         val_response.validationResult = val_result;
+        io:println(val_result);
         map<json> queryString = {"$set": {"identityVerificationStatus": val_response.identityVerificationStatus, "addressVerificationStatus": val_response.addressVerificationStatus, "policeVerificationStatus": val_response.policeVerificationStatus, validationResult: val_response.validationResult}};
         map<json> filter = {"NIC": nic};
         _ = check mongoClient->update(queryString, "RequestDetails", filter = filter);
